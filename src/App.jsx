@@ -31,6 +31,8 @@ const DEFAULT_DATA = {
   textScale: 0.66,
   slideSeconds: 7,
   tickerSpeed: 24,
+  heroImageUrl: "",
+  tickerText: "",
   logoText: "ח",
   heroSlides: [
     {
@@ -155,21 +157,60 @@ const itemT = (data, item, heKey, arKey) => (data.language === "ar" ? item?.[arK
 
 function applyFirebaseSettings(base, remote) {
   if (!remote) return base;
+
   const next = { ...base };
-  if (remote.storeName) next.businessNameAr = remote.storeName;
+
+  if (remote.storeName) {
+    next.businessNameAr = remote.storeName;
+    next.businessNameHe = remote.storeName;
+  }
   if (remote.phone) next.phone = remote.phone;
   if (remote.language) next.language = remote.language;
   if (remote.primaryColor) next.primaryColor = remote.primaryColor;
   if (remote.secondaryColor) next.backgroundColor = remote.secondaryColor;
+
   if (remote.offerTitle) {
     next.offerTitleAr = remote.offerTitle;
     next.offerTitleHe = remote.offerTitle;
   }
+
   if (remote.offerText) {
     next.offerTextAr = remote.offerText;
     next.offerTextHe = remote.offerText;
   }
-  if (remote.offerPercent !== undefined) next.offerPercent = String(remote.offerPercent).includes("%") ? String(remote.offerPercent) : `${remote.offerPercent}%`;
+
+  if (remote.offerPercent !== undefined) {
+    next.offerPercent = String(remote.offerPercent).includes("%")
+      ? String(remote.offerPercent)
+      : `${remote.offerPercent}%`;
+  }
+
+  // صورة رئيسية من Firebase عبر رابط مباشر
+  if (remote.heroImageUrl) {
+    next.heroImageUrl = remote.heroImageUrl;
+    const firstSlide = next.heroSlides?.[0] || DEFAULT_DATA.heroSlides[0];
+    next.heroSlides = [
+      {
+        ...firstSlide,
+        image: remote.heroImageUrl,
+        images: [remote.heroImageUrl],
+        media: [{ type: "image", src: remote.heroImageUrl, name: "firebase-image" }]
+      },
+      ...(next.heroSlides || DEFAULT_DATA.heroSlides).slice(1)
+    ];
+  }
+
+  // شريط الأخبار من Firebase
+  if (remote.tickerText) {
+    next.tickerText = remote.tickerText;
+    next.tickerAr = [remote.tickerText];
+    next.tickerHe = [remote.tickerText];
+  }
+
+  // أسعار صرف اختيارية من Firebase بدل API إذا بدك تتحكم يدويًا
+  if (remote.exchangeUSD !== undefined) next.exchangeUSD = remote.exchangeUSD;
+  if (remote.exchangeEUR !== undefined) next.exchangeEUR = remote.exchangeEUR;
+
   return next;
 }
 
@@ -183,6 +224,8 @@ function toFirebaseSettings(data) {
     offerTitle: data.offerTitleAr || data.offerTitleHe || "",
     offerText: data.offerTextAr || data.offerTextHe || "",
     offerPercent: Number(String(data.offerPercent || "0").replace("%", "")) || 0,
+    heroImageUrl: data.heroImageUrl || data.heroSlides?.[0]?.image || "",
+    tickerText: data.tickerText || (data.language === "ar" ? data.tickerAr?.[0] : data.tickerHe?.[0]) || "",
     currency: "ILS",
     updatedAt: new Date().toISOString()
   };
@@ -329,8 +372,8 @@ export default function HamoudaPremiumDisplay() {
 
           <div className="flex items-center justify-center gap-2">
             <InfoPill label={isAr ? "هاتف" : "טלפון"} value={`📞 ${data.phone}`} color={data.primaryColor} />
-            <InfoPill label={isAr ? "دولار" : "דולר"} value={`$ ${fx.usdIls}`} color={data.primaryColor} />
-            <InfoPill label={isAr ? "يورو" : "אירו"} value={`€ ${fx.eurIls}`} color={data.primaryColor} />
+            <InfoPill label={isAr ? "دولار" : "דולר"} value={`$ ${data.exchangeUSD ?? fx.usdIls}`} color={data.primaryColor} />
+            <InfoPill label={isAr ? "يورو" : "אירו"} value={`€ ${data.exchangeEUR ?? fx.eurIls}`} color={data.primaryColor} />
           </div>
 
           <div className="text-left">
@@ -432,6 +475,7 @@ export default function HamoudaPremiumDisplay() {
             </SettingsSection>
 
             <SettingsSection title="السلايدات والوسائط - صور وفيديوهات">
+              <Input label="رابط الصورة الرئيسية من Firebase / الإنترنت" value={draft.heroImageUrl || ""} onChange={(v) => updateDraft("heroImageUrl", v)} />
               <div className="mb-3 rounded-2xl border border-amber-300/30 bg-amber-300/10 p-3 text-sm text-amber-100">ملاحظة مهمة: لتجنب خطأ QuotaExceededError، النصوص والأسعار والألوان تُحفظ الآن على Firebase وتظهر على شاشة التلفزيون مباشرة. الصور والفيديوهات تحتاج روابط خارجية أو رفع مؤقت من نفس الجهاز لأن Storage غير مفعل.</div>
               {draft.heroSlides.map((s, i) => <div key={i} className="mb-4 rounded-2xl bg-white/5 p-3">
                 <Input label="العنوان عبري" value={s.titleHe} onChange={(v) => updateArray("heroSlides", i, "titleHe", v, setDraft)} />
@@ -471,6 +515,7 @@ export default function HamoudaPremiumDisplay() {
               <Input label="نص العرض عبري" value={draft.offerTextHe} onChange={(v) => updateDraft("offerTextHe", v)} />
               <Input label="نص العرض عربي" value={draft.offerTextAr} onChange={(v) => updateDraft("offerTextAr", v)} />
               <Input label="نسبة الخصم" value={draft.offerPercent} onChange={(v) => updateDraft("offerPercent", v)} />
+              <Input label="شريط أخبار Firebase سطر واحد" value={draft.tickerText || ""} onChange={(v) => updateDraft("tickerText", v)} />
               <Textarea label="شريط الأخبار عبري - كل سطر إعلان" value={draft.tickerHe.join(NL)} onChange={(v) => updateDraft("tickerHe", v.split(NL).filter(Boolean))} />
               <Textarea label="شريط الأخبار عربي - كل سطر إعلان" value={draft.tickerAr.join(NL)} onChange={(v) => updateDraft("tickerAr", v.split(NL).filter(Boolean))} />
               <Textarea label="الأكثر طلباً عبري" value={draft.topProductsHe.join(NL)} onChange={(v) => updateDraft("topProductsHe", v.split(NL).filter(Boolean))} />
