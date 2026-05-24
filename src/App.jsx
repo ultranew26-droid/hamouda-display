@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Settings, X, Plus, Trash2, Save, ImagePlus, Languages, Upload, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { db } from "./firebase";
+import { collection, doc, onSnapshot, setDoc } from "firebase/firestore";
 
 const STORAGE_KEY = "hamouda-display-settings-v4";
 const NL = String.fromCharCode(10);
@@ -151,6 +153,41 @@ if (typeof window !== "undefined") runSmallTests();
 const t = (data, heKey, arKey) => (data.language === "ar" ? data[arKey] : data[heKey]);
 const itemT = (data, item, heKey, arKey) => (data.language === "ar" ? item?.[arKey] : item?.[heKey]);
 
+function applyFirebaseSettings(base, remote) {
+  if (!remote) return base;
+  const next = { ...base };
+  if (remote.storeName) next.businessNameAr = remote.storeName;
+  if (remote.phone) next.phone = remote.phone;
+  if (remote.language) next.language = remote.language;
+  if (remote.primaryColor) next.primaryColor = remote.primaryColor;
+  if (remote.secondaryColor) next.backgroundColor = remote.secondaryColor;
+  if (remote.offerTitle) {
+    next.offerTitleAr = remote.offerTitle;
+    next.offerTitleHe = remote.offerTitle;
+  }
+  if (remote.offerText) {
+    next.offerTextAr = remote.offerText;
+    next.offerTextHe = remote.offerText;
+  }
+  if (remote.offerPercent !== undefined) next.offerPercent = String(remote.offerPercent).includes("%") ? String(remote.offerPercent) : `${remote.offerPercent}%`;
+  return next;
+}
+
+function toFirebaseSettings(data) {
+  return {
+    storeName: data.businessNameAr || data.businessNameHe || "",
+    phone: data.phone || "",
+    language: data.language || "ar",
+    primaryColor: data.primaryColor || "#f5b21a",
+    secondaryColor: data.backgroundColor || "#05070b",
+    offerTitle: data.offerTitleAr || data.offerTitleHe || "",
+    offerText: data.offerTextAr || data.offerTextHe || "",
+    offerPercent: Number(String(data.offerPercent || "0").replace("%", "")) || 0,
+    currency: "ILS",
+    updatedAt: new Date().toISOString()
+  };
+}
+
 export default function HamoudaPremiumDisplay() {
   const [data, setData] = useState(loadData);
   const [draft, setDraft] = useState(data);
@@ -160,6 +197,7 @@ export default function HamoudaPremiumDisplay() {
   const [now, setNow] = useState(new Date());
   const [fx, setFx] = useState({ loading: true, usdIls: "--", eurIls: "--", eurUsd: "--" });
   const [notice, setNotice] = useState("");
+  const [firebaseSettingsId, setFirebaseSettingsId] = useState(null);
 
   const isAr = data.language === "ar";
   const dir = "rtl";
@@ -170,6 +208,21 @@ export default function HamoudaPremiumDisplay() {
     ? currentSlide.media
     : (currentSlide?.images?.length ? currentSlide.images : [currentSlide?.image || FALLBACK_IMAGE]).map((src) => ({ type: "image", src, name: "image" }));
   const currentMedia = slideMedia[imageIndex % slideMedia.length] || { type: "image", src: FALLBACK_IMAGE, name: "fallback" };
+
+  useEffect(() => {
+    const unsub = onSnapshot(collection(db, "settings"), (snapshot) => {
+      if (snapshot.empty) return;
+      const firstDoc = snapshot.docs[0];
+      setFirebaseSettingsId(firstDoc.id);
+      const remote = firstDoc.data();
+      setData((current) => applyFirebaseSettings(current, remote));
+      setDraft((current) => applyFirebaseSettings(current, remote));
+    }, (error) => {
+      console.error("Firebase settings error:", error);
+      setNotice("تعذر الاتصال بـ Firebase. تأكد من قواعد Firestore والإنترنت.");
+    });
+    return () => unsub();
+  }, []);
 
   useEffect(() => {
     const clock = setInterval(() => setNow(new Date()), 1000);
@@ -215,11 +268,19 @@ export default function HamoudaPremiumDisplay() {
 
   const tickerText = useMemo(() => (isAr ? data.tickerAr : data.tickerHe).join("     •     "), [data, isAr]);
 
-  const saveSettings = () => {
+  const saveSettings = async () => {
     const result = safeSaveSettings(draft);
     setData(draft);
     setSettingsOpen(false);
-    setNotice(result.message);
+    try {
+      const targetId = firebaseSettingsId || "main";
+      await setDoc(doc(db, "settings", targetId), toFirebaseSettings(draft), { merge: true });
+      setFirebaseSettingsId(targetId);
+      setNotice("تم حفظ الإعدادات على Firebase وستظهر على شاشة التلفزيون تلقائيًا.");
+    } catch (error) {
+      console.error("Firebase save error:", error);
+      setNotice(result.message + " لكن لم يتم الحفظ على Firebase. افحص قواعد Firestore.");
+    }
     setTimeout(() => setNotice(""), 6500);
   };
 
@@ -229,6 +290,9 @@ export default function HamoudaPremiumDisplay() {
     setData((d) => {
       const next = { ...d, language: d.language === "he" ? "ar" : "he" };
       safeSaveSettings(next);
+      const targetId = firebaseSettingsId || "main";
+      setDoc(doc(db, "settings", targetId), toFirebaseSettings(next), { merge: true }).catch(console.error);
+      setFirebaseSettingsId(targetId);
       return next;
     });
   };
@@ -368,7 +432,7 @@ export default function HamoudaPremiumDisplay() {
             </SettingsSection>
 
             <SettingsSection title="السلايدات والوسائط - صور وفيديوهات">
-              <div className="mb-3 rounded-2xl border border-amber-300/30 bg-amber-300/10 p-3 text-sm text-amber-100">ملاحظة مهمة: لتجنب خطأ QuotaExceededError، الصور والفيديوهات لا تُحفظ داخل ذاكرة المتصفح. بعد تحديث الصفحة قد تحتاج لإعادة رفع الوسائط، أما النصوص والأسعار والألوان فتُحفظ عادي.</div>
+              <div className="mb-3 rounded-2xl border border-amber-300/30 bg-amber-300/10 p-3 text-sm text-amber-100">ملاحظة مهمة: لتجنب خطأ QuotaExceededError، النصوص والأسعار والألوان تُحفظ الآن على Firebase وتظهر على شاشة التلفزيون مباشرة. الصور والفيديوهات تحتاج روابط خارجية أو رفع مؤقت من نفس الجهاز لأن Storage غير مفعل.</div>
               {draft.heroSlides.map((s, i) => <div key={i} className="mb-4 rounded-2xl bg-white/5 p-3">
                 <Input label="العنوان عبري" value={s.titleHe} onChange={(v) => updateArray("heroSlides", i, "titleHe", v, setDraft)} />
                 <Input label="العنوان عربي" value={s.titleAr} onChange={(v) => updateArray("heroSlides", i, "titleAr", v, setDraft)} />

@@ -1,12 +1,8 @@
 {
-  "name": "hamouda-display",
-  "private": true,
-  "version": "1.0.0",
-  "type": "module",
   "scripts": {
-    "dev": "vite --host 0.0.0.0",
+    "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview --host 0.0.0.0"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",
@@ -14,10 +10,11 @@
     "react": "latest",
     "react-dom": "latest",
     "framer-motion": "latest",
-    "lucide-react": "latest"
+    "lucide-react": "latest",
+    "firebase": "latest"
   },
   "devDependencies": {
-    "tailwindcss": "^3.4.17",
+    "tailwindcss": "latest",
     "postcss": "latest",
     "autoprefixer": "latest"
   }
