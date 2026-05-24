@@ -160,23 +160,37 @@ function applyFirebaseSettings(base, remote) {
 
   const next = { ...base };
 
-  if (remote.storeName) {
-    next.businessNameAr = remote.storeName;
-    next.businessNameHe = remote.storeName;
+  // اللغة من Firebase: ar أو he
+  if (remote.language === "ar" || remote.language === "he") {
+    next.language = remote.language;
   }
+
+  // أسماء المحل منفصلة حسب اللغة
+  if (remote.storeNameAr) next.businessNameAr = remote.storeNameAr;
+  if (remote.storeNameHe) next.businessNameHe = remote.storeNameHe;
+
+  // توافق مع الحقل القديم storeName: اعتبره عربي فقط حتى لا يخرب العبري
+  if (remote.storeName && !remote.storeNameAr) {
+    next.businessNameAr = remote.storeName;
+  }
+
   if (remote.phone) next.phone = remote.phone;
-  if (remote.language) next.language = remote.language;
   if (remote.primaryColor) next.primaryColor = remote.primaryColor;
   if (remote.secondaryColor) next.backgroundColor = remote.secondaryColor;
 
-  if (remote.offerTitle) {
+  // العروض منفصلة حسب اللغة
+  if (remote.offerTitleAr) next.offerTitleAr = remote.offerTitleAr;
+  if (remote.offerTitleHe) next.offerTitleHe = remote.offerTitleHe;
+  if (remote.offerTextAr) next.offerTextAr = remote.offerTextAr;
+  if (remote.offerTextHe) next.offerTextHe = remote.offerTextHe;
+
+  // توافق مع الحقول القديمة: اعتبرها عربية فقط
+  if (remote.offerTitle && !remote.offerTitleAr) {
     next.offerTitleAr = remote.offerTitle;
-    next.offerTitleHe = remote.offerTitle;
   }
 
-  if (remote.offerText) {
+  if (remote.offerText && !remote.offerTextAr) {
     next.offerTextAr = remote.offerText;
-    next.offerTextHe = remote.offerText;
   }
 
   if (remote.offerPercent !== undefined) {
@@ -231,11 +245,20 @@ else if (remote.heroImageUrl) {
   ];
 }
 
-  // شريط الأخبار من Firebase
-  if (remote.tickerText) {
+  // شريط الأخبار منفصل حسب اللغة
+  if (remote.tickerTextAr) {
+    next.tickerText = remote.tickerTextAr;
+    next.tickerAr = [remote.tickerTextAr];
+  }
+
+  if (remote.tickerTextHe) {
+    next.tickerHe = [remote.tickerTextHe];
+  }
+
+  // توافق مع الحقل القديم tickerText: اعتبره عربي فقط
+  if (remote.tickerText && !remote.tickerTextAr) {
     next.tickerText = remote.tickerText;
     next.tickerAr = [remote.tickerText];
-    next.tickerHe = [remote.tickerText];
   }
 
   // أسعار المنتجات من Firebase
@@ -260,16 +283,27 @@ else if (remote.heroImageUrl) {
 
 function toFirebaseSettings(data) {
   return {
+    // حقول قديمة للتوافق
     storeName: data.businessNameAr || data.businessNameHe || "",
+    offerTitle: data.offerTitleAr || data.offerTitleHe || "",
+    offerText: data.offerTextAr || data.offerTextHe || "",
+    tickerText: data.tickerText || data.tickerAr?.[0] || "",
+
+    // حقول جديدة منفصلة حسب اللغة
+    storeNameAr: data.businessNameAr || "",
+    storeNameHe: data.businessNameHe || "",
     phone: data.phone || "",
     language: data.language || "ar",
     primaryColor: data.primaryColor || "#f5b21a",
     secondaryColor: data.backgroundColor || "#05070b",
-    offerTitle: data.offerTitleAr || data.offerTitleHe || "",
-    offerText: data.offerTextAr || data.offerTextHe || "",
+    offerTitleAr: data.offerTitleAr || "",
+    offerTitleHe: data.offerTitleHe || "",
+    offerTextAr: data.offerTextAr || "",
+    offerTextHe: data.offerTextHe || "",
     offerPercent: Number(String(data.offerPercent || "0").replace("%", "")) || 0,
     heroImageUrl: data.heroImageUrl || data.heroSlides?.[0]?.image || "",
-    tickerText: data.tickerText || (data.language === "ar" ? data.tickerAr?.[0] : data.tickerHe?.[0]) || "",
+    tickerTextAr: data.tickerAr?.[0] || data.tickerText || "",
+    tickerTextHe: data.tickerHe?.[0] || "",
     prices: (data.prices || []).map((p) => ({
       nameHe: p.nameHe || "",
       nameAr: p.nameAr || "",
