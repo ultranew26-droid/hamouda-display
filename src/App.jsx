@@ -206,8 +206,24 @@ function applyFirebaseSettings(base, remote) {
   }
 
   // صور متعددة من Firebase
-  if (remote.heroImages && Array.isArray(remote.heroImages) && remote.heroImages.length > 0) {
-    const images = remote.heroImages.filter(Boolean);
+if (remote.heroImages && Array.isArray(remote.heroImages) && remote.heroImages.length > 0) {
+  const images = remote.heroImages.filter(Boolean);
+
+  const firstSlide = next.heroSlides?.[0] || DEFAULT_DATA.heroSlides[0];
+
+  next.heroSlides = [
+    {
+      ...firstSlide,
+      image: images[0],
+      images: images,
+      media: images.map((img, index) => ({
+        type: "image",
+        src: img,
+        name: `firebase-image-${index}`
+      }))
+    }
+  ];
+}    const images = remote.heroImages.filter(Boolean);
     const firstSlide = next.heroSlides?.[0] || DEFAULT_DATA.heroSlides[0];
 
     next.heroSlides = [
