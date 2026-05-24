@@ -238,6 +238,19 @@ else if (remote.heroImageUrl) {
     next.tickerHe = [remote.tickerText];
   }
 
+  // أسعار المنتجات من Firebase
+  if (remote.prices && Array.isArray(remote.prices) && remote.prices.length > 0) {
+    next.prices = remote.prices.map((p) => ({
+      nameHe: p.nameHe || "",
+      nameAr: p.nameAr || "",
+      price: String(p.price ?? "0"),
+      unitHe: p.unitHe || "",
+      unitAr: p.unitAr || "",
+      change: p.change || "0",
+      direction: p.direction || "flat"
+    }));
+  }
+
   // أسعار صرف اختيارية من Firebase بدل API إذا بدك تتحكم يدويًا
   if (remote.exchangeUSD !== undefined) next.exchangeUSD = remote.exchangeUSD;
   if (remote.exchangeEUR !== undefined) next.exchangeEUR = remote.exchangeEUR;
@@ -257,6 +270,15 @@ function toFirebaseSettings(data) {
     offerPercent: Number(String(data.offerPercent || "0").replace("%", "")) || 0,
     heroImageUrl: data.heroImageUrl || data.heroSlides?.[0]?.image || "",
     tickerText: data.tickerText || (data.language === "ar" ? data.tickerAr?.[0] : data.tickerHe?.[0]) || "",
+    prices: (data.prices || []).map((p) => ({
+      nameHe: p.nameHe || "",
+      nameAr: p.nameAr || "",
+      price: String(p.price ?? "0"),
+      unitHe: p.unitHe || "",
+      unitAr: p.unitAr || "",
+      change: p.change || "0",
+      direction: p.direction || "flat"
+    })),
     currency: "ILS",
     updatedAt: new Date().toISOString()
   };
