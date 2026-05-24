@@ -160,19 +160,25 @@ function applyFirebaseSettings(base, remote) {
 
   const next = { ...base };
 
-  // اللغة من Firebase: ar أو he
+  // اللغة من Firebase: اكتب ar للعربي أو he للعبري
   if (remote.language === "ar" || remote.language === "he") {
     next.language = remote.language;
   }
 
   // أسماء المحل منفصلة حسب اللغة
+  // storeNameAr يظهر فقط عند اللغة العربية
+  // storeNameHe يظهر فقط عند اللغة العبرية
   if (remote.storeNameAr) next.businessNameAr = remote.storeNameAr;
   if (remote.storeNameHe) next.businessNameHe = remote.storeNameHe;
 
-  // توافق مع الحقل القديم storeName: اعتبره عربي فقط حتى لا يخرب العبري
+  // توافق مع الحقل القديم storeName: نعتبره عربي فقط حتى لا يظهر العربي عند اختيار العبرية
   if (remote.storeName && !remote.storeNameAr) {
     next.businessNameAr = remote.storeName;
   }
+
+  // وصف المحل منفصل حسب اللغة
+  if (remote.sloganAr) next.sloganAr = remote.sloganAr;
+  if (remote.sloganHe) next.sloganHe = remote.sloganHe;
 
   if (remote.phone) next.phone = remote.phone;
   if (remote.primaryColor) next.primaryColor = remote.primaryColor;
@@ -184,7 +190,7 @@ function applyFirebaseSettings(base, remote) {
   if (remote.offerTextAr) next.offerTextAr = remote.offerTextAr;
   if (remote.offerTextHe) next.offerTextHe = remote.offerTextHe;
 
-  // توافق مع الحقول القديمة: اعتبرها عربية فقط
+  // توافق مع الحقول القديمة: نعتبرها عربية فقط حتى لا تظهر عند اختيار العبرية
   if (remote.offerTitle && !remote.offerTitleAr) {
     next.offerTitleAr = remote.offerTitle;
   }
@@ -199,51 +205,44 @@ function applyFirebaseSettings(base, remote) {
       : `${remote.offerPercent}%`;
   }
 
- // صور متعددة من Firebase
-if (remote.heroImages && Array.isArray(remote.heroImages) && remote.heroImages.length > 0) {
+  // صور متعددة من Firebase
+  if (remote.heroImages && Array.isArray(remote.heroImages) && remote.heroImages.length > 0) {
+    const images = remote.heroImages.filter(Boolean);
+    const firstSlide = next.heroSlides?.[0] || DEFAULT_DATA.heroSlides[0];
 
-  const images = remote.heroImages.filter(Boolean);
-
-  const firstSlide =
-    next.heroSlides?.[0] || DEFAULT_DATA.heroSlides[0];
-
-  next.heroSlides = [
-    {
-      ...firstSlide,
-      image: images[0],
-      images: images,
-      media: images.map((img, index) => ({
-        type: "image",
-        src: img,
-        name: `firebase-image-${index}`
-      }))
-    },
-    ...(next.heroSlides || DEFAULT_DATA.heroSlides).slice(1)
-  ];
-}
-else if (remote.heroImageUrl) {
-
-  next.heroImageUrl = remote.heroImageUrl;
-
-  const firstSlide =
-    next.heroSlides?.[0] || DEFAULT_DATA.heroSlides[0];
-
-  next.heroSlides = [
-    {
-      ...firstSlide,
-      image: remote.heroImageUrl,
-      images: [remote.heroImageUrl],
-      media: [
-        {
+    next.heroSlides = [
+      {
+        ...firstSlide,
+        image: images[0],
+        images,
+        media: images.map((img, index) => ({
           type: "image",
-          src: remote.heroImageUrl,
-          name: "firebase-image"
-        }
-      ]
-    },
-    ...(next.heroSlides || DEFAULT_DATA.heroSlides).slice(1)
-  ];
-}
+          src: img,
+          name: `firebase-image-${index}`
+        }))
+      },
+      ...(next.heroSlides || DEFAULT_DATA.heroSlides).slice(1)
+    ];
+  } else if (remote.heroImageUrl) {
+    next.heroImageUrl = remote.heroImageUrl;
+    const firstSlide = next.heroSlides?.[0] || DEFAULT_DATA.heroSlides[0];
+
+    next.heroSlides = [
+      {
+        ...firstSlide,
+        image: remote.heroImageUrl,
+        images: [remote.heroImageUrl],
+        media: [
+          {
+            type: "image",
+            src: remote.heroImageUrl,
+            name: "firebase-image"
+          }
+        ]
+      },
+      ...(next.heroSlides || DEFAULT_DATA.heroSlides).slice(1)
+    ];
+  }
 
   // شريط الأخبار منفصل حسب اللغة
   if (remote.tickerTextAr) {
@@ -255,7 +254,7 @@ else if (remote.heroImageUrl) {
     next.tickerHe = [remote.tickerTextHe];
   }
 
-  // توافق مع الحقل القديم tickerText: اعتبره عربي فقط
+  // توافق مع الحقل القديم tickerText: نعتبره عربي فقط
   if (remote.tickerText && !remote.tickerTextAr) {
     next.tickerText = remote.tickerText;
     next.tickerAr = [remote.tickerText];
@@ -280,20 +279,21 @@ else if (remote.heroImageUrl) {
 
   return next;
 }
-
 function toFirebaseSettings(data) {
   return {
-    // حقول قديمة للتوافق
-    storeName: data.businessNameAr || data.businessNameHe || "",
-    offerTitle: data.offerTitleAr || data.offerTitleHe || "",
-    offerText: data.offerTextAr || data.offerTextHe || "",
+    // حقول قديمة للتوافق مع النسخ السابقة
+    storeName: data.businessNameAr || "",
+    offerTitle: data.offerTitleAr || "",
+    offerText: data.offerTextAr || "",
     tickerText: data.tickerText || data.tickerAr?.[0] || "",
 
     // حقول جديدة منفصلة حسب اللغة
+    language: data.language || "ar",
     storeNameAr: data.businessNameAr || "",
     storeNameHe: data.businessNameHe || "",
+    sloganAr: data.sloganAr || "",
+    sloganHe: data.sloganHe || "",
     phone: data.phone || "",
-    language: data.language || "ar",
     primaryColor: data.primaryColor || "#f5b21a",
     secondaryColor: data.backgroundColor || "#05070b",
     offerTitleAr: data.offerTitleAr || "",
@@ -317,7 +317,6 @@ function toFirebaseSettings(data) {
     updatedAt: new Date().toISOString()
   };
 }
-
 export default function HamoudaPremiumDisplay() {
   const [data, setData] = useState(loadData);
   const [draft, setDraft] = useState(data);
