@@ -29,7 +29,7 @@ const DEFAULT_DATA = {
   primaryColor: "#f5b21a",
   backgroundColor: "#05070b",
   textScale: 0.66,
-  slideSeconds: 7,
+  slideSeconds: 30,
   tickerSpeed: 24,
   heroImageUrl: "",
   tickerText: "",
@@ -369,7 +369,7 @@ export default function HamoudaPremiumDisplay() {
 
   useEffect(() => {
     const mediaCount = slideMedia.length || 1;
-    const i = setInterval(() => setImageIndex((v) => (v + 1) % mediaCount), 4500);
+    const i = setInterval(() => setImageIndex((v) => (v + 1) % mediaCount), 8000);
     return () => clearInterval(i);
   }, [slideIndex, slideMedia.length]);
 
