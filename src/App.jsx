@@ -366,13 +366,10 @@ export default function HamoudaPremiumDisplay() {
   }, []);
 
   useEffect(() => {
-    const interval = Math.max(30, Number(data.slideSeconds || 30)) * 1000;
-    const s = setInterval(() => {
-      setSlideIndex((v) => (v + 1) % Math.max(1, data.heroSlides.length));
-      setImageIndex(0);
-    }, interval);
-    return () => clearInterval(s);
-  }, [data.slideSeconds, data.heroSlides.length]);
+    // نثبّت العرض على السلايد الأول عند استخدام صور Firebase
+    // حتى يتم عرض كل الصور بالترتيب بدون الرجوع للبداية قبل اكتمالها.
+    setSlideIndex(0);
+  }, [data.heroSlides.length]);
 
   useEffect(() => {
     const mediaCount = slideMedia.length || 1;
