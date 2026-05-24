@@ -185,20 +185,51 @@ function applyFirebaseSettings(base, remote) {
       : `${remote.offerPercent}%`;
   }
 
-  // صورة رئيسية من Firebase عبر رابط مباشر
-  if (remote.heroImageUrl) {
-    next.heroImageUrl = remote.heroImageUrl;
-    const firstSlide = next.heroSlides?.[0] || DEFAULT_DATA.heroSlides[0];
-    next.heroSlides = [
-      {
-        ...firstSlide,
-        image: remote.heroImageUrl,
-        images: [remote.heroImageUrl],
-        media: [{ type: "image", src: remote.heroImageUrl, name: "firebase-image" }]
-      },
-      ...(next.heroSlides || DEFAULT_DATA.heroSlides).slice(1)
-    ];
-  }
+ // صور متعددة من Firebase
+if (remote.heroImages && Array.isArray(remote.heroImages) && remote.heroImages.length > 0) {
+
+  const images = remote.heroImages.filter(Boolean);
+
+  const firstSlide =
+    next.heroSlides?.[0] || DEFAULT_DATA.heroSlides[0];
+
+  next.heroSlides = [
+    {
+      ...firstSlide,
+      image: images[0],
+      images: images,
+      media: images.map((img, index) => ({
+        type: "image",
+        src: img,
+        name: `firebase-image-${index}`
+      }))
+    },
+    ...(next.heroSlides || DEFAULT_DATA.heroSlides).slice(1)
+  ];
+}
+else if (remote.heroImageUrl) {
+
+  next.heroImageUrl = remote.heroImageUrl;
+
+  const firstSlide =
+    next.heroSlides?.[0] || DEFAULT_DATA.heroSlides[0];
+
+  next.heroSlides = [
+    {
+      ...firstSlide,
+      image: remote.heroImageUrl,
+      images: [remote.heroImageUrl],
+      media: [
+        {
+          type: "image",
+          src: remote.heroImageUrl,
+          name: "firebase-image"
+        }
+      ]
+    },
+    ...(next.heroSlides || DEFAULT_DATA.heroSlides).slice(1)
+  ];
+}
 
   // شريط الأخبار من Firebase
   if (remote.tickerText) {
