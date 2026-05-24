@@ -206,42 +206,34 @@ function applyFirebaseSettings(base, remote) {
   }
 
   // صور متعددة من Firebase
-if (remote.heroImages && Array.isArray(remote.heroImages) && remote.heroImages.length > 0) {
-  const images = remote.heroImages.filter(Boolean);
+  if (
+    remote.heroImages &&
+    Array.isArray(remote.heroImages) &&
+    remote.heroImages.length > 0
+  ) {
+    const images = remote.heroImages.filter(Boolean);
 
-  const firstSlide = next.heroSlides?.[0] || DEFAULT_DATA.heroSlides[0];
-
-  next.heroSlides = [
-    {
-      ...firstSlide,
-      image: images[0],
-      images: images,
-      media: images.map((img, index) => ({
-        type: "image",
-        src: img,
-        name: `firebase-image-${index}`
-      }))
-    }
-  ];
-}    const images = remote.heroImages.filter(Boolean);
-    const firstSlide = next.heroSlides?.[0] || DEFAULT_DATA.heroSlides[0];
+    const firstSlide =
+      next.heroSlides?.[0] || DEFAULT_DATA.heroSlides[0];
 
     next.heroSlides = [
       {
         ...firstSlide,
         image: images[0],
-        images,
+        images: images,
         media: images.map((img, index) => ({
           type: "image",
           src: img,
           name: `firebase-image-${index}`
         }))
-      },
-      ...(next.heroSlides || DEFAULT_DATA.heroSlides).slice(1)
+      }
     ];
-  } else if (remote.heroImageUrl) {
+  }
+  else if (remote.heroImageUrl) {
     next.heroImageUrl = remote.heroImageUrl;
-    const firstSlide = next.heroSlides?.[0] || DEFAULT_DATA.heroSlides[0];
+
+    const firstSlide =
+      next.heroSlides?.[0] || DEFAULT_DATA.heroSlides[0];
 
     next.heroSlides = [
       {
@@ -255,8 +247,7 @@ if (remote.heroImages && Array.isArray(remote.heroImages) && remote.heroImages.l
             name: "firebase-image"
           }
         ]
-      },
-      ...(next.heroSlides || DEFAULT_DATA.heroSlides).slice(1)
+      }
     ];
   }
 
@@ -375,7 +366,7 @@ export default function HamoudaPremiumDisplay() {
   }, []);
 
   useEffect(() => {
-    const interval = Math.max(3, Number(data.slideSeconds || 8)) * 1000;
+    const interval = Math.max(30, Number(data.slideSeconds || 30)) * 1000;
     const s = setInterval(() => {
       setSlideIndex((v) => (v + 1) % Math.max(1, data.heroSlides.length));
       setImageIndex(0);
