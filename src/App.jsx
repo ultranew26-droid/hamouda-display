@@ -323,6 +323,57 @@ function toFirebaseSettings(data) {
     updatedAt: new Date().toISOString()
   };
 }
+
+if (typeof document !== "undefined" && !document.getElementById("tv-safe-animations")) {
+  const style = document.createElement("style");
+  style.id = "tv-safe-animations";
+  style.innerHTML = `
+    @keyframes tickerMove {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    @keyframes softPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.045); opacity: .78; }
+    }
+
+    @keyframes goldGlow {
+      0%, 100% { filter: brightness(1); transform: scale(1); }
+      50% { filter: brightness(1.28); transform: scale(1.04); }
+    }
+
+    @keyframes imageFade {
+      from { opacity: .82; }
+      to { opacity: 1; }
+    }
+
+    .tv-price-pulse {
+      animation: softPulse 2.2s ease-in-out infinite;
+      display: inline-block;
+    }
+
+    .tv-discount-pulse {
+      animation: goldGlow 1.6s ease-in-out infinite;
+    }
+
+    .tv-info-glow {
+      animation: softPulse 3.2s ease-in-out infinite;
+    }
+
+    .tv-image-fade {
+      animation: imageFade .8s ease-in-out;
+    }
+
+    .tv-ticker-move {
+      display: inline-block;
+      padding-inline-start: 100%;
+      animation: tickerMove 28s linear infinite;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
 export default function HamoudaPremiumDisplay() {
   const [data, setData] = useState(loadData);
   const [draft, setDraft] = useState(data);
@@ -473,7 +524,7 @@ export default function HamoudaPremiumDisplay() {
               {currentMedia.type === "video" ? (
                 <video src={currentMedia.src} className="h-full w-full object-contain" autoPlay muted loop playsInline />
               ) : (
-                <img src={currentMedia.src || FALLBACK_IMAGE} className="h-full w-full object-contain" alt="slide" onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }} />
+                <img src={currentMedia.src || FALLBACK_IMAGE} className="h-full w-full object-contain tv-image-fade" alt="slide" onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }} />
               )}
               <div className="absolute inset-0 bg-black/25 pointer-events-none" />
               <div className="absolute right-5 top-5 rounded-full px-4 py-1.5 text-sm font-bold" style={{ background: data.primaryColor, color: "#0b1220" }}>{itemT(data, currentSlide, "tagHe", "tagAr")}</div>
@@ -492,7 +543,7 @@ export default function HamoudaPremiumDisplay() {
                   {data.prices.map((p, i) => (
                     <div key={i} className="rounded-xl border border-white/10 bg-black/25 p-2.5 ">
                       <div className="text-sm font-bold text-white/85 truncate">{itemT(data, p, "nameHe", "nameAr")}</div>
-                      <div className="mt-1 text-2xl font-black">₪{p.price}</div>
+                      <div className="mt-1 text-2xl font-black tv-price-pulse">₪{p.price}</div>
                       <div className="mt-0.5 flex items-center justify-between text-[11px] text-white/55">
                         <span>{itemT(data, p, "unitHe", "unitAr")}</span>
                         <span className={p.direction === "up" ? "text-green-400" : p.direction === "down" ? "text-red-400" : "text-white/50"}>{p.direction === "up" ? "↑" : p.direction === "down" ? "↓" : "—"} {p.change}</span>
@@ -509,7 +560,7 @@ export default function HamoudaPremiumDisplay() {
                   <div className="text-sm font-bold text-white/65">{t(data, "offerTitleHe", "offerTitleAr")}</div>
                   <div className="mt-1 text-xl font-black">{t(data, "offerTextHe", "offerTextAr")}</div>
                 </div>
-                <div className="rounded-2xl px-4 py-2 text-3xl font-black " style={{ background: data.primaryColor, color: "#08111f" }}>{data.offerPercent}</div>
+                <div className="rounded-2xl px-4 py-2 text-3xl font-black tv-discount-pulse" style={{ background: data.primaryColor, color: "#08111f" }}>{data.offerPercent}</div>
               </CardContent>
             </Card>
           </div>
@@ -525,7 +576,7 @@ export default function HamoudaPremiumDisplay() {
         </section>
 
         <footer className="overflow-hidden rounded-[1.2rem] border border-white/10 bg-black/35 py-2  ">
-          <div className="whitespace-nowrap text-lg font-bold">
+          <div className="whitespace-nowrap text-lg font-bold tv-ticker-move">
             {tickerText}
           </div>
         </footer>
@@ -612,7 +663,7 @@ export default function HamoudaPremiumDisplay() {
 }
 
 function InfoPill({ label, value, color }) {
-  return <div className="rounded-2xl border border-white/10 bg-black/30 px-3 py-1.5 text-center  min-w-[110px]"><div className="text-[10px] text-white/55">{label}</div><div className="text-sm font-black" style={{ color }}>{value}</div></div>;
+  return <div className="rounded-2xl border border-white/10 bg-black/30 px-3 py-1.5 text-center min-w-[110px] tv-info-glow"><div className="text-[10px] text-white/55">{label}</div><div className="text-sm font-black" style={{ color }}>{value}</div></div>;
 }
 
 function SettingsSection({ title, children }) {
