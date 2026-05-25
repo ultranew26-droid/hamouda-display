@@ -12,6 +12,10 @@ import {
   Truck,
   Award,
   Volume2,
+  CloudSun,
+  Fuel,
+  AlertTriangle,
+  Gem,
   Settings,
   Languages,
   Package,
@@ -59,6 +63,12 @@ const DEFAULT_DATA = {
   tickerSpeed: 95,
   heroImageUrl: "",
   tickerText: "",
+  alertText: "",
+  fuel95: "--",
+  diesel: "--",
+  goldPrice: "--",
+  newsApiKey: "",
+  constructionNews: [],
   logoText: "ח",
   heroSlides: [
     {
@@ -123,7 +133,7 @@ function injectTvTheme() {
       border-radius: 1.25vw;
       box-shadow: 0 0 0 1px rgba(255,255,255,.04) inset, 0 0 28px rgba(245,178,26,.12);
     }
-    .topbar { height: 5.9vw; display:grid; grid-template-columns: 1.7fr 2.4fr 1.5fr; align-items:center; padding:.55vw .75vw; gap:1vw; }
+    .topbar { height: 5.9vw; display:grid; grid-template-columns: 1.45fr 3.25fr 1.25fr; align-items:center; padding:.55vw .75vw; gap:.75vw; }
     .brand { display:flex; align-items:center; gap:.9vw; }
     .logo-box {
       width:4.35vw; height:4.35vw; border-radius:1vw;
@@ -133,22 +143,22 @@ function injectTvTheme() {
     }
     .brand-title { font-size:2.05vw; line-height:1; font-weight:1000; letter-spacing:-.03em; text-shadow:0 0 12px rgba(255,255,255,.18); }
     .brand-sub { margin-top:.35vw; color:rgba(255,255,255,.72); font-size:.9vw; font-weight:700; }
-    .top-pills { display:flex; justify-content:center; gap:.85vw; }
+    .top-pills { display:flex; justify-content:center; gap:.48vw; overflow:hidden; }
     .data-pill {
-      min-width:8.8vw; height:3.75vw; border-radius:.75vw; padding:.35vw .65vw;
-      display:grid; grid-template-columns:2.3vw 1fr; align-items:center; gap:.55vw;
+      min-width:6.7vw; height:3.75vw; border-radius:.75vw; padding:.35vw .65vw;
+      display:grid; grid-template-columns:2.05vw 1fr; align-items:center; gap:.42vw;
       border:1px solid rgba(245,178,26,.32);
       background:linear-gradient(180deg, rgba(8,13,22,.92), rgba(3,7,12,.96));
       box-shadow:0 0 16px rgba(245,178,26,.10);
     }
     .pill-icon {
-      width:2.25vw; height:2.25vw; border-radius:.55vw; display:grid; place-items:center;
+      width:2.05vw; height:2.05vw; border-radius:.55vw; display:grid; place-items:center;
       color:var(--gold2); border:1px solid rgba(245,178,26,.45);
       background:radial-gradient(circle, rgba(245,178,26,.18), rgba(0,0,0,.15));
       filter: drop-shadow(0 0 8px rgba(245,178,26,.55));
     }
     .pill-label { color:rgba(255,255,255,.63); font-size:.7vw; font-weight:800; }
-    .pill-value { font-size:1.02vw; color:var(--gold2); font-weight:1000; text-shadow:0 0 10px rgba(245,178,26,.45); white-space:nowrap; }
+    .pill-value { font-size:.86vw; color:var(--gold2); font-weight:1000; text-shadow:0 0 10px rgba(245,178,26,.45); white-space:nowrap; }
     .pill-change { color:#27f36b; font-size:.72vw; font-weight:1000; margin-inline-start:.25vw; }
     .time-box { display:flex; align-items:center; justify-content:flex-end; gap:.75vw; }
     .time-main { color:var(--gold2); font-size:1.55vw; font-weight:1000; text-shadow:0 0 12px rgba(245,178,26,.55); }
@@ -278,6 +288,49 @@ function injectTvTheme() {
     .settings-drawer input,.settings-drawer select,.settings-drawer textarea { width:100%; background:#111827; color:#fff; border:1px solid rgba(255,255,255,.14); border-radius:.55vw; padding:.7vw; margin-top:.25vw; }
     .settings-drawer label { display:block; margin-bottom:.7vw; font-size:.8vw; color:rgba(255,255,255,.75); }
     .settings-box { border:1px solid rgba(255,255,255,.1); padding:.8vw; border-radius:.8vw; margin-bottom:.8vw; background:rgba(255,255,255,.04); }
+
+    .live-alert {
+      position:fixed;
+      top:6.95vw;
+      left:50%;
+      transform:translateX(-50%);
+      z-index:60;
+      min-width:42vw;
+      max-width:76vw;
+      min-height:3vw;
+      border-radius:.85vw;
+      padding:.55vw 1.1vw;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:.7vw;
+      color:#fff;
+      font-size:1.15vw;
+      font-weight:1000;
+      background:linear-gradient(135deg, rgba(182,18,18,.96), rgba(255,67,67,.92), rgba(140,9,9,.96));
+      border:1px solid rgba(255,255,255,.28);
+      box-shadow:0 0 28px rgba(255,44,44,.45), inset 0 0 20px rgba(255,255,255,.1);
+      animation: alertPulse 1.8s ease-in-out infinite;
+      text-shadow:0 0 10px rgba(0,0,0,.65);
+    }
+    .fuel-row {
+      position:relative;
+      width:100%;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:.55vw;
+      margin-top:1vw;
+    }
+    .fuel-box {
+      border:1px solid rgba(245,178,26,.35);
+      border-radius:.65vw;
+      padding:.55vw .45vw;
+      background:rgba(0,0,0,.32);
+      box-shadow:inset 0 0 18px rgba(245,178,26,.05);
+    }
+    .fuel-label { font-size:.72vw; color:rgba(255,255,255,.70); font-weight:900; }
+    .fuel-value { margin-top:.15vw; font-size:1.05vw; color:var(--gold2); font-weight:1000; text-shadow:0 0 10px rgba(245,178,26,.45); }
+    @keyframes alertPulse { 0%,100% { opacity:.92; transform:translateX(-50%) scale(1); } 50% { opacity:1; transform:translateX(-50%) scale(1.025); } }
     @keyframes tickerMove { 0% { transform:translateX(0); } 100% { transform:translateX(45%); } }
     @keyframes shimmer { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
     @keyframes pulseGold { 0%,100% { transform:scale(1); } 50% { transform:scale(1.035); } }
@@ -381,6 +434,16 @@ function applyFirebaseSettings(base, remote) {
   if (remote.offerText && !remote.offerTextAr) next.offerTextAr = remote.offerText;
   if (remote.offerPercent !== undefined) next.offerPercent = String(remote.offerPercent).includes("%") ? String(remote.offerPercent) : `${remote.offerPercent}%`;
   if (remote.tickerSpeed !== undefined) next.tickerSpeed = Number(remote.tickerSpeed) || next.tickerSpeed;
+  if (remote.alertText !== undefined) next.alertText = String(remote.alertText || "");
+  if (remote.fuel95 !== undefined) next.fuel95 = String(remote.fuel95 || "--");
+  if (remote.diesel !== undefined) next.diesel = String(remote.diesel || "--");
+  if (remote.goldPrice !== undefined) next.goldPrice = String(remote.goldPrice || "--");
+  if (remote.newsApiKey !== undefined) next.newsApiKey = String(remote.newsApiKey || "");
+  if (remote.constructionNews !== undefined) {
+    next.constructionNews = Array.isArray(remote.constructionNews)
+      ? remote.constructionNews.filter(Boolean).map(String)
+      : String(remote.constructionNews || "").split("|").map((x) => x.trim()).filter(Boolean);
+  }
 
   if (remote.heroImages && Array.isArray(remote.heroImages) && remote.heroImages.length > 0) {
     const images = remote.heroImages.filter(Boolean);
@@ -441,6 +504,12 @@ function toFirebaseSettings(data) {
     offerTextHe: data.offerTextHe || "",
     offerPercent: Number(String(data.offerPercent || "0").replace("%", "")) || 0,
     tickerSpeed: Number(data.tickerSpeed || 95),
+    alertText: data.alertText || "",
+    fuel95: data.fuel95 || "--",
+    diesel: data.diesel || "--",
+    goldPrice: data.goldPrice || "--",
+    newsApiKey: data.newsApiKey || "",
+    constructionNews: data.constructionNews || [],
     tickerTextAr: data.tickerAr?.[0] || "",
     tickerTextHe: data.tickerHe?.[0] || "",
     prices: (data.prices || []).map((p) => ({
@@ -506,6 +575,9 @@ export default function HamoudaPremiumDisplay() {
   const [imageIndex, setImageIndex] = useState(0);
   const [now, setNow] = useState(new Date());
   const [fx, setFx] = useState({ loading: true, usdIls: "--", eurIls: "--", eurUsd: "--", jodIls: "--" });
+  const [weather, setWeather] = useState({ loading: true, temp: "--", labelAr: "الطقس", labelHe: "מזג אוויר" });
+  const [gold, setGold] = useState({ loading: true, price: "--" });
+  const [constructionNews, setConstructionNews] = useState([]);
   const [firebaseSettingsId, setFirebaseSettingsId] = useState(null);
 
   const isAr = data.language === "ar";
@@ -566,10 +638,81 @@ export default function HamoudaPremiumDisplay() {
     return () => clearInterval(i);
   }, []);
 
+
+  useEffect(() => {
+    async function getWeather() {
+      try {
+        // Nablus coordinates. Free API, no key needed.
+        const r = await fetch("https://api.open-meteo.com/v1/forecast?latitude=32.2211&longitude=35.2544&current=temperature_2m,weather_code&timezone=Asia%2FJerusalem");
+        const j = await r.json();
+        const temp = j?.current?.temperature_2m;
+        const code = Number(j?.current?.weather_code ?? 0);
+        const isRain = [51, 53, 55, 61, 63, 65, 80, 81, 82, 95].includes(code);
+        const isCloud = [1, 2, 3, 45, 48].includes(code);
+        setWeather({
+          loading: false,
+          temp: temp !== undefined ? `${Math.round(temp)}°` : "--",
+          labelAr: isRain ? "ماطر" : isCloud ? "غائم" : "مشمس",
+          labelHe: isRain ? "גשום" : isCloud ? "מעונן" : "שמשי"
+        });
+      } catch {
+        setWeather({ loading: false, temp: "--", labelAr: "الطقس", labelHe: "מזג אוויר" });
+      }
+    }
+    getWeather();
+    const i = setInterval(getWeather, 1000 * 60 * 30);
+    return () => clearInterval(i);
+  }, []);
+
+  useEffect(() => {
+    async function getGold() {
+      try {
+        // Public fallback endpoint; Firebase goldPrice overrides this if provided.
+        const r = await fetch("https://api.gold-api.com/price/XAU");
+        const j = await r.json();
+        const price = j?.price || j?.price_gram_24k || j?.ask;
+        setGold({ loading: false, price: price ? Number(price).toFixed(0) : "--" });
+      } catch {
+        setGold({ loading: false, price: "--" });
+      }
+    }
+    getGold();
+    const i = setInterval(getGold, 1000 * 60 * 15);
+    return () => clearInterval(i);
+  }, []);
+
+  useEffect(() => {
+    async function getConstructionNews() {
+      if (!data.newsApiKey) {
+        setConstructionNews([]);
+        return;
+      }
+      try {
+        const q = encodeURIComponent("construction OR housing OR building materials OR contractors");
+        const r = await fetch(`https://newsapi.org/v2/everything?q=${q}&language=he&sortBy=publishedAt&pageSize=5&apiKey=${data.newsApiKey}`);
+        const j = await r.json();
+        const titles = (j?.articles || []).map((a) => a?.title).filter(Boolean).slice(0, 5);
+        setConstructionNews(titles);
+      } catch {
+        setConstructionNews([]);
+      }
+    }
+    getConstructionNews();
+    const i = setInterval(getConstructionNews, 1000 * 60 * 30);
+    return () => clearInterval(i);
+  }, [data.newsApiKey]);
+
   const tickerText = useMemo(() => {
     const arr = isAr ? data.tickerAr : data.tickerHe;
-    return (arr && arr.length ? arr : DEFAULT_DATA.tickerHe).join("     •     ");
-  }, [data, isAr]);
+    const base = (arr && arr.length ? arr : DEFAULT_DATA.tickerHe);
+    const manualNews = Array.isArray(data.constructionNews) ? data.constructionNews : [];
+    const newsItems = [...manualNews, ...constructionNews].filter(Boolean);
+    const fuelItems = [
+      data.fuel95 && data.fuel95 !== "--" ? `${isAr ? "بنزين 95" : "בנזין 95"}: ₪${data.fuel95}` : "",
+      data.diesel && data.diesel !== "--" ? `${isAr ? "سولار" : "סולר"}: ₪${data.diesel}` : ""
+    ].filter(Boolean);
+    return [...base, ...fuelItems, ...newsItems.map((n) => `🏗️ ${n}`)].join("     •     ");
+  }, [data, isAr, constructionNews]);
 
   const topProducts = isAr ? data.topProductsAr : data.topProductsHe;
 
@@ -601,6 +744,9 @@ export default function HamoudaPremiumDisplay() {
 
   return (
     <div dir="rtl" className="tv-root">
+      {data.alertText && (
+        <div className="live-alert"><AlertTriangle size={26} /> {data.alertText}</div>
+      )}
       <div className="hidden-controls">
         <button className="control-btn" onClick={() => { setDraft(data); setSettingsOpen(true); }}><Settings size={16} /></button>
         <button className="control-btn" onClick={toggleLanguage}><Languages size={16} /></button>
@@ -617,9 +763,12 @@ export default function HamoudaPremiumDisplay() {
           </div>
 
           <div className="top-pills">
-            <CurrencyPill icon={<Euro size={28} />} label={isAr ? "يورو" : "אירו"} value={`${data.exchangeEUR ?? fx.eurIls} €`} change="↑ 0.25%" />
-            <CurrencyPill icon={<DollarSign size={28} />} label={isAr ? "دولار" : "דולר"} value={`${data.exchangeUSD ?? fx.usdIls} $`} change="↑ 0.18%" />
-            <CurrencyPill icon={<Phone size={28} />} label={isAr ? "هاتف الطلبات" : "טלפון להזמנות"} value={data.phone} />
+            <CurrencyPill icon={<CloudSun size={26} />} label={isAr ? (weather.labelAr || "الطقس") : (weather.labelHe || "מזג אוויר")} value={weather.temp} />
+            <CurrencyPill icon={<Euro size={26} />} label={isAr ? "يورو" : "אירו"} value={`${data.exchangeEUR ?? fx.eurIls} €`} />
+            <CurrencyPill icon={<DollarSign size={26} />} label={isAr ? "دولار" : "דולר"} value={`${data.exchangeUSD ?? fx.usdIls} $`} />
+            <CurrencyPill icon={<span style={{fontWeight:1000,fontSize:".78vw"}}>JD</span>} label={isAr ? "دينار" : "דינר"} value={`${data.exchangeJOD ?? fx.jodIls} JD`} />
+            <CurrencyPill icon={<Gem size={26} />} label={isAr ? "ذهب" : "זהב"} value={`$${data.goldPrice !== "--" ? data.goldPrice : gold.price}`} />
+            <CurrencyPill icon={<Phone size={26} />} label={isAr ? "هاتف" : "טלפון"} value={data.phone} />
           </div>
 
           <div className="time-box">
@@ -660,6 +809,16 @@ export default function HamoudaPremiumDisplay() {
             <div className="offer-word">{isAr ? "خصم" : "הנחה"}</div>
             <div className="offer-text">{t(data, "offerTextHe", "offerTextAr")}</div>
             <div className="offer-button">{isAr ? "لفترة محدودة!" : "לתקופה מוגבלת!"}</div>
+            <div className="fuel-row">
+              <div className="fuel-box">
+                <div className="fuel-label"><Fuel size={16} /> {isAr ? "بنزين 95" : "בנזין 95"}</div>
+                <div className="fuel-value">₪{data.fuel95 || "--"}</div>
+              </div>
+              <div className="fuel-box">
+                <div className="fuel-label"><Fuel size={16} /> {isAr ? "سولار" : "סולר"}</div>
+                <div className="fuel-value">₪{data.diesel || "--"}</div>
+              </div>
+            </div>
           </aside>
         </section>
 
@@ -709,6 +868,12 @@ export default function HamoudaPremiumDisplay() {
             <label>نص العرض عربي <input value={draft.offerTextAr} onChange={(e) => updateDraft("offerTextAr", e.target.value)} /></label>
             <label>نسبة الخصم <input value={draft.offerPercent} onChange={(e) => updateDraft("offerPercent", e.target.value)} /></label>
             <label>سرعة شريط الأخبار <input type="number" value={draft.tickerSpeed} onChange={(e) => updateDraft("tickerSpeed", Number(e.target.value))} /></label>
+            <label>تنبيه فوري <input value={draft.alertText || ""} onChange={(e) => updateDraft("alertText", e.target.value)} /></label>
+            <label>بنزين 95 <input value={draft.fuel95 || ""} onChange={(e) => updateDraft("fuel95", e.target.value)} /></label>
+            <label>سولار <input value={draft.diesel || ""} onChange={(e) => updateDraft("diesel", e.target.value)} /></label>
+            <label>سعر الذهب يدوي اختياري <input value={draft.goldPrice || ""} onChange={(e) => updateDraft("goldPrice", e.target.value)} /></label>
+            <label>NewsAPI Key اختياري <input value={draft.newsApiKey || ""} onChange={(e) => updateDraft("newsApiKey", e.target.value)} /></label>
+            <label>أخبار بناء يدوية، افصل بينها بـ | <input value={(draft.constructionNews || []).join(" | ")} onChange={(e) => updateDraft("constructionNews", e.target.value.split("|").map(x => x.trim()).filter(Boolean))} /></label>
           </div>
 
           <button className="control-btn" style={{width:"100%",height:"3vw",fontSize:"1.1vw"}} onClick={saveSettings}>حفظ وتشغيل</button>
