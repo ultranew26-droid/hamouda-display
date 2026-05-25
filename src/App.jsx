@@ -60,6 +60,7 @@ const DEFAULT_DATA = {
   textScale: 0.66,
   slideSeconds: 8,
   tickerSpeed: 95,
+  musicUrl: "https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3",
   heroImageUrl: "",
   tickerText: "",
   alertText: "",
@@ -385,6 +386,7 @@ function injectTvTheme() {
 
 function normalizeData(input) {
   const merged = { ...DEFAULT_DATA, ...(input || {}) };
+  merged.musicUrl = String(merged.musicUrl || DEFAULT_DATA.musicUrl || "");
   const slides = (merged.heroSlides || DEFAULT_DATA.heroSlides).map((slide) => {
     const oldImages = slide.images && slide.images.length ? slide.images : [slide.image || FALLBACK_IMAGE];
     let media = slide.media && slide.media.length
@@ -461,6 +463,7 @@ function applyFirebaseSettings(base, remote) {
   if (remote.alertText !== undefined) next.alertText = String(remote.alertText || "");
   if (remote.goldPrice !== undefined) next.goldPrice = String(remote.goldPrice || "--");
   if (remote.newsApiKey !== undefined) next.newsApiKey = String(remote.newsApiKey || "");
+  if (remote.musicUrl !== undefined) next.musicUrl = String(remote.musicUrl || "");
   if (remote.constructionNews !== undefined) {
     next.constructionNews = Array.isArray(remote.constructionNews)
       ? remote.constructionNews.filter(Boolean).map(String)
@@ -542,6 +545,7 @@ function toFirebaseSettings(data) {
     offerTextHe: data.offerTextHe || "",
     offerPercent: Number(String(data.offerPercent || "0").replace("%", "")) || 0,
     tickerSpeed: Number(data.tickerSpeed || 95),
+    musicUrl: data.musicUrl || "",
     alertText: data.alertText || "",
     goldPrice: data.goldPrice || "--",
     newsApiKey: data.newsApiKey || "",
@@ -662,9 +666,25 @@ export default function HamoudaPremiumDisplay() {
 
   useEffect(() => {
     const count = data.projectImages?.length || 1;
-    const timer = setInterval(() => setProjectIndex((v) => (v + 1) % count), 10000);
+    const soundUrl = data.musicUrl || "https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3";
+
+    const playTransitionSound = () => {
+      if (!soundUrl) return;
+      try {
+        const transitionSound = new Audio(soundUrl);
+        transitionSound.volume = 0.14;
+        transitionSound.currentTime = 0;
+        transitionSound.play().catch(() => {});
+      } catch {}
+    };
+
+    const timer = setInterval(() => {
+      playTransitionSound();
+      setProjectIndex((v) => (v + 1) % count);
+    }, 10000);
+
     return () => clearInterval(timer);
-  }, [data.projectImages?.length]);
+  }, [data.projectImages?.length, data.musicUrl]);
 
   useEffect(() => {
     async function getRates() {
@@ -948,6 +968,13 @@ export default function HamoudaPremiumDisplay() {
                 value={(draft.projectTitlesHe || []).join(" | ")}
                 onChange={(e) => updateDraft("projectTitlesHe", e.target.value.split("|").map(x => x.trim()).filter(Boolean))}
                 placeholder="וילה למגורים | מטבח מודרני | פרויקט מסחרי"
+              />
+            </label>
+            <label>رابط صوت الانتقال MP3
+              <input
+                value={draft.musicUrl || ""}
+                onChange={(e) => updateDraft("musicUrl", e.target.value)}
+                placeholder="https://...mp3"
               />
             </label>
             <label>سرعة شريط الأخبار <input type="number" value={draft.tickerSpeed} onChange={(e) => updateDraft("tickerSpeed", Number(e.target.value))} /></label>
