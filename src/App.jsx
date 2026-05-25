@@ -285,8 +285,11 @@ function injectTvTheme() {
       border:1px solid rgba(245,178,26,.52); background:#050911;
       box-shadow:0 0 22px rgba(245,178,26,.22), inset 0 0 22px rgba(255,255,255,.035);
     }
-    .project-photo-wrap img {
+    .project-photo-wrap img,
+    .project-photo-wrap video {
       width:100%; height:100%; object-fit:cover; object-position:center center; display:block;
+    }
+    .project-photo-wrap img {
       animation: projectKenBurns 10s ease-in-out infinite;
     }
     .project-overlay {
@@ -432,6 +435,8 @@ function saveLocal(data) {
 const t = (data, heKey, arKey) => (data.language === "ar" ? data[arKey] : data[heKey]);
 const itemT = (data, item, heKey, arKey) => (data.language === "ar" ? item?.[arKey] : item?.[heKey]);
 
+const isVideoUrl = (url) => /\.(mp4|webm|ogg)(\?.*)?$/i.test(String(url || ""));
+
 function applyFirebaseSettings(base, remote) {
   if (!remote) return base;
   const next = { ...base };
@@ -485,7 +490,7 @@ function applyFirebaseSettings(base, remote) {
       ...firstSlide,
       image: images[0],
       images,
-      media: images.map((img, index) => ({ type: "image", src: img, name: `firebase-image-${index}` }))
+      media: images.map((img, index) => ({ type: isVideoUrl(img) ? "video" : "image", src: img, name: `firebase-media-${index}` }))
     }];
   } else if (remote.heroImageUrl) {
     const firstSlide = next.heroSlides?.[0] || DEFAULT_DATA.heroSlides[0];
@@ -493,7 +498,7 @@ function applyFirebaseSettings(base, remote) {
       ...firstSlide,
       image: remote.heroImageUrl,
       images: [remote.heroImageUrl],
-      media: [{ type: "image", src: remote.heroImageUrl, name: "firebase-image" }]
+      media: [{ type: isVideoUrl(remote.heroImageUrl) ? "video" : "image", src: remote.heroImageUrl, name: "firebase-media" }]
     }];
   }
 
@@ -622,6 +627,7 @@ export default function HamoudaPremiumDisplay() {
   const currentMedia = slideMedia[imageIndex % Math.max(1, slideMedia.length)] || { type: "image", src: FALLBACK_IMAGE };
   const projectImages = data.projectImages?.length ? data.projectImages : [FALLBACK_IMAGE];
   const currentProjectImage = projectImages[projectIndex % Math.max(1, projectImages.length)] || FALLBACK_IMAGE;
+  const currentProjectIsVideo = isVideoUrl(currentProjectImage);
   const currentProjectTitle =
     (isAr ? data.projectTitlesAr?.[projectIndex % Math.max(1, projectImages.length)] : data.projectTitlesHe?.[projectIndex % Math.max(1, projectImages.length)]) ||
     (isAr ? "مشروع من أعمالنا" : "פרויקט מהעבודות שלנו");
@@ -851,11 +857,22 @@ export default function HamoudaPremiumDisplay() {
             </div>
 
             <div className="project-photo-wrap">
-              <img
-                src={currentProjectImage}
-                alt="project"
-                onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }}
-              />
+              {currentProjectIsVideo ? (
+                <video
+                  key={currentProjectImage}
+                  src={currentProjectImage}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                />
+              ) : (
+                <img
+                  src={currentProjectImage}
+                  alt="project"
+                  onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }}
+                />
+              )}
               <div className="project-overlay">
                 <div className="project-name">{currentProjectTitle}</div>
                 <div className="project-desc">
@@ -916,7 +933,7 @@ export default function HamoudaPremiumDisplay() {
                 rows={5}
                 value={(draft.projectImages || []).join(" | ")}
                 onChange={(e) => updateDraft("projectImages", e.target.value.split("|").map(x => x.trim()).filter(Boolean))}
-                placeholder="https://...jpg | https://...jpg | https://...jpg"
+                placeholder="https://...jpg | https://...mp4 | https://...webm"
               />
             </label>
             <label>أسماء المشاريع بالعربي، افصل بينها بـ |
