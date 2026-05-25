@@ -587,7 +587,7 @@ function PriceRow({ p, data }) {
         <div className="prod-name">{itemT(data, p, "nameHe", "nameAr")}</div>
         <div className="prod-unit">{itemT(data, p, "unitHe", "unitAr")}</div>
       </div>
-      <div className="prod-price">₪{p.price}</div>
+      <div className="prod-price">p.price === "0" ? "זה יתוקן בקרוב" : `₪${p.price}`</div>
       <div className={`prod-change ${dirClass}`}>{arrow} {p.change}</div>
     </div>
   );
