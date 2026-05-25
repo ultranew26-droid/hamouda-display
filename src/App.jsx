@@ -340,6 +340,15 @@ if (typeof document !== "undefined" && !document.getElementById("hamouda-tv-pro-
     .tv-image-fade { animation: imageFade .9s ease both; }
     .tv-ticker { display:inline-block; animation: tickerMove 32s linear infinite; padding-left:100%; }
     .tv-shimmer { background: linear-gradient(90deg, #fff, #f5b21a, #fff); background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: shimmer 4s linear infinite; }
+    @keyframes priceWheelMove { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+    .price-wheel-mask { height: calc(100% - 2.8rem); overflow: hidden; position: relative; }
+    .price-wheel-mask:before, .price-wheel-mask:after { content: ''; position: absolute; left: 0; right: 0; height: 22px; z-index: 5; pointer-events: none; }
+    .price-wheel-mask:before { top: 0; background: linear-gradient(to bottom, rgba(2,6,23,.98), transparent); }
+    .price-wheel-mask:after { bottom: 0; background: linear-gradient(to top, rgba(2,6,23,.98), transparent); }
+    .price-wheel-track { animation: priceWheelMove 38s linear infinite; will-change: transform; }
+    .price-wheel-mask:hover .price-wheel-track { animation-play-state: paused; }
+    .price-row-pro { min-height: 72px; transition: transform .3s ease, box-shadow .3s ease; }
+    .price-row-pro:nth-child(5n+3) { box-shadow: 0 0 18px rgba(245,178,26,.20); border-color: rgba(245,178,26,.35); }
   `;
   document.head.appendChild(style);
 }
@@ -496,20 +505,22 @@ export default function HamoudaPremiumDisplay() {
                 <h3 className="text-xl font-black" style={{ color: data.primaryColor }}>{isAr ? "أسعار اليوم" : "מחירי היום"}</h3>
                 <span className="h-px w-14 bg-amber-300/70" />
               </div>
-              <div className="grid max-h-[calc(100%-2.2rem)] grid-cols-1 gap-1.5 overflow-hidden">
-                {data.prices.slice(0, 8).map((p, i) => (
-                  <div key={i} className="grid grid-cols-[44px_1fr_auto_38px] items-center gap-2 rounded-xl border border-white/10 bg-black/35 px-2.5 py-1.5">
-                    <div className="grid h-10 w-10 place-items-center rounded-xl border border-amber-300/25 bg-black/40 text-xl">
-                      {i === 0 ? "🏗️" : i === 1 ? "🔩" : i === 2 ? "🧱" : i === 3 ? "⚙️" : i === 4 ? "⬜" : i === 5 ? "🎨" : i === 6 ? "⛰️" : "🛡️"}
+              <div className="price-wheel-mask">
+                <div className="price-wheel-track grid grid-cols-1 gap-2 pb-2">
+                  {[...(data.prices || []), ...(data.prices || [])].map((p, i) => (
+                    <div key={`${i}-${p.nameHe}-${p.nameAr}`} className="price-row-pro grid grid-cols-[48px_1fr_auto_42px] items-center gap-2 rounded-xl border border-white/10 bg-black/35 px-2.5 py-2">
+                      <div className="grid h-11 w-11 place-items-center rounded-xl border border-amber-300/25 bg-black/40 text-xl">
+                        {i % 8 === 0 ? "🏗️" : i % 8 === 1 ? "🔩" : i % 8 === 2 ? "🧱" : i % 8 === 3 ? "⚙️" : i % 8 === 4 ? "⬜" : i % 8 === 5 ? "🎨" : i % 8 === 6 ? "⛰️" : "🛡️"}
+                      </div>
+                      <div className="min-w-0">
+                        <div className="truncate text-sm font-black text-white/90">{itemT(data, p, "nameHe", "nameAr")}</div>
+                        <div className="text-[11px] text-white/55">{itemT(data, p, "unitHe", "unitAr")}</div>
+                      </div>
+                      <div className="text-3xl font-black tv-price-pulse">₪{p.price}</div>
+                      <div className={p.direction === "up" ? "text-green-400 font-black" : p.direction === "down" ? "text-red-400 font-black" : "text-white/60 font-black"}>{p.direction === "up" ? "↑" : p.direction === "down" ? "↓" : "—"} {p.change}</div>
                     </div>
-                    <div className="min-w-0">
-                      <div className="truncate text-sm font-black text-white/90">{itemT(data, p, "nameHe", "nameAr")}</div>
-                      <div className="text-[11px] text-white/55">{itemT(data, p, "unitHe", "unitAr")}</div>
-                    </div>
-                    <div className="text-3xl font-black tv-price-pulse">₪{p.price}</div>
-                    <div className={p.direction === "up" ? "text-green-400 font-black" : p.direction === "down" ? "text-red-400 font-black" : "text-white/60 font-black"}>{p.direction === "up" ? "↑" : p.direction === "down" ? "↓" : "—"} {p.change}</div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
               <div className="pt-1 text-center text-[11px] text-white/55">* {isAr ? "الأسعار تتحدث مباشرة" : "המחירים מתעדכנים בזמן אמת"}</div>
             </CardContent>
