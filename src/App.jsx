@@ -66,29 +66,9 @@ const DEFAULT_DATA = {
   goldPrice: "--",
   newsApiKey: "",
   constructionNews: [],
-  projects: [
-    {
-      image: FALLBACK_IMAGE,
-      titleAr: "فيلا سكنية",
-      titleHe: "וילה למגורים",
-      descAr: "تم التوريد من حمودة لمواد البناء",
-      descHe: "סופק על ידי חמודי חומרי בניין"
-    },
-    {
-      image: FALLBACK_IMAGE,
-      titleAr: "مطبخ عصري",
-      titleHe: "מטבח מודרני",
-      descAr: "مواد مختارة بجودة عالية للمشاريع",
-      descHe: "חומרים איכותיים לפרויקטים"
-    },
-    {
-      image: FALLBACK_IMAGE,
-      titleAr: "مبنى تجاري",
-      titleHe: "מבנה מסחרי",
-      descAr: "شريك موثوق للمقاولين وأصحاب المشاريع",
-      descHe: "שותף אמין לקבלנים ובעלי פרויקטים"
-    }
-  ],
+  projectImages: [FALLBACK_IMAGE],
+  projectTitlesAr: ["مشروع من أعمالنا"],
+  projectTitlesHe: ["פרויקט מהעבודות שלנו"],
   logoText: "ח",
   heroSlides: [
     {
@@ -291,24 +271,33 @@ function injectTvTheme() {
     .offer-text { position:relative; font-size:1.2vw; font-weight:1000; margin-top:.4vw; }
     .offer-button { position:relative; margin-top:1.6vw; width:70%; padding:.75vw 1vw; border-radius:.65vw; background:linear-gradient(180deg, #f7c238, #d99505); color:#09111f; font-size:1.25vw; font-weight:1000; box-shadow:0 0 26px rgba(245,178,26,.55); }
     .projects-card {
-      position:relative; overflow:hidden; padding:1vw; display:flex; flex-direction:column; justify-content:space-between;
+      position:relative; overflow:hidden; padding:1vw; display:flex; flex-direction:column; text-align:center;
       border-color:rgba(245,178,26,.72);
-      background:radial-gradient(circle at 50% 10%, rgba(245,178,26,.16), transparent 30%), linear-gradient(180deg, rgba(12,12,11,.96), rgba(4,7,12,.98));
-      box-shadow:0 0 30px rgba(245,178,26,.22), inset 0 0 48px rgba(245,178,26,.06);
+      background:
+        radial-gradient(circle at 50% 20%, rgba(245,178,26,.17), transparent 30%),
+        linear-gradient(180deg, rgba(12,20,33,.96), rgba(4,7,12,.98));
+      box-shadow:0 0 30px rgba(245,178,26,.20), inset 0 0 48px rgba(245,178,26,.055);
     }
-    .projects-card:before { content:""; position:absolute; inset:-35%; background:radial-gradient(circle, rgba(255,223,100,.18), transparent 22%); animation: shimmer 7s linear infinite; opacity:.5; pointer-events:none; }
-    .projects-head { position:relative; z-index:2; display:flex; align-items:center; justify-content:center; gap:.45vw; color:var(--gold2); font-size:1.25vw; font-weight:1000; text-shadow:0 0 16px rgba(245,178,26,.45); }
-    .project-photo-wrap { position:relative; z-index:2; width:100%; height:17.2vw; border-radius:1vw; overflow:hidden; margin:.75vw 0; border:1px solid rgba(245,178,26,.48); box-shadow:0 0 22px rgba(245,178,26,.22); background:#050911; }
-    .project-photo-wrap img { width:100%; height:100%; object-fit:cover; display:block; animation: projectZoom 10s ease-in-out infinite; }
-    .project-photo-wrap:after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, transparent 50%, rgba(0,0,0,.70)); pointer-events:none; }
-    .project-badge { position:absolute; top:.65vw; right:.65vw; z-index:3; padding:.35vw .7vw; border-radius:999px; background:rgba(0,0,0,.62); border:1px solid rgba(245,178,26,.55); color:#fff; font-size:.75vw; font-weight:1000; }
-    .project-title { position:relative; z-index:2; color:#fff; font-size:1.45vw; line-height:1.15; font-weight:1000; text-shadow:0 0 14px rgba(0,0,0,.9); }
-    .project-desc { position:relative; z-index:2; margin-top:.45vw; color:rgba(255,255,255,.82); font-size:.83vw; line-height:1.35; font-weight:800; }
-    .project-trust { position:relative; z-index:2; margin-top:.75vw; padding:.65vw .7vw; border-radius:.75vw; color:#07111f; background:linear-gradient(135deg, #ffdb54, #f0a300); font-size:.86vw; line-height:1.35; font-weight:1000; box-shadow:0 0 22px rgba(245,178,26,.35); }
-    .project-dots { position:relative; z-index:2; display:flex; justify-content:center; gap:.35vw; margin-top:.65vw; }
-    .project-dot { width:.55vw; height:.55vw; border-radius:50%; background:rgba(255,255,255,.42); }
-    .project-dot.active { background:var(--gold2); box-shadow:0 0 10px rgba(245,178,26,.9); }
-    @keyframes projectZoom { 0%,100% { transform:scale(1); } 50% { transform:scale(1.045); } }
+    .projects-card:before { content:""; position:absolute; inset:-30%; background:radial-gradient(circle, rgba(255,223,100,.18), transparent 23%); animation: shimmer 7s linear infinite; opacity:.5; }
+    .projects-title { position:relative; color:var(--gold2); font-size:1.35vw; font-weight:1000; margin-bottom:.75vw; text-shadow:0 0 14px rgba(245,178,26,.55); }
+    .project-photo-wrap {
+      position:relative; flex:1; min-height:0; border-radius:1vw; overflow:hidden;
+      border:1px solid rgba(245,178,26,.52); background:#050911;
+      box-shadow:0 0 22px rgba(245,178,26,.22), inset 0 0 22px rgba(255,255,255,.035);
+    }
+    .project-photo-wrap img {
+      width:100%; height:100%; object-fit:cover; object-position:center center; display:block;
+      animation: projectKenBurns 10s ease-in-out infinite;
+    }
+    .project-overlay {
+      position:absolute; left:0; right:0; bottom:0; padding:1vw .7vw .75vw;
+      background:linear-gradient(0deg, rgba(0,0,0,.86), rgba(0,0,0,.50), transparent);
+    }
+    .project-name { color:#fff; font-size:1.25vw; font-weight:1000; text-shadow:0 0 12px #000; }
+    .project-desc { color:rgba(255,255,255,.82); font-size:.72vw; font-weight:800; margin-top:.25vw; }
+    .project-footer { position:relative; margin-top:.72vw; color:#fff; font-size:.8vw; font-weight:900; line-height:1.35; }
+    .project-footer strong { color:var(--gold2); font-size:1vw; display:block; margin-bottom:.15vw; }
+    @keyframes projectKenBurns { 0%,100% { transform:scale(1); } 50% { transform:scale(1.06); } }
     .ticker-wrap { height:4.8vw; display:grid; grid-template-columns:11.8vw 1fr; align-items:center; padding:.55vw; overflow:hidden; }
     .ticker-label {
       height:100%; display:flex; align-items:center; justify-content:center; gap:.6vw; color:#07111f;
@@ -402,18 +391,12 @@ function normalizeData(input) {
     if (!media.length) media = [{ type: "image", src: FALLBACK_IMAGE, name: "default" }];
     return { ...slide, image: media[0]?.src || FALLBACK_IMAGE, images: media.filter((m) => m.type === "image").map((m) => m.src), media };
   });
-  const projects = Array.isArray(merged.projects) && merged.projects.length
-    ? merged.projects
-        .map((project, index) => ({
-          image: project?.image || FALLBACK_IMAGE,
-          titleAr: project?.titleAr || `مشروع ${index + 1}`,
-          titleHe: project?.titleHe || `פרויקט ${index + 1}`,
-          descAr: project?.descAr || "تم التوريد من حمودة لمواد البناء",
-          descHe: project?.descHe || "סופק על ידי חמודי חומרי בניין"
-        }))
-        .filter((project) => project.image && !String(project.image).startsWith("blob:"))
-    : DEFAULT_DATA.projects;
-  return { ...merged, heroSlides: slides, projects };
+  const projectImages = Array.isArray(merged.projectImages) && merged.projectImages.length
+    ? merged.projectImages.filter(Boolean).map(String)
+    : [FALLBACK_IMAGE];
+  const projectTitlesAr = Array.isArray(merged.projectTitlesAr) ? merged.projectTitlesAr.map(String) : [];
+  const projectTitlesHe = Array.isArray(merged.projectTitlesHe) ? merged.projectTitlesHe.map(String) : [];
+  return { ...merged, heroSlides: slides, projectImages, projectTitlesAr, projectTitlesHe };
 }
 
 function loadData() {
@@ -433,7 +416,10 @@ function compactForStorage(data) {
       image: FALLBACK_IMAGE,
       images: [FALLBACK_IMAGE],
       media: [{ type: "image", src: FALLBACK_IMAGE, name: "default" }]
-    }))
+    })),
+    projectImages: data.projectImages || [],
+    projectTitlesAr: data.projectTitlesAr || [],
+    projectTitlesHe: data.projectTitlesHe || []
   };
 }
 
@@ -476,28 +462,20 @@ function applyFirebaseSettings(base, remote) {
       : String(remote.constructionNews || "").split("|").map((x) => x.trim()).filter(Boolean);
   }
 
-  if (remote.projects !== undefined) {
-    next.projects = Array.isArray(remote.projects)
-      ? remote.projects.filter(Boolean).map((project, index) => ({
-          image: project.image || FALLBACK_IMAGE,
-          titleAr: project.titleAr || `مشروع ${index + 1}`,
-          titleHe: project.titleHe || `פרויקט ${index + 1}`,
-          descAr: project.descAr || "تم التوريد من حمودة لمواد البناء",
-          descHe: project.descHe || "סופק על ידי חמודי חומרי בניין"
-        }))
-      : String(remote.projects || "")
-          .split("\n")
-          .map((line, index) => {
-            const [image, titleAr, titleHe, descAr, descHe] = line.split("|").map((x) => x.trim());
-            return image ? {
-              image,
-              titleAr: titleAr || `مشروع ${index + 1}`,
-              titleHe: titleHe || titleAr || `פרויקט ${index + 1}`,
-              descAr: descAr || "تم التوريد من حمودة لمواد البناء",
-              descHe: descHe || descAr || "סופק על ידי חמודי חומרי בניין"
-            } : null;
-          })
-          .filter(Boolean);
+  if (remote.projectImages !== undefined) {
+    next.projectImages = Array.isArray(remote.projectImages)
+      ? remote.projectImages.filter(Boolean).map(String)
+      : String(remote.projectImages || "").split("|").map((x) => x.trim()).filter(Boolean);
+  }
+  if (remote.projectTitlesAr !== undefined) {
+    next.projectTitlesAr = Array.isArray(remote.projectTitlesAr)
+      ? remote.projectTitlesAr.filter(Boolean).map(String)
+      : String(remote.projectTitlesAr || "").split("|").map((x) => x.trim()).filter(Boolean);
+  }
+  if (remote.projectTitlesHe !== undefined) {
+    next.projectTitlesHe = Array.isArray(remote.projectTitlesHe)
+      ? remote.projectTitlesHe.filter(Boolean).map(String)
+      : String(remote.projectTitlesHe || "").split("|").map((x) => x.trim()).filter(Boolean);
   }
 
   if (remote.heroImages && Array.isArray(remote.heroImages) && remote.heroImages.length > 0) {
@@ -563,13 +541,9 @@ function toFirebaseSettings(data) {
     goldPrice: data.goldPrice || "--",
     newsApiKey: data.newsApiKey || "",
     constructionNews: data.constructionNews || [],
-    projects: (data.projects || []).map((project) => ({
-      image: project.image || "",
-      titleAr: project.titleAr || "",
-      titleHe: project.titleHe || "",
-      descAr: project.descAr || "",
-      descHe: project.descHe || ""
-    })),
+    projectImages: data.projectImages || [],
+    projectTitlesAr: data.projectTitlesAr || [],
+    projectTitlesHe: data.projectTitlesHe || [],
     tickerTextAr: data.tickerAr?.[0] || "",
     tickerTextHe: data.tickerHe?.[0] || "",
     prices: (data.prices || []).map((p) => ({
@@ -646,8 +620,11 @@ export default function HamoudaPremiumDisplay() {
   const currentSlide = data.heroSlides?.[0] || DEFAULT_DATA.heroSlides[0];
   const slideMedia = currentSlide?.media?.length ? currentSlide.media : [{ type: "image", src: FALLBACK_IMAGE, name: "fallback" }];
   const currentMedia = slideMedia[imageIndex % Math.max(1, slideMedia.length)] || { type: "image", src: FALLBACK_IMAGE };
-  const projects = data.projects?.length ? data.projects : DEFAULT_DATA.projects;
-  const currentProject = projects[projectIndex % Math.max(1, projects.length)] || DEFAULT_DATA.projects[0];
+  const projectImages = data.projectImages?.length ? data.projectImages : [FALLBACK_IMAGE];
+  const currentProjectImage = projectImages[projectIndex % Math.max(1, projectImages.length)] || FALLBACK_IMAGE;
+  const currentProjectTitle =
+    (isAr ? data.projectTitlesAr?.[projectIndex % Math.max(1, projectImages.length)] : data.projectTitlesHe?.[projectIndex % Math.max(1, projectImages.length)]) ||
+    (isAr ? "مشروع من أعمالنا" : "פרויקט מהעבודות שלנו");
 
   useEffect(() => {
     const unsub = onSnapshot(
@@ -678,10 +655,10 @@ export default function HamoudaPremiumDisplay() {
   }, [slideMedia.length, data.slideSeconds]);
 
   useEffect(() => {
-    const projectCount = projects.length || 1;
-    const timer = setInterval(() => setProjectIndex((v) => (v + 1) % projectCount), 10000);
+    const count = data.projectImages?.length || 1;
+    const timer = setInterval(() => setProjectIndex((v) => (v + 1) % count), 10000);
     return () => clearInterval(timer);
-  }, [projects.length]);
+  }, [data.projectImages?.length]);
 
   useEffect(() => {
     async function getRates() {
@@ -807,27 +784,6 @@ export default function HamoudaPremiumDisplay() {
 
   const updateDraft = (key, value) => setDraft((d) => ({ ...d, [key]: value }));
 
-  const projectsToText = (projectsList = []) => projectsList
-    .map((project) => [project.image, project.titleAr, project.titleHe, project.descAr, project.descHe].filter((value) => value !== undefined).join(" | "))
-    .join("\n");
-
-  const updateProjectsFromText = (value) => {
-    const projectsList = value
-      .split("\n")
-      .map((line, index) => {
-        const [image, titleAr, titleHe, descAr, descHe] = line.split("|").map((x) => x.trim());
-        return image ? {
-          image,
-          titleAr: titleAr || `مشروع ${index + 1}`,
-          titleHe: titleHe || titleAr || `פרויקט ${index + 1}`,
-          descAr: descAr || "تم التوريد من حمودة لمواد البناء",
-          descHe: descHe || descAr || "סופק על ידי חמודי חומרי בניין"
-        } : null;
-      })
-      .filter(Boolean);
-    updateDraft("projects", projectsList);
-  };
-
   return (
     <div dir="rtl" className="tv-root">
       {data.alertText && (
@@ -890,29 +846,33 @@ export default function HamoudaPremiumDisplay() {
           </main>
 
           <aside className="projects-card glass-panel">
-            <div className="projects-head">📸 {isAr ? "مشاريع تم تنفيذها بموادنا" : "פרויקטים שבוצעו עם החומרים שלנו"}</div>
+            <div className="projects-title">
+              📸 {isAr ? "مشاريع تم تنفيذها بموادنا" : "פרויקטים שבוצעו עם החומרים שלנו"}
+            </div>
+
             <div className="project-photo-wrap">
               <img
-                key={`${currentProject.image}-${projectIndex}`}
-                src={currentProject.image || FALLBACK_IMAGE}
-                alt={isAr ? currentProject.titleAr : currentProject.titleHe}
+                src={currentProjectImage}
+                alt="project"
                 onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }}
               />
-              <div className="project-badge">{isAr ? "مشروع حقيقي" : "פרויקט אמיתי"}</div>
-            </div>
-            <div>
-              <div className="project-title">{isAr ? currentProject.titleAr : currentProject.titleHe}</div>
-              <div className="project-desc">{isAr ? currentProject.descAr : currentProject.descHe}</div>
-              <div className="project-trust">{isAr ? "نفخر بمساهمتنا في مئات المشاريع الناجحة" : "גאים לקחת חלק במאות פרויקטים מוצלחים"}</div>
-              <div className="project-dots">
-                {projects.map((_, i) => <span key={i} className={`project-dot ${i === projectIndex % projects.length ? "active" : ""}`} />)}
+              <div className="project-overlay">
+                <div className="project-name">{currentProjectTitle}</div>
+                <div className="project-desc">
+                  {isAr ? "تم التوريد من حمودة لمواد البناء" : "סופק על ידי חמודי חומרי בניין"}
+                </div>
               </div>
+            </div>
+
+            <div className="project-footer">
+              <strong>{isAr ? "نفخر بمساهمتنا في مئات المشاريع الناجحة" : "גאים לקחת חלק במאות פרויקטים מוצלחים"}</strong>
+              {isAr ? "فلل • مطابخ • مبانٍ تجارية • مشاريع إسكانية" : "וילות • מטבחים • מבנים מסחריים • פרויקטים למגורים"}
             </div>
           </aside>
         </section>
 
         <section className="ticker-wrap glass-panel">
-          <div className="ticker-label"><Volume2 size={28} /> {isAr ? "تحديثات المحل" : "עדכוני החנות"}</div>
+          <div className="ticker-label"><Volume2 size={28} /> {isAr ? "عروض وتحديثات" : "מבצעים ועדכונים"}</div>
           <div className="ticker-window">
             <div className="ticker-track" style={{ animationDuration: `${Math.max(25, Number(data.tickerSpeed || 95))}s` }}>
               {tickerText}     •     {tickerText}
@@ -951,12 +911,26 @@ export default function HamoudaPremiumDisplay() {
           </div>
 
           <div className="settings-box">
-            <label>مشاريع العملاء - كل مشروع بسطر بهذا الشكل:<br />رابط الصورة | الاسم عربي | الاسم عبري | وصف عربي | وصف عبري
+            <label>روابط صور المشاريع، افصل بينها بـ |
               <textarea
-                rows={7}
-                value={projectsToText(draft.projects || [])}
-                onChange={(e) => updateProjectsFromText(e.target.value)}
-                placeholder="https://example.com/villa.jpg | فيلا سكنية | וילה למגורים | تم التوريد من حمودة لمواد البناء | סופק על ידי חמודי חומרי בניין"
+                rows={5}
+                value={(draft.projectImages || []).join(" | ")}
+                onChange={(e) => updateDraft("projectImages", e.target.value.split("|").map(x => x.trim()).filter(Boolean))}
+                placeholder="https://...jpg | https://...jpg | https://...jpg"
+              />
+            </label>
+            <label>أسماء المشاريع بالعربي، افصل بينها بـ |
+              <input
+                value={(draft.projectTitlesAr || []).join(" | ")}
+                onChange={(e) => updateDraft("projectTitlesAr", e.target.value.split("|").map(x => x.trim()).filter(Boolean))}
+                placeholder="فيلا سكنية | مطبخ عصري | مبنى تجاري"
+              />
+            </label>
+            <label>أسماء المشاريع بالعبري، افصل بينها بـ |
+              <input
+                value={(draft.projectTitlesHe || []).join(" | ")}
+                onChange={(e) => updateDraft("projectTitlesHe", e.target.value.split("|").map(x => x.trim()).filter(Boolean))}
+                placeholder="וילה למגורים | מטבח מודרני | פרויקט מסחרי"
               />
             </label>
             <label>سرعة شريط الأخبار <input type="number" value={draft.tickerSpeed} onChange={(e) => updateDraft("tickerSpeed", Number(e.target.value))} /></label>
