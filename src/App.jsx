@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { Settings, X, Plus, Trash2, Save, ImagePlus, Languages, Upload, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -366,10 +365,8 @@ export default function HamoudaPremiumDisplay() {
   }, []);
 
   useEffect(() => {
-    // نثبّت العرض على السلايد الأول عند استخدام صور Firebase
-    // حتى يتم عرض كل الصور بالترتيب بدون الرجوع للبداية قبل اكتمالها.
     setSlideIndex(0);
-  }, [data.heroSlides.length]);
+  }, []);
 
   useEffect(() => {
     const mediaCount = slideMedia.length || 1;
@@ -433,27 +430,25 @@ export default function HamoudaPremiumDisplay() {
   return (
     <div dir={dir} className={`min-h-screen overflow-hidden text-white ${langClass}`} style={{ background: data.backgroundColor, fontSize: `${16 * scale}px` }}>
       <div className="absolute inset-0 opacity-30" style={{ background: `radial-gradient(circle at 20% 20%, ${data.primaryColor}33, transparent 30%), radial-gradient(circle at 80% 40%, #38bdf833, transparent 28%)` }} />
-      <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,.04)_1px,transparent_1px)] bg-[length:42px_42px] opacity-20" />
-
       {notice && (
-        <div className="fixed bottom-4 left-4 z-[120] max-w-md rounded-2xl border border-amber-300/40 bg-black/80 p-4 text-sm text-white shadow-2xl backdrop-blur-xl">
+        <div className="fixed bottom-4 left-4 z-[120] max-w-md rounded-2xl border border-amber-300/40 bg-black/80 p-4 text-sm text-white  ">
           <div className="flex items-start gap-2"><AlertTriangle className="mt-0.5 h-5 w-5 text-amber-300" /><span>{notice}</span></div>
         </div>
       )}
 
       <div className="fixed left-4 top-4 z-50 flex gap-2">
-        <Button onClick={toggleLanguage} className="rounded-2xl bg-white/15 shadow-xl backdrop-blur-xl hover:bg-white/25">
+        <Button onClick={toggleLanguage} className="rounded-2xl bg-white/15   hover:bg-white/25">
           <Languages className="ml-2 h-4 w-4" /> {data.language === "he" ? "עברית" : "عربي"}
         </Button>
-        <Button onClick={() => { setDraft(data); setSettingsOpen(true); }} className="rounded-2xl shadow-xl" style={{ background: data.primaryColor, color: "#111827" }}>
+        <Button onClick={() => { setDraft(data); setSettingsOpen(true); }} className="rounded-2xl " style={{ background: data.primaryColor, color: "#111827" }}>
           <Settings className="ml-2 h-4 w-4" /> {isAr ? "الإعدادات" : "הגדרות"}
         </Button>
       </div>
 
       <main className="relative z-10 flex h-screen flex-col gap-2.5 p-4">
-        <header className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 rounded-[1.5rem] border border-white/10 bg-white/10 px-4 py-2.5 shadow-2xl backdrop-blur-xl">
+        <header className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 rounded-[1.5rem] border border-white/10 bg-white/10 px-4 py-2.5  ">
           <div className="flex items-center gap-3">
-            <div className="grid h-12 w-12 place-items-center rounded-2xl text-2xl font-black shadow-xl" style={{ background: `linear-gradient(135deg, ${data.primaryColor}, #fff1a8)`, color: "#08111f" }}>{data.logoText}</div>
+            <div className="grid h-12 w-12 place-items-center rounded-2xl text-2xl font-black " style={{ background: `linear-gradient(135deg, ${data.primaryColor}, #fff1a8)`, color: "#08111f" }}>{data.logoText}</div>
             <div>
               <h1 className="text-2xl font-black tracking-tight">{t(data, "businessNameHe", "businessNameAr")}</h1>
               <p className="mt-0.5 text-sm text-white/75">{t(data, "sloganHe", "sloganAr")}</p>
@@ -473,31 +468,29 @@ export default function HamoudaPremiumDisplay() {
         </header>
 
         <section className="grid flex-1 grid-cols-[1.45fr_.95fr] gap-2.5 min-h-0">
-          <Card className="relative overflow-hidden rounded-[1.7rem] border-white/10 bg-black/30 shadow-2xl backdrop-blur-xl">
-            <AnimatePresence mode="wait">
-              <motion.div key={`${slideIndex}-${imageIndex}-${data.language}`} initial={{ opacity: 0, scale: 1.02 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: .99 }} transition={{ duration: .65 }} className="absolute inset-0">
-                {currentMedia.type === "video" ? (
-                  <video src={currentMedia.src} className="h-full w-full object-contain" autoPlay muted loop playsInline />
-                ) : (
-                  <img src={currentMedia.src || FALLBACK_IMAGE} className="h-full w-full object-contain" alt="slide" onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }} />
-                )}
-                <div className="absolute inset-0 bg-gradient-to-l from-black/70 via-black/10 to-black/5 pointer-events-none" />
-                <div className="absolute right-5 top-5 rounded-full px-4 py-1.5 text-sm font-bold" style={{ background: `${data.primaryColor}ee`, color: "#0b1220" }}>{itemT(data, currentSlide, "tagHe", "tagAr")}</div>
-                <div className="absolute bottom-6 right-6 max-w-3xl rounded-3xl bg-black/45 p-5 backdrop-blur-sm">
-                  <motion.h2 initial={{ y: 16, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="text-4xl font-black leading-tight">{itemT(data, currentSlide, "titleHe", "titleAr")}</motion.h2>
-                  <motion.p initial={{ y: 16, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: .12 }} className="mt-2 text-lg text-white/85">{itemT(data, currentSlide, "subtitleHe", "subtitleAr")}</motion.p>
-                </div>
-              </motion.div>
-            </AnimatePresence>
+          <Card className="relative overflow-hidden rounded-[1.7rem] border-white/10 bg-black/30  ">
+            <div key={`${slideIndex}-${imageIndex}-${data.language}`} className="absolute inset-0">
+              {currentMedia.type === "video" ? (
+                <video src={currentMedia.src} className="h-full w-full object-contain" autoPlay muted loop playsInline />
+              ) : (
+                <img src={currentMedia.src || FALLBACK_IMAGE} className="h-full w-full object-contain" alt="slide" onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }} />
+              )}
+              <div className="absolute inset-0 bg-black/25 pointer-events-none" />
+              <div className="absolute right-5 top-5 rounded-full px-4 py-1.5 text-sm font-bold" style={{ background: data.primaryColor, color: "#0b1220" }}>{itemT(data, currentSlide, "tagHe", "tagAr")}</div>
+              <div className="absolute bottom-6 right-6 max-w-3xl rounded-3xl bg-black/70 p-5">
+                <h2 className="text-4xl font-black leading-tight">{itemT(data, currentSlide, "titleHe", "titleAr")}</h2>
+                <p className="mt-2 text-lg text-white/85">{itemT(data, currentSlide, "subtitleHe", "subtitleAr")}</p>
+              </div>
+            </div>
           </Card>
 
           <div className="grid grid-rows-[1fr_auto] gap-2.5 min-h-0">
-            <Card className="rounded-[1.5rem] border-white/10 bg-white/10 shadow-2xl backdrop-blur-xl min-h-0 overflow-hidden">
+            <Card className="rounded-[1.5rem] border-white/10 bg-white/10   min-h-0 overflow-hidden">
               <CardContent className="h-full p-3">
                 <h3 className="mb-2 text-xl font-black" style={{ color: data.primaryColor }}>{isAr ? "الأسعار المباشرة" : "מחירים חיים"}</h3>
                 <div className="grid max-h-[calc(100%-2.2rem)] grid-cols-2 gap-2 overflow-hidden">
                   {data.prices.map((p, i) => (
-                    <div key={i} className="rounded-xl border border-white/10 bg-black/25 p-2.5 shadow-xl">
+                    <div key={i} className="rounded-xl border border-white/10 bg-black/25 p-2.5 ">
                       <div className="text-sm font-bold text-white/85 truncate">{itemT(data, p, "nameHe", "nameAr")}</div>
                       <div className="mt-1 text-2xl font-black">₪{p.price}</div>
                       <div className="mt-0.5 flex items-center justify-between text-[11px] text-white/55">
@@ -510,19 +503,19 @@ export default function HamoudaPremiumDisplay() {
               </CardContent>
             </Card>
 
-            <Card className="rounded-[1.5rem] border-white/10 bg-white/10 shadow-2xl backdrop-blur-xl">
+            <Card className="rounded-[1.5rem] border-white/10 bg-white/10  ">
               <CardContent className="grid grid-cols-[1fr_auto] items-center gap-3 p-3">
                 <div>
                   <div className="text-sm font-bold text-white/65">{t(data, "offerTitleHe", "offerTitleAr")}</div>
                   <div className="mt-1 text-xl font-black">{t(data, "offerTextHe", "offerTextAr")}</div>
                 </div>
-                <div className="rounded-2xl px-4 py-2 text-3xl font-black shadow-xl" style={{ background: data.primaryColor, color: "#08111f" }}>{data.offerPercent}</div>
+                <div className="rounded-2xl px-4 py-2 text-3xl font-black " style={{ background: data.primaryColor, color: "#08111f" }}>{data.offerPercent}</div>
               </CardContent>
             </Card>
           </div>
         </section>
 
-        <section className="rounded-[1.4rem] border border-white/10 bg-white/10 p-2.5 shadow-2xl backdrop-blur-xl">
+        <section className="rounded-[1.4rem] border border-white/10 bg-white/10 p-2.5  ">
           <div className="flex items-center gap-2 overflow-hidden">
             <h3 className="shrink-0 px-2 text-base font-black" style={{ color: data.primaryColor }}>{isAr ? "الأكثر طلباً" : "הכי מבוקש"}</h3>
             <div className="grid flex-1 grid-cols-6 gap-2">
@@ -531,16 +524,15 @@ export default function HamoudaPremiumDisplay() {
           </div>
         </section>
 
-        <footer className="overflow-hidden rounded-[1.2rem] border border-white/10 bg-black/35 py-2 shadow-2xl backdrop-blur-xl">
-          <motion.div className="whitespace-nowrap text-lg font-bold" animate={{ x: ["-20%", "100%"] }} transition={{ repeat: Infinity, duration: Number(data.tickerSpeed || 28), ease: "linear" }}>
+        <footer className="overflow-hidden rounded-[1.2rem] border border-white/10 bg-black/35 py-2  ">
+          <div className="whitespace-nowrap text-lg font-bold">
             {tickerText}
-          </motion.div>
+          </div>
         </footer>
       </main>
 
-      <AnimatePresence>
-        {settingsOpen && (
-          <motion.aside initial={{ x: -540, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -540, opacity: 0 }} className="fixed left-0 top-0 z-[100] h-screen w-[540px] overflow-y-auto border-r border-white/10 bg-slate-950/95 p-5 text-white shadow-2xl backdrop-blur-xl" dir="rtl">
+      {settingsOpen && (
+          <aside className="fixed left-0 top-0 z-[100] h-screen w-[540px] overflow-y-auto border-r border-white/10 bg-slate-950 p-5 text-white" dir="rtl">
             <div className="mb-5 flex items-center justify-between">
               <h2 className="text-3xl font-black">لوحة الإعدادات</h2>
               <Button variant="ghost" onClick={() => setSettingsOpen(false)}><X /></Button>
@@ -612,16 +604,15 @@ export default function HamoudaPremiumDisplay() {
               <Textarea label="الأكثر طلباً عربي" value={draft.topProductsAr.join(NL)} onChange={(v) => updateDraft("topProductsAr", v.split(NL).filter(Boolean))} />
             </SettingsSection>
 
-            <Button onClick={saveSettings} className="sticky bottom-4 mt-6 h-14 w-full rounded-2xl text-xl font-black shadow-2xl" style={{ background: draft.primaryColor, color: "#08111f" }}><Save className="ml-2 h-5 w-5" /> حفظ وتشغيل على الشاشة</Button>
-          </motion.aside>
+            <Button onClick={saveSettings} className="sticky bottom-4 mt-6 h-14 w-full rounded-2xl text-xl font-black " style={{ background: draft.primaryColor, color: "#08111f" }}><Save className="ml-2 h-5 w-5" /> حفظ وتشغيل على الشاشة</Button>
+          </aside>
         )}
-      </AnimatePresence>
     </div>
   );
 }
 
 function InfoPill({ label, value, color }) {
-  return <div className="rounded-2xl border border-white/10 bg-black/30 px-3 py-1.5 text-center shadow-xl min-w-[110px]"><div className="text-[10px] text-white/55">{label}</div><div className="text-sm font-black" style={{ color }}>{value}</div></div>;
+  return <div className="rounded-2xl border border-white/10 bg-black/30 px-3 py-1.5 text-center  min-w-[110px]"><div className="text-[10px] text-white/55">{label}</div><div className="text-sm font-black" style={{ color }}>{value}</div></div>;
 }
 
 function SettingsSection({ title, children }) {
