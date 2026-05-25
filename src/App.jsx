@@ -71,10 +71,10 @@ const DEFAULT_DATA = {
   constructionNews: [],
   projectImages: [FALLBACK_IMAGE],
   backgroundImages: [
-    "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1800&q=80",
-    "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1800&q=80",
-    "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1800&q=80",
-    "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1800&q=80"
+    "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1920&q=80",
+    "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1920&q=80",
+    "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1920&q=80",
+    "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1920&q=80"
   ],
   projectTitlesAr: ["مشروع من أعمالنا"],
   projectTitlesHe: ["פרויקט מהעבודות שלנו"],
@@ -127,31 +127,6 @@ function injectTvTheme() {
     }
     * { box-sizing: border-box; }
     body { margin: 0; overflow: hidden; background:#03060b; }
-    .background-slideshow {
-      position:fixed;
-      inset:0;
-      z-index:0;
-      overflow:hidden;
-      background:#03060b;
-      pointer-events:none;
-    }
-    .background-slideshow img {
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      filter:blur(10px) brightness(.34) saturate(1.15);
-      transform:scale(1.08);
-      opacity:.78;
-      animation:bgZoom 15s ease-in-out infinite;
-    }
-    .background-slideshow::after {
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        radial-gradient(circle at 50% 0%, rgba(245,178,26,.16), transparent 34%),
-        linear-gradient(180deg, rgba(3,6,11,.42), rgba(3,6,11,.74));
-    }
     .tv-root {
       width: 100vw; height: 100vh; color: #fff; overflow: hidden;
       background:
@@ -160,7 +135,45 @@ function injectTvTheme() {
         linear-gradient(180deg, #03060b 0%, #06101e 54%, #03060b 100%);
       font-family: Heebo, Arial, sans-serif;
     }
-    .pixel-shell { height: 100%; padding: .85vw; display:flex; flex-direction:column; gap:.8vw; position:relative; z-index:2; }
+    .background-slideshow {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      background:#03060b;
+      pointer-events:none;
+    }
+    .background-slideshow img {
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      filter: blur(10px) brightness(.32) saturate(1.15);
+      transform: scale(1.12);
+      opacity:0;
+      transition: opacity 1.4s ease-in-out;
+      will-change: opacity, transform;
+    }
+    .background-slideshow img.active {
+      opacity:1;
+      animation: bgSlowZoom 18s ease-in-out infinite;
+    }
+    .background-vignette {
+      position:fixed;
+      inset:0;
+      z-index:1;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at 50% 20%, rgba(245,178,26,.14), transparent 34%),
+        linear-gradient(180deg, rgba(3,6,11,.62), rgba(3,6,11,.84));
+    }
+    .pixel-shell, .hidden-controls, .live-alert, .settings-drawer { position: relative; z-index: 2; }
+    @keyframes bgSlowZoom {
+      0%,100% { transform:scale(1.12); }
+      50% { transform:scale(1.19); }
+    }
+    .pixel-shell { height: 100%; padding: .85vw; display:flex; flex-direction:column; gap:.8vw; }
     .glass-panel {
       border: 1px solid rgba(245,178,26,.38);
       background: linear-gradient(180deg, rgba(12,20,33,.92), rgba(4,9,15,.94));
@@ -378,7 +391,6 @@ function injectTvTheme() {
       animation: alertPulse 1.8s ease-in-out infinite;
       text-shadow:0 0 10px rgba(0,0,0,.65);
     }
-    @keyframes bgZoom { 0%,100% { transform:scale(1.08); } 50% { transform:scale(1.15); } }
     @keyframes alertPulse { 0%,100% { opacity:.92; transform:translateX(-50%) scale(1); } 50% { opacity:1; transform:translateX(-50%) scale(1.025); } }
     @keyframes tickerMove { 0% { transform:translateX(0); } 100% { transform:translateX(45%); } }
     @keyframes shimmer { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
@@ -437,7 +449,7 @@ function normalizeData(input) {
     : [FALLBACK_IMAGE];
   const backgroundImages = Array.isArray(merged.backgroundImages) && merged.backgroundImages.length
     ? merged.backgroundImages.filter(Boolean).map(String)
-    : DEFAULT_DATA.backgroundImages;
+    : (DEFAULT_DATA.backgroundImages || []);
   const projectTitlesAr = Array.isArray(merged.projectTitlesAr) ? merged.projectTitlesAr.map(String) : [];
   const projectTitlesHe = Array.isArray(merged.projectTitlesHe) ? merged.projectTitlesHe.map(String) : [];
   return { ...merged, heroSlides: slides, projectImages, backgroundImages, projectTitlesAr, projectTitlesHe };
@@ -689,8 +701,8 @@ export default function HamoudaPremiumDisplay() {
   const currentProjectTitle =
     (isAr ? data.projectTitlesAr?.[projectIndex % Math.max(1, projectImages.length)] : data.projectTitlesHe?.[projectIndex % Math.max(1, projectImages.length)]) ||
     (isAr ? "مشروع من أعمالنا" : "פרויקט מהעבודות שלנו");
-  const backgroundImages = data.backgroundImages?.length ? data.backgroundImages : DEFAULT_DATA.backgroundImages;
-  const currentBackgroundImage = backgroundImages[bgIndex % Math.max(1, backgroundImages.length)] || FALLBACK_IMAGE;
+  const backgroundImages = data.backgroundImages?.length ? data.backgroundImages : (DEFAULT_DATA.backgroundImages || []);
+  const currentBackground = backgroundImages[bgIndex % Math.max(1, backgroundImages.length)] || FALLBACK_IMAGE;
 
   useEffect(() => {
     const unsub = onSnapshot(
@@ -743,12 +755,12 @@ export default function HamoudaPremiumDisplay() {
   }, [data.projectImages?.length, data.musicUrl]);
 
   useEffect(() => {
-    const count = backgroundImages.length || 1;
+    const count = data.backgroundImages?.length || 1;
     const timer = setInterval(() => {
       setBgIndex((v) => (v + 1) % count);
     }, 15000);
     return () => clearInterval(timer);
-  }, [backgroundImages.length]);
+  }, [data.backgroundImages?.length]);
 
   useEffect(() => {
     const musicUrl = String(data.backgroundMusicUrl || "").trim();
@@ -906,8 +918,17 @@ export default function HamoudaPremiumDisplay() {
   return (
     <div dir="rtl" className="tv-root">
       <div className="background-slideshow">
-        <img src={currentBackgroundImage} alt="" onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }} />
+        {backgroundImages.map((src, i) => (
+          <img
+            key={`${src}-${i}`}
+            src={src}
+            alt=""
+            className={i === bgIndex % Math.max(1, backgroundImages.length) ? "active" : ""}
+            onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }}
+          />
+        ))}
       </div>
+      <div className="background-vignette" />
       {data.alertText && (
         <div className="live-alert"><AlertTriangle size={26} /> {data.alertText}</div>
       )}
@@ -1044,20 +1065,20 @@ export default function HamoudaPremiumDisplay() {
           </div>
 
           <div className="settings-box">
+            <label>روابط صور خلفية الشاشة، افصل بينها بـ |
+              <textarea
+                rows={5}
+                value={(draft.backgroundImages || []).join(" | ")}
+                onChange={(e) => updateDraft("backgroundImages", e.target.value.split("|").map(x => x.trim()).filter(Boolean))}
+                placeholder="https://...jpg | https://...jpg | https://...jpg"
+              />
+            </label>
             <label>روابط صور المشاريع، افصل بينها بـ |
               <textarea
                 rows={5}
                 value={(draft.projectImages || []).join(" | ")}
                 onChange={(e) => updateDraft("projectImages", e.target.value.split("|").map(x => x.trim()).filter(Boolean))}
                 placeholder="https://...jpg | https://...mp4 | https://...webm"
-              />
-            </label>
-            <label>روابط صور خلفية الشاشة، افصل بينها بـ |
-              <textarea
-                rows={4}
-                value={(draft.backgroundImages || []).join(" | ")}
-                onChange={(e) => updateDraft("backgroundImages", e.target.value.split("|").map(x => x.trim()).filter(Boolean))}
-                placeholder="https://...jpg | https://...jpg"
               />
             </label>
             <label>أسماء المشاريع بالعربي، افصل بينها بـ |
