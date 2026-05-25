@@ -327,35 +327,35 @@ function toFirebaseSettings(data) {
   };
 }
 
-if (typeof document !== "undefined" && !document.getElementById("hamouda-tv-pro-style")) {
+if (typeof document !== "undefined" && !document.getElementById("tv-pro-runtime-styles")) {
   const style = document.createElement("style");
-  style.id = "hamouda-tv-pro-style";
+  style.id = "tv-pro-runtime-styles";
   style.innerHTML = `
-    @keyframes tickerMove { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
-    @keyframes rateGlow { 0%,100% { box-shadow: 0 0 10px rgba(245,178,26,.18); transform: scale(1); } 50% { box-shadow: 0 0 22px rgba(245,178,26,.55); transform: scale(1.025); } }
-    @keyframes softPulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.04); opacity: .88; } }
-    @keyframes goldGlow { 0%,100% { box-shadow: 0 0 10px rgba(245,178,26,.25), inset 0 0 12px rgba(245,178,26,.08); } 50% { box-shadow: 0 0 24px rgba(245,178,26,.75), inset 0 0 18px rgba(245,178,26,.18); } }
-    @keyframes imageFade { from { opacity: .55; transform: scale(1.015); } to { opacity: 1; transform: scale(1); } }
-    @keyframes shimmer { 0% { background-position: -220% 0; } 100% { background-position: 220% 0; } }
-    .tv-card { border: 1px solid rgba(245,178,26,.28); background: linear-gradient(180deg, rgba(15,23,42,.92), rgba(2,6,23,.92)); box-shadow: 0 0 18px rgba(245,178,26,.18); }
-    .tv-card-soft { border: 1px solid rgba(255,255,255,.10); background: linear-gradient(180deg, rgba(30,41,59,.85), rgba(15,23,42,.88)); }
-    .tv-gold-glow { animation: goldGlow 3.2s ease-in-out infinite; }
-    .tv-price-pulse { animation: softPulse 2.3s ease-in-out infinite; text-shadow: 0 0 16px rgba(245,178,26,.45); }
-    .tv-image-fade { animation: imageFade .9s ease both; }
-    .tv-ticker { display:inline-block; padding-left:100%; will-change: transform; }
-    .rate-pill-pro { border: 1px solid rgba(245,178,26,.28); background: linear-gradient(180deg, rgba(15,23,42,.92), rgba(2,6,23,.92)); animation: rateGlow 4s ease-in-out infinite; }
-    .rate-icon-pro { width: 38px; height: 38px; border-radius: 14px; display: grid; place-items: center; font-size: 22px; background: radial-gradient(circle at 30% 25%, rgba(255,255,255,.35), rgba(245,178,26,.12) 45%, rgba(0,0,0,.5)); border: 1px solid rgba(245,178,26,.35); }
-    .hidden-admin-controls { display: none !important; }
-    .tv-shimmer { background: linear-gradient(90deg, #fff, #f5b21a, #fff); background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: shimmer 4s linear infinite; }
-    @keyframes priceWheelMove { from { transform: translateY(0); } to { transform: translateY(-50%); } }
-    .price-wheel-mask { height: calc(100% - 2.8rem); overflow: hidden; position: relative; }
-    .price-wheel-mask:before, .price-wheel-mask:after { content: ''; position: absolute; left: 0; right: 0; height: 22px; z-index: 5; pointer-events: none; }
-    .price-wheel-mask:before { top: 0; background: linear-gradient(to bottom, rgba(2,6,23,.98), transparent); }
-    .price-wheel-mask:after { bottom: 0; background: linear-gradient(to top, rgba(2,6,23,.98), transparent); }
-    .price-wheel-track { animation: priceWheelMove 38s linear infinite; will-change: transform; }
-    .price-wheel-mask:hover .price-wheel-track { animation-play-state: paused; }
-    .price-row-pro { min-height: 72px; transition: transform .3s ease, box-shadow .3s ease; }
-    .price-row-pro:nth-child(5n+3) { box-shadow: 0 0 18px rgba(245,178,26,.20); border-color: rgba(245,178,26,.35); }
+    @keyframes tickerMove {
+      0% { transform: translateX(-5%); }
+      100% { transform: translateX(105%); }
+    }
+    @keyframes priceWheel {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-50%); }
+    }
+    @keyframes softGlow {
+      0%,100% { box-shadow: 0 0 10px rgba(245,178,26,.22), inset 0 0 10px rgba(245,178,26,.08); }
+      50% { box-shadow: 0 0 24px rgba(245,178,26,.55), inset 0 0 16px rgba(245,178,26,.15); }
+    }
+    @keyframes numberPulse {
+      0%,100% { transform: scale(1); text-shadow: 0 0 10px rgba(255,255,255,.35); }
+      50% { transform: scale(1.045); text-shadow: 0 0 18px rgba(245,178,26,.8); }
+    }
+    @keyframes iconFloat {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-2px); }
+    }
+    .tv-price-wheel { animation: priceWheel 36s linear infinite; }
+    .tv-glow { animation: softGlow 3.5s ease-in-out infinite; }
+    .tv-number { animation: numberPulse 2.8s ease-in-out infinite; display:inline-block; }
+    .tv-icon { animation: iconFloat 3s ease-in-out infinite; }
+    .tv-ticker { animation-name: tickerMove; animation-timing-function: linear; animation-iteration-count: infinite; display:inline-block; padding-inline-start: 100%; }
   `;
   document.head.appendChild(style);
 }
@@ -475,7 +475,7 @@ export default function HamoudaPremiumDisplay() {
         </div>
       )}
 
-      <div className="hidden-admin-controls fixed left-4 top-4 z-50 flex gap-2">
+      <div className="hidden">
         <Button onClick={toggleLanguage} className="rounded-2xl bg-white/15   hover:bg-white/25">
           <Languages className="ml-2 h-4 w-4" /> {data.language === "he" ? "עברית" : "عربي"}
         </Button>
@@ -484,109 +484,111 @@ export default function HamoudaPremiumDisplay() {
         </Button>
       </div>
 
-      <main className="relative z-10 flex h-screen flex-col gap-3 p-4" dir="ltr">
-        <header className="grid grid-cols-[1.05fr_1.25fr_1.05fr] items-center gap-3 rounded-[1.5rem] border border-amber-300/20 bg-slate-900/85 px-4 py-2.5 tv-card-soft">
-          <div className="flex items-center gap-3" dir={dir}>
-            <div className="grid h-14 w-14 place-items-center rounded-2xl text-3xl font-black tv-gold-glow" style={{ background: `linear-gradient(135deg, ${data.primaryColor}, #fff1a8)`, color: "#08111f" }}>{data.logoText}</div>
+      <main className="relative z-10 flex h-screen flex-col gap-2.5 p-4">
+        <header className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 rounded-[1.5rem] border border-white/10 bg-white/10 px-4 py-2.5  ">
+          <div className="flex items-center gap-3">
+            <div className="grid h-12 w-12 place-items-center rounded-2xl text-2xl font-black " style={{ background: `linear-gradient(135deg, ${data.primaryColor}, #fff1a8)`, color: "#08111f" }}>{data.logoText}</div>
             <div>
-              <h1 className="text-3xl font-black tracking-tight">{t(data, "businessNameHe", "businessNameAr")}</h1>
+              <h1 className="text-2xl font-black tracking-tight">{t(data, "businessNameHe", "businessNameAr")}</h1>
               <p className="mt-0.5 text-sm text-white/75">{t(data, "sloganHe", "sloganAr")}</p>
             </div>
           </div>
 
-          <div className="flex items-center justify-center gap-3" dir="ltr">
-            <RatePill icon="€" label={isAr ? "يورو" : "אירו"} value={`${data.exchangeEUR ?? fx.eurIls} ₪`} color={data.primaryColor} />
-            <RatePill icon="$" label={isAr ? "دولار" : "דולר"} value={`${data.exchangeUSD ?? fx.usdIls} ₪`} color={data.primaryColor} />
-            <RatePill icon="د" label={isAr ? "دينار" : "דינר"} value={`${data.exchangeJOD ?? fx.jodIls} ₪`} color={data.primaryColor} />
-            <RatePill icon="☎" label={isAr ? "هاتف" : "טלפון"} value={data.phone} color={data.primaryColor} />
+          <div className="flex items-center justify-center gap-2">
+            <InfoPill icon="€" label={isAr ? "يورو" : "אירו"} value={`${data.exchangeEUR ?? fx.eurIls} €`} change="↑ 0.25%" color={data.primaryColor} />
+            <InfoPill icon="$" label={isAr ? "دولار" : "דולר"} value={`${data.exchangeUSD ?? fx.usdIls} $`} change="↑ 0.18%" color={data.primaryColor} />
+            <InfoPill icon="د" label={isAr ? "دينار" : "דינר"} value={`${data.exchangeJOD ?? fx.jodIls} JD`} change="" color={data.primaryColor} />
+            <InfoPill icon="☎" label={isAr ? "هاتف" : "טלפון"} value={data.phone} change="" color={data.primaryColor} />
           </div>
 
-          <div className="text-right" dir={dir}>
-            <div className="text-2xl font-black" style={{ color: data.primaryColor }}>{now.toLocaleTimeString(isAr ? "ar" : "he", { hour: "2-digit", minute: "2-digit" })}</div>
-            <div className="text-xs text-white/70">{now.toLocaleDateString(isAr ? "ar" : "he", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</div>
+          <div className="flex items-center justify-end gap-3 text-left">
+            <div className="grid h-12 w-12 place-items-center rounded-2xl border border-yellow-400/30 bg-black/30 text-2xl tv-glow">📅</div>
+            <div>
+              <div className="text-3xl font-black leading-none" style={{ color: data.primaryColor }}>{now.toLocaleTimeString(isAr ? "ar" : "he", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}</div>
+              <div className="mt-1 text-xs text-white/70">{now.toLocaleDateString(isAr ? "ar" : "he", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</div>
+            </div>
           </div>
         </header>
 
-        <section className="grid flex-1 grid-cols-[.82fr_1.65fr_.72fr] gap-3 min-h-0" dir="ltr">
-          <Card className="tv-card rounded-[1.5rem] min-h-0 overflow-hidden" dir={dir}>
-            <CardContent className="h-full p-3">
-              <div className="mb-2 flex items-center justify-center gap-3">
-                <span className="h-px w-14 bg-amber-300/70" />
-                <h3 className="text-xl font-black" style={{ color: data.primaryColor }}>{isAr ? "أسعار اليوم" : "מחירי היום"}</h3>
-                <span className="h-px w-14 bg-amber-300/70" />
-              </div>
-              <div className="price-wheel-mask">
-                <div className="price-wheel-track grid grid-cols-1 gap-2 pb-2">
-                  {[...(data.prices || []), ...(data.prices || [])].map((p, i) => (
-                    <div key={`${i}-${p.nameHe}-${p.nameAr}`} className="price-row-pro grid grid-cols-[48px_1fr_auto_42px] items-center gap-2 rounded-xl border border-white/10 bg-black/35 px-2.5 py-2">
-                      <div className="grid h-11 w-11 place-items-center rounded-xl border border-amber-300/25 bg-black/40 text-xl">
-                        {i % 8 === 0 ? "🏗️" : i % 8 === 1 ? "🔩" : i % 8 === 2 ? "🧱" : i % 8 === 3 ? "⚙️" : i % 8 === 4 ? "⬜" : i % 8 === 5 ? "🎨" : i % 8 === 6 ? "⛰️" : "🛡️"}
-                      </div>
-                      <div className="min-w-0">
-                        <div className="truncate text-sm font-black text-white/90">{itemT(data, p, "nameHe", "nameAr")}</div>
-                        <div className="text-[11px] text-white/55">{itemT(data, p, "unitHe", "unitAr")}</div>
-                      </div>
-                      <div className="text-3xl font-black tv-price-pulse">₪{p.price}</div>
-                      <div className={p.direction === "up" ? "text-green-400 font-black" : p.direction === "down" ? "text-red-400 font-black" : "text-white/60 font-black"}>{p.direction === "up" ? "↑" : p.direction === "down" ? "↓" : "—"} {p.change}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="pt-1 text-center text-[11px] text-white/55">* {isAr ? "الأسعار تتحدث مباشرة" : "המחירים מתעדכנים בזמן אמת"}</div>
-            </CardContent>
-          </Card>
-
-          <Card className="relative overflow-hidden rounded-[1.7rem] border border-amber-300/35 bg-black/50 tv-gold-glow" dir={dir}>
-            <div key={`${slideIndex}-${imageIndex}-${data.language}`} className="absolute inset-0 tv-image-fade">
+        <section className="grid flex-1 grid-cols-[1.45fr_.95fr] gap-2.5 min-h-0">
+          <Card className="relative overflow-hidden rounded-[1.7rem] border-white/10 bg-black/30  ">
+            <div key={`${slideIndex}-${imageIndex}-${data.language}`} className="absolute inset-0">
               {currentMedia.type === "video" ? (
-                <video src={currentMedia.src} className="h-full w-full object-cover" autoPlay muted loop playsInline />
+                <video src={currentMedia.src} className="h-full w-full object-contain" autoPlay muted loop playsInline />
               ) : (
                 <img src={currentMedia.src || FALLBACK_IMAGE} className="h-full w-full object-contain" alt="slide" onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }} />
               )}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-transparent to-black/45 pointer-events-none" />
-              <button className="absolute left-5 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-amber-300/50 bg-black/55 text-3xl" style={{ color: data.primaryColor }}>‹</button>
-              <button className="absolute right-5 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-amber-300/50 bg-black/55 text-3xl" style={{ color: data.primaryColor }}>›</button>
-              <div className="absolute bottom-5 left-1/2 flex -translate-x-1/2 gap-2">
-                {slideMedia.slice(0, 8).map((_, i) => <span key={i} className="h-3 w-3 rounded-full border border-white/30" style={{ background: i === imageIndex % slideMedia.length ? data.primaryColor : "rgba(255,255,255,.28)" }} />)}
-              </div>
-              <div className="absolute right-7 top-5 rounded-full px-5 py-2 text-sm font-black tv-gold-glow" style={{ background: data.primaryColor, color: "#0b1220" }}>{itemT(data, currentSlide, "tagHe", "tagAr")}</div>
-              <div className="absolute bottom-16 right-7 max-w-3xl rounded-3xl border border-white/10 bg-black/75 p-6">
-                <h2 className="text-5xl font-black leading-tight tv-shimmer">{itemT(data, currentSlide, "titleHe", "titleAr")}</h2>
-                <p className="mt-3 text-xl font-bold text-white/90">{itemT(data, currentSlide, "subtitleHe", "subtitleAr")}</p>
+              <div className="absolute inset-0 bg-black/25 pointer-events-none" />
+              <div className="absolute right-5 top-5 rounded-full px-4 py-1.5 text-sm font-bold" style={{ background: data.primaryColor, color: "#0b1220" }}>{itemT(data, currentSlide, "tagHe", "tagAr")}</div>
+              <div className="absolute bottom-6 right-6 max-w-3xl rounded-3xl bg-black/70 p-5">
+                <h2 className="text-4xl font-black leading-tight">{itemT(data, currentSlide, "titleHe", "titleAr")}</h2>
+                <p className="mt-2 text-lg text-white/85">{itemT(data, currentSlide, "subtitleHe", "subtitleAr")}</p>
               </div>
             </div>
           </Card>
 
-          <Card className="tv-card rounded-[1.5rem] overflow-hidden tv-gold-glow" dir={dir}>
-            <CardContent className="flex h-full flex-col items-center justify-center p-5 text-center">
-              <div className="text-2xl font-black text-white/90">{t(data, "offerTitleHe", "offerTitleAr")} 🔥</div>
-              <div className="my-5 text-8xl font-black tv-price-pulse" style={{ color: data.primaryColor }}>{data.offerPercent}</div>
-              <div className="text-2xl font-black leading-relaxed">{t(data, "offerTextHe", "offerTextAr")}</div>
-              <div className="mt-7 rounded-2xl px-7 py-3 text-xl font-black tv-gold-glow" style={{ background: data.primaryColor, color: "#08111f" }}>{isAr ? "لفترة محدودة!" : "לתקופה מוגבלת!"}</div>
-            </CardContent>
-          </Card>
+          <div className="grid grid-rows-[1fr_auto] gap-2.5 min-h-0">
+            <Card className="rounded-[1.5rem] border-white/10 bg-white/10   min-h-0 overflow-hidden">
+              <CardContent className="h-full p-3">
+                <h3 className="mb-2 text-xl font-black" style={{ color: data.primaryColor }}>{isAr ? "الأسعار المباشرة" : "מחירים חיים"}</h3>
+                <div className="relative h-[calc(100%-2.2rem)] overflow-hidden rounded-2xl">
+                  <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 h-10 bg-gradient-to-b from-[#111827] to-transparent" />
+                  <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-10 h-10 bg-gradient-to-t from-[#111827] to-transparent" />
+                  <div className="tv-price-wheel space-y-2 pb-3">
+                    {[...data.prices, ...data.prices].map((p, i) => (
+                      <div key={i} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/35 px-3 py-2.5">
+                        <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-yellow-400/30 bg-black/35 text-2xl tv-icon">
+                          {productIcon(itemT(data, p, "nameHe", "nameAr"))}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="truncate text-base font-black text-white">{itemT(data, p, "nameHe", "nameAr")}</div>
+                          <div className="text-xs text-white/55">{itemT(data, p, "unitHe", "unitAr")}</div>
+                        </div>
+                        <div className="text-left">
+                          <div className="tv-number text-3xl font-black text-white">₪{p.price}</div>
+                          <div className={p.direction === "up" ? "text-green-400" : p.direction === "down" ? "text-red-400" : "text-white/50"}>
+                            {p.direction === "up" ? "↑" : p.direction === "down" ? "↓" : "—"} {p.change}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="rounded-[1.5rem] border-white/10 bg-white/10  ">
+              <CardContent className="grid grid-cols-[1fr_auto] items-center gap-3 p-3">
+                <div>
+                  <div className="text-sm font-bold text-white/65">{t(data, "offerTitleHe", "offerTitleAr")}</div>
+                  <div className="mt-1 text-xl font-black">{t(data, "offerTextHe", "offerTextAr")}</div>
+                </div>
+                <div className="tv-glow rounded-2xl px-4 py-2 text-3xl font-black" style={{ background: data.primaryColor, color: "#08111f" }}>{data.offerPercent}</div>
+              </CardContent>
+            </Card>
+          </div>
         </section>
 
-        <footer className="rounded-[1.2rem] border border-amber-300/25 bg-black/60 p-2" dir={dir}>
-          <div className="mb-1 text-right text-sm font-black" style={{ color: data.primaryColor }}>{isAr ? "أخبار وتحديثات" : "חדשות ועדכונים"} 🔊</div>
-          <div className="overflow-hidden rounded-xl border border-white/10 bg-black/45 py-2">
-            <div
-              className="tv-ticker whitespace-nowrap text-xl font-black"
-              style={{ animation: `tickerMove ${Number(data.tickerSpeed || 60)}s linear infinite` }}
-            >
-              {tickerText}     •     {tickerText}
+        <section className="rounded-[1.4rem] border border-white/10 bg-white/10 p-2.5  ">
+          <div className="flex items-center gap-2 overflow-hidden">
+            <h3 className="shrink-0 px-2 text-base font-black" style={{ color: data.primaryColor }}>{isAr ? "الأكثر طلباً" : "הכי מבוקש"}</h3>
+            <div className="grid flex-1 grid-cols-6 gap-2">
+              {(isAr ? data.topProductsAr : data.topProductsHe).slice(0, 6).map((item, i) => <div key={i} className="truncate rounded-xl bg-black/25 px-3 py-2 text-center text-sm font-bold">{i + 1}. {item}</div>)}
             </div>
+          </div>
+        </section>
+
+        <footer className="relative overflow-hidden rounded-[1.2rem] border border-yellow-400/30 bg-black/45 py-2 tv-glow">
+          <div className="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-xl px-3 py-1 text-sm font-black" style={{ background: data.primaryColor, color: "#08111f" }}>
+            {isAr ? "الأخبار" : "חדשות ועדכונים"} 🔊
+          </div>
+          <div
+            className="tv-ticker whitespace-nowrap text-lg font-bold"
+            style={{ animationDuration: `${Math.max(20, Number(data.tickerSpeed || 60))}s` }}
+          >
+            {tickerText}     •     {tickerText}
           </div>
         </footer>
-
-        <section className="rounded-[1.1rem] border border-white/10 bg-black/35 p-2" dir={dir}>
-          <div className="grid grid-cols-7 gap-2">
-            <div className="rounded-xl px-3 py-2 text-center text-sm font-black tv-gold-glow" style={{ background: data.primaryColor, color: "#08111f" }}>{isAr ? "الرئيسية" : "דף הבית"} 🏠</div>
-            {(isAr ? data.topProductsAr : data.topProductsHe).slice(0, 6).map((item, i) => (
-              <div key={i} className="truncate rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-center text-sm font-bold">{item}</div>
-            ))}
-          </div>
-        </section>
       </main>
 
       {settingsOpen && (
@@ -669,20 +671,30 @@ export default function HamoudaPremiumDisplay() {
   );
 }
 
-function RatePill({ icon, label, value, color }) {
+function InfoPill({ icon, label, value, change, color }) {
   return (
-    <div className="rate-pill-pro flex min-w-[145px] items-center justify-center gap-2 rounded-2xl px-3 py-2 text-center">
-      <div className="rate-icon-pro" style={{ color }}>{icon}</div>
-      <div>
+    <div className="flex min-w-[145px] items-center gap-2 rounded-2xl border border-yellow-400/20 bg-black/35 px-3 py-2 tv-glow">
+      <div className="grid h-10 w-10 place-items-center rounded-full border border-yellow-400/30 bg-black/40 text-2xl tv-icon" style={{ color }}>
+        {icon}
+      </div>
+      <div className="text-center leading-tight">
         <div className="text-[10px] text-white/55">{label}</div>
-        <div className="text-base font-black" style={{ color }}>{value}</div>
+        <div className="text-sm font-black" style={{ color }}>{value}</div>
+        {change ? <div className="text-[10px] font-bold text-green-400">{change}</div> : null}
       </div>
     </div>
   );
 }
 
-function InfoPill({ label, value, color }) {
-  return <div className="rounded-2xl border border-white/10 bg-black/30 px-3 py-1.5 text-center  min-w-[110px]"><div className="text-[10px] text-white/55">{label}</div><div className="text-sm font-black" style={{ color }}>{value}</div></div>;
+function productIcon(name = "") {
+  const n = String(name).toLowerCase();
+  if (n.includes("מלט") || n.includes("إسمنت") || n.includes("اسمنت")) return "🏗️";
+  if (n.includes("ברזל") || n.includes("حديد")) return "🔩";
+  if (n.includes("גבס") || n.includes("جبص") || n.includes("جبس")) return "◻️";
+  if (n.includes("צבע") || n.includes("دهان")) return "🎨";
+  if (n.includes("חול") || n.includes("رمل")) return "⛰️";
+  if (n.includes("איטום") || n.includes("عزل")) return "🛡️";
+  return "📦";
 }
 
 function SettingsSection({ title, children }) {
