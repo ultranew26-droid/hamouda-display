@@ -1,20 +1,47 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Settings, X, Plus, Trash2, Save, ImagePlus, Languages, Upload, AlertTriangle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import {
+  Home,
+  Phone,
+  CalendarDays,
+  Euro,
+  DollarSign,
+  Wrench,
+  PaintBucket,
+  Layers,
+  ShieldCheck,
+  Truck,
+  Award,
+  Volume2,
+  Settings,
+  Languages,
+  Package,
+  Hammer,
+  BadgePercent,
+  Drill,
+  ScrollText,
+  Building2
+} from "lucide-react";
 import { db } from "./firebase";
 import { collection, doc, onSnapshot, setDoc } from "firebase/firestore";
 
 const STORAGE_KEY = "hamouda-display-settings-v4";
 const NL = String.fromCharCode(10);
 
-const FALLBACK_IMAGE = "data:image/svg+xml;utf8," + encodeURIComponent(`
+const FALLBACK_IMAGE =
+  "data:image/svg+xml;utf8," +
+  encodeURIComponent(`
 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900'>
-  <defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop stop-color='#05070b'/><stop offset='1' stop-color='#1f2937'/></linearGradient></defs>
+  <defs>
+    <linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>
+      <stop stop-color='#05070b'/>
+      <stop offset='.55' stop-color='#101827'/>
+      <stop offset='1' stop-color='#020617'/>
+    </linearGradient>
+  </defs>
   <rect width='1600' height='900' fill='url(#g)'/>
-  <path d='M0 740 C320 620 520 780 820 660 S1240 500 1600 650 V900 H0Z' fill='#f5b21a' opacity='.18'/>
-  <text x='800' y='410' text-anchor='middle' fill='#f5b21a' font-size='78' font-family='Arial' font-weight='800'>HAMOUDI</text>
-  <text x='800' y='500' text-anchor='middle' fill='white' font-size='48' font-family='Arial'>Building Materials Display</text>
+  <path d='M0 760 C270 590 540 790 850 620 S1260 470 1600 610 V900 H0Z' fill='#f7b500' opacity='.20'/>
+  <text x='800' y='370' text-anchor='middle' fill='#f7b500' font-size='92' font-family='Arial' font-weight='900'>HAMOUDI</text>
+  <text x='800' y='470' text-anchor='middle' fill='white' font-size='50' font-family='Arial'>Building Materials Display</text>
 </svg>`);
 
 const DEFAULT_DATA = {
@@ -28,24 +55,12 @@ const DEFAULT_DATA = {
   primaryColor: "#f5b21a",
   backgroundColor: "#05070b",
   textScale: 0.66,
-  slideSeconds: 30,
-  tickerSpeed: 60,
+  slideSeconds: 8,
+  tickerSpeed: 95,
   heroImageUrl: "",
   tickerText: "",
   logoText: "ח",
   heroSlides: [
-    {
-      titleHe: "חומרי בניין ברמה אחרת",
-      titleAr: "مواد بناء بمستوى مختلف",
-      subtitleHe: "מחירים, מבצעים ומוצרים מתעדכנים על המסך בזמן אמת",
-      subtitleAr: "أسعار، عروض ومنتجات تظهر على الشاشة بشكل احترافي",
-      image: FALLBACK_IMAGE,
-      images: [FALLBACK_IMAGE],
-      imageNames: [],
-      media: [{ type: "image", src: FALLBACK_IMAGE, name: "default" }],
-      tagHe: "תצוגה ראשית",
-      tagAr: "العرض الرئيسي"
-    },
     {
       titleHe: "כל מה שהקבלן צריך במקום אחד",
       titleAr: "كل ما يحتاجه المقاول في مكان واحد",
@@ -53,250 +68,284 @@ const DEFAULT_DATA = {
       subtitleAr: "حديد • إسمنت • دهانات • جبص • أدوات • عزل",
       image: FALLBACK_IMAGE,
       images: [FALLBACK_IMAGE],
-      imageNames: [],
       media: [{ type: "image", src: FALLBACK_IMAGE, name: "default" }],
-      tagHe: "מחלקות",
-      tagAr: "الأقسام"
+      tagHe: "דף הבית",
+      tagAr: "الرئيسية"
     }
   ],
   prices: [
-    { nameHe: "מלט", nameAr: "إسمنت", price: "29", unitHe: "שק", unitAr: "كيس", change: "+1", direction: "up" },
-    { nameHe: "ברזל 8 מ״מ", nameAr: "حديد 8 ملم", price: "32", unitHe: "מ׳", unitAr: "متر", change: "0", direction: "flat" },
-    { nameHe: "ברזל 10 מ״מ", nameAr: "حديد 10 ملم", price: "38", unitHe: "מ׳", unitAr: "متر", change: "-1", direction: "down" },
-    { nameHe: "ברזל 12 מ״מ", nameAr: "حديد 12 ملم", price: "43", unitHe: "מ׳", unitAr: "متر", change: "+2", direction: "up" },
-    { nameHe: "גבס לבן", nameAr: "جبص أبيض", price: "45", unitHe: "לוח", unitAr: "لوح", change: "0", direction: "flat" },
-    { nameHe: "צבע פנים", nameAr: "دهان داخلي", price: "120", unitHe: "גלון", unitAr: "غالون", change: "-5", direction: "down" },
-    { nameHe: "חול דק", nameAr: "رمل ناعم", price: "180", unitHe: "קוב", unitAr: "كوب", change: "+5", direction: "up" },
-    { nameHe: "חומר איטום", nameAr: "مادة عزل", price: "65", unitHe: "יח׳", unitAr: "قطعة", change: "0", direction: "flat" }
+    { nameHe: "מלט", nameAr: "إسمنت", price: "29", unitHe: "שק", unitAr: "كيس", change: "+1", direction: "up", icon: "cement" },
+    { nameHe: "ברזל 8 מ״מ", nameAr: "حديد 8 ملم", price: "32", unitHe: "מ׳", unitAr: "متر", change: "0", direction: "flat", icon: "steel" },
+    { nameHe: "ברזל 10 מ״מ", nameAr: "حديد 10 ملم", price: "38", unitHe: "מ׳", unitAr: "متر", change: "-1", direction: "down", icon: "steel" },
+    { nameHe: "ברזל 12 מ״מ", nameAr: "حديد 12 ملم", price: "43", unitHe: "מ׳", unitAr: "متر", change: "+2", direction: "up", icon: "steel" },
+    { nameHe: "גבס לבן", nameAr: "جبص أبيض", price: "45", unitHe: "לוח", unitAr: "لوح", change: "0", direction: "flat", icon: "gypsum" },
+    { nameHe: "צבע פנים", nameAr: "دهان داخلي", price: "120", unitHe: "גלון", unitAr: "غالون", change: "-5", direction: "down", icon: "paint" },
+    { nameHe: "חול דק", nameAr: "رمل ناعم", price: "180", unitHe: "קוב", unitAr: "كوب", change: "+5", direction: "up", icon: "sand" },
+    { nameHe: "חומר איטום", nameAr: "مادة عزل", price: "65", unitHe: "יח׳", unitAr: "قطعة", change: "0", direction: "flat", icon: "seal" }
   ],
-  topProductsHe: ["מלט", "ברזל 12 מ״מ", "גבס לבן", "צבע פנים", "חומרי איטום", "כלי עבודה"],
-  topProductsAr: ["إسمنت", "حديد 12 ملم", "جبص أبيض", "دهان داخلي", "مواد عزل", "أدوات عمل"],
+  topProductsHe: ["מלט", "ברזל", "גבס", "צבעים", "חומרי איטום", "כלי עבודה"],
+  topProductsAr: ["إسمنت", "حديد", "جبص", "دهانات", "مواد عزل", "أدوات عمل"],
   offerTitleHe: "מבצע השבוע",
   offerTitleAr: "عرض الأسبوع",
-  offerTextHe: "הנחה מיוחדת על צבעים וחומרי איטום",
-  offerTextAr: "خصم خاص على الدهانات ومواد العزل",
-  offerPercent: "10%",
+  offerTextHe: "הנחה על צבעים וחומרי איטום",
+  offerTextAr: "خصم على الدهانات ومواد العزل",
+  offerPercent: "5%",
   tickerHe: ["🔥 מבצעים יומיים על חומרי בניין", "🚚 אספקה מהירה להזמנות גדולות", "🏗️ ציוד מלא לקבלנים ופרויקטים", "📞 להזמנות ושירות: 054-7285036"],
   tickerAr: ["🔥 عروض يومية على مواد البناء", "🚚 توصيل سريع للطلبات الكبيرة", "🏗️ تجهيز كامل للمقاولين والمشاريع", "📞 للطلب والاستفسار: 054-7285036"]
 };
 
-function removeLargeImagesFromData(data) {
-  return {
-    ...data,
-    heroSlides: (data.heroSlides || []).map((slide) => ({
-      ...slide,
-      image: FALLBACK_IMAGE,
-      images: [FALLBACK_IMAGE],
-      media: [{ type: "image", src: FALLBACK_IMAGE, name: "default" }],
-      imageNames: slide.imageNames || slide.media?.map((m) => m.name).filter(Boolean) || []
-    }))
-  };
+function injectTvTheme() {
+  if (typeof document === "undefined" || document.getElementById("hamouda-tv-pixel-theme")) return;
+  const style = document.createElement("style");
+  style.id = "hamouda-tv-pixel-theme";
+  style.innerHTML = `
+    :root {
+      --gold: #f5b21a;
+      --gold2: #ffdc63;
+      --dark: #05070b;
+      --panel: rgba(9,15,25,.88);
+      --line: rgba(245,178,26,.55);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; overflow: hidden; background:#03060b; }
+    .tv-root {
+      width: 100vw; height: 100vh; color: #fff; overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(245,178,26,.13), transparent 30%),
+        radial-gradient(circle at 90% 70%, rgba(245,178,26,.10), transparent 35%),
+        linear-gradient(180deg, #03060b 0%, #06101e 54%, #03060b 100%);
+      font-family: Heebo, Arial, sans-serif;
+    }
+    .pixel-shell { height: 100%; padding: .85vw; display:flex; flex-direction:column; gap:.8vw; }
+    .glass-panel {
+      border: 1px solid rgba(245,178,26,.38);
+      background: linear-gradient(180deg, rgba(12,20,33,.92), rgba(4,9,15,.94));
+      border-radius: 1.25vw;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.04) inset, 0 0 28px rgba(245,178,26,.12);
+    }
+    .topbar { height: 5.9vw; display:grid; grid-template-columns: 1.7fr 2.4fr 1.5fr; align-items:center; padding:.55vw .75vw; gap:1vw; }
+    .brand { display:flex; align-items:center; gap:.9vw; }
+    .logo-box {
+      width:4.35vw; height:4.35vw; border-radius:1vw;
+      display:grid; place-items:center; font-size:2.25vw; font-weight:1000;
+      color:#07111f; background:linear-gradient(135deg, #f2aa12, #ffe27b);
+      box-shadow: 0 0 24px rgba(245,178,26,.75), inset 0 0 12px rgba(255,255,255,.5);
+    }
+    .brand-title { font-size:2.05vw; line-height:1; font-weight:1000; letter-spacing:-.03em; text-shadow:0 0 12px rgba(255,255,255,.18); }
+    .brand-sub { margin-top:.35vw; color:rgba(255,255,255,.72); font-size:.9vw; font-weight:700; }
+    .top-pills { display:flex; justify-content:center; gap:.85vw; }
+    .data-pill {
+      min-width:8.8vw; height:3.75vw; border-radius:.75vw; padding:.35vw .65vw;
+      display:grid; grid-template-columns:2.3vw 1fr; align-items:center; gap:.55vw;
+      border:1px solid rgba(245,178,26,.32);
+      background:linear-gradient(180deg, rgba(8,13,22,.92), rgba(3,7,12,.96));
+      box-shadow:0 0 16px rgba(245,178,26,.10);
+    }
+    .pill-icon {
+      width:2.25vw; height:2.25vw; border-radius:.55vw; display:grid; place-items:center;
+      color:var(--gold2); border:1px solid rgba(245,178,26,.45);
+      background:radial-gradient(circle, rgba(245,178,26,.18), rgba(0,0,0,.15));
+      filter: drop-shadow(0 0 8px rgba(245,178,26,.55));
+    }
+    .pill-label { color:rgba(255,255,255,.63); font-size:.7vw; font-weight:800; }
+    .pill-value { font-size:1.02vw; color:var(--gold2); font-weight:1000; text-shadow:0 0 10px rgba(245,178,26,.45); white-space:nowrap; }
+    .pill-change { color:#27f36b; font-size:.72vw; font-weight:1000; margin-inline-start:.25vw; }
+    .time-box { display:flex; align-items:center; justify-content:flex-end; gap:.75vw; }
+    .time-main { color:var(--gold2); font-size:1.55vw; font-weight:1000; text-shadow:0 0 12px rgba(245,178,26,.55); }
+    .date-main { color:rgba(255,255,255,.72); font-size:.86vw; font-weight:700; text-align:end; }
+    .main-grid { flex:1; min-height:0; display:grid; grid-template-columns: 24.6vw 1fr 24.2vw; gap:.85vw; }
+    .prices-card { padding:.8vw; display:flex; flex-direction:column; min-height:0; }
+    .section-title { display:flex; align-items:center; justify-content:center; gap:.8vw; color:var(--gold); font-size:1.25vw; font-weight:1000; margin:.1vw 0 .7vw; }
+    .section-title:before,.section-title:after { content:""; height:1px; width:4.1vw; background:linear-gradient(90deg, transparent, var(--gold), transparent); }
+    .price-list { display:flex; flex-direction:column; gap:.42vw; min-height:0; overflow:hidden; }
+    .price-row {
+      height:3.75vw; flex:0 0 3.75vw; display:grid; grid-template-columns:3vw 1fr 5.5vw 2.35vw; align-items:center; gap:.52vw;
+      border-radius:.65vw; padding:.35vw .55vw; border:1px solid rgba(255,255,255,.10);
+      background:linear-gradient(90deg, rgba(255,255,255,.055), rgba(255,255,255,.015));
+      box-shadow:inset 0 0 18px rgba(255,255,255,.025);
+    }
+    .price-row:nth-child(1), .price-row:hover { border-color:rgba(245,178,26,.70); box-shadow:0 0 18px rgba(245,178,26,.20), inset 0 0 18px rgba(245,178,26,.05); }
+    .prod-icon { width:2.55vw; height:2.55vw; border-radius:.55vw; border:1px solid rgba(245,178,26,.35); display:grid; place-items:center; color:#fff; background:rgba(0,0,0,.32); }
+    .prod-name { font-size:.95vw; font-weight:1000; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .prod-unit { font-size:.65vw; color:rgba(255,255,255,.58); font-weight:700; margin-top:.05vw; }
+    .prod-price { color:white; font-size:1.55vw; font-weight:1000; text-align:end; text-shadow:0 0 12px rgba(255,245,214,.75); animation: valueGlow 2.8s ease-in-out infinite; }
+    .prod-change { font-size:.85vw; font-weight:1000; text-align:center; }
+    .up { color:#24ff65; } .down { color:#ff4052; } .flat { color:rgba(255,255,255,.68); }
+    .small-note { font-size:.62vw; color:rgba(255,255,255,.64); text-align:center; margin-top:.25vw; }
+    .hero-card { position:relative; overflow:hidden; min-height:0; }
+    .hero-media { position:absolute; inset:0; display:grid; place-items:center; background:#050911; }
+    .hero-media img,.hero-media video { width:100%; height:100%; object-fit:cover; opacity:.96; transition:opacity .65s ease; }
+    .hero-dark { position:absolute; inset:0; background:linear-gradient(90deg, rgba(0,0,0,.22), rgba(0,0,0,.10), rgba(0,0,0,.35)); pointer-events:none; }
+    .hero-content { position:absolute; top:12%; right:6%; width:47%; text-align:right; }
+    .hero-title { font-size:3.15vw; line-height:1.02; font-weight:1000; color:white; text-shadow:0 .12vw .1vw #000, 0 0 18px rgba(0,0,0,.7); }
+    .hero-title .gold { display:block; color:var(--gold); font-size:3.25vw; text-shadow:0 0 18px rgba(245,178,26,.55); }
+    .hero-subtitle { margin-top:.9vw; color:#fff; font-weight:900; font-size:1.02vw; text-shadow:0 0 10px #000; }
+    .hero-service-bar { position:absolute; bottom:.95vw; right:1.2vw; left:1.2vw; height:4.8vw; display:grid; grid-template-columns:repeat(3,1fr); gap:.8vw; }
+    .service-box { border-top:1px solid rgba(245,178,26,.25); background:rgba(0,0,0,.46); border-radius:.7vw; display:grid; grid-template-columns:3vw 1fr; align-items:center; gap:.45vw; padding:.65vw; }
+    .service-icon { width:2.65vw; height:2.65vw; border-radius:.55vw; display:grid; place-items:center; background:rgba(245,178,26,.11); color:var(--gold); border:1px solid rgba(245,178,26,.30); }
+    .service-title { font-size:.93vw; font-weight:1000; }
+    .service-sub { font-size:.62vw; color:rgba(255,255,255,.64); font-weight:700; }
+    .hero-arrow { position:absolute; top:47%; width:2.45vw; height:2.45vw; border-radius:50%; display:grid; place-items:center; background:rgba(0,0,0,.55); color:#fff; border:1px solid rgba(245,178,26,.55); box-shadow:0 0 18px rgba(245,178,26,.35); font-size:1.9vw; font-weight:900; }
+    .arrow-left { left:.85vw; } .arrow-right { right:.85vw; }
+    .dots { position:absolute; bottom:6.25vw; left:50%; transform:translateX(-50%); display:flex; gap:.42vw; }
+    .dot { width:.72vw; height:.72vw; border-radius:50%; background:rgba(255,255,255,.62); box-shadow:0 0 8px rgba(255,255,255,.2); }
+    .dot.active { background:var(--gold); box-shadow:0 0 12px rgba(245,178,26,.9); }
+    .offer-card {
+      position:relative; overflow:hidden; padding:1.3vw; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+      border-color:rgba(245,178,26,.72);
+      background:
+        radial-gradient(circle at 50% 35%, rgba(245,178,26,.20), transparent 28%),
+        linear-gradient(180deg, rgba(12,12,11,.96), rgba(4,7,12,.98));
+      box-shadow:0 0 30px rgba(245,178,26,.22), inset 0 0 48px rgba(245,178,26,.06);
+    }
+    .offer-card:before { content:""; position:absolute; inset:-30%; background:radial-gradient(circle, rgba(255,223,100,.25), transparent 22%); animation: shimmer 6s linear infinite; opacity:.55; }
+    .offer-title { position:relative; font-size:1.75vw; font-weight:1000; text-shadow:0 0 18px rgba(255,255,255,.35); }
+    .offer-percent { position:relative; color:var(--gold2); font-size:6.7vw; line-height:1; font-weight:1000; margin:.8vw 0 .5vw; text-shadow:0 0 22px rgba(245,178,26,.85), 0 0 60px rgba(245,178,26,.35); animation: pulseGold 2.4s ease-in-out infinite; }
+    .offer-word { position:relative; font-size:2vw; font-weight:1000; }
+    .offer-text { position:relative; font-size:1.2vw; font-weight:1000; margin-top:.4vw; }
+    .offer-button { position:relative; margin-top:1.6vw; width:70%; padding:.75vw 1vw; border-radius:.65vw; background:linear-gradient(180deg, #f7c238, #d99505); color:#09111f; font-size:1.25vw; font-weight:1000; box-shadow:0 0 26px rgba(245,178,26,.55); }
+    .ticker-wrap { height:4.8vw; display:grid; grid-template-columns:11.8vw 1fr; align-items:center; padding:.55vw; overflow:hidden; }
+    .ticker-label {
+      height:100%; display:flex; align-items:center; justify-content:center; gap:.6vw; color:#07111f;
+      background:linear-gradient(135deg, #ffdb54, #f0a300); border-radius:.7vw; font-size:1.05vw; font-weight:1000;
+      clip-path:polygon(0 0, 88% 0, 100% 50%, 88% 100%, 0 100%);
+    }
+    .ticker-window { overflow:hidden; height:100%; display:flex; align-items:center; border:1px solid rgba(245,178,26,.33); border-radius:.65vw; background:rgba(0,0,0,.45); }
+    .ticker-track { display:inline-block; white-space:nowrap; padding-inline-start:100%; color:#fff; font-size:1.1vw; font-weight:900; animation: tickerMove linear infinite; }
+    .bottom-nav { height:4.9vw; display:grid; grid-template-columns:repeat(7,1fr); align-items:center; padding:.48vw; gap:.5vw; }
+    .nav-item { height:100%; border:1px solid rgba(255,255,255,.12); border-radius:.6vw; background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(0,0,0,.28)); display:flex; align-items:center; justify-content:center; gap:.65vw; font-size:1.02vw; font-weight:900; color:#fff; }
+    .nav-item.active { color:var(--gold2); border-color:rgba(245,178,26,.85); box-shadow:0 0 18px rgba(245,178,26,.35), inset 0 0 16px rgba(245,178,26,.10); }
+    .hidden-controls { position:fixed; top:.9vw; left:.9vw; z-index:40; display:flex; gap:.45vw; opacity:.04; transition:opacity .2s; }
+    .hidden-controls:hover { opacity:1; }
+    .control-btn { border:0; background:#f5b21a; color:#07111f; border-radius:.5vw; font-weight:900; padding:.45vw .7vw; cursor:pointer; }
+    .settings-drawer { position:fixed; top:0; left:0; width:32vw; max-width:540px; height:100vh; overflow:auto; z-index:80; background:#07111f; border-right:1px solid rgba(245,178,26,.45); padding:1vw; }
+    .settings-drawer input,.settings-drawer select,.settings-drawer textarea { width:100%; background:#111827; color:#fff; border:1px solid rgba(255,255,255,.14); border-radius:.55vw; padding:.7vw; margin-top:.25vw; }
+    .settings-drawer label { display:block; margin-bottom:.7vw; font-size:.8vw; color:rgba(255,255,255,.75); }
+    .settings-box { border:1px solid rgba(255,255,255,.1); padding:.8vw; border-radius:.8vw; margin-bottom:.8vw; background:rgba(255,255,255,.04); }
+    @keyframes tickerMove { from { transform:translateX(0); } to { transform:translateX(-100%); } }
+    @keyframes shimmer { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+    @keyframes pulseGold { 0%,100% { transform:scale(1); } 50% { transform:scale(1.035); } }
+    @keyframes valueGlow { 0%,100% { text-shadow:0 0 8px rgba(255,245,214,.48); } 50% { text-shadow:0 0 18px rgba(255,245,214,.9); } }
+    @media (max-aspect-ratio: 14/9) {
+      .topbar { grid-template-columns: 1.6fr 2.2fr 1.5fr; }
+      .main-grid { grid-template-columns: 24.5vw 1fr 24vw; }
+    }
+  `;
+  document.head.appendChild(style);
 }
 
 function normalizeData(input) {
   const merged = { ...DEFAULT_DATA, ...(input || {}) };
-  return {
-    ...merged,
-    heroSlides: (merged.heroSlides || DEFAULT_DATA.heroSlides).map((slide) => {
-      const oldImages = slide.images && slide.images.length ? slide.images : [slide.image || FALLBACK_IMAGE];
-      let media = slide.media && slide.media.length
-        ? slide.media
-        : oldImages.map((src, i) => ({ type: "image", src, name: slide.imageNames?.[i] || `image-${i + 1}` }));
-
-      // Blob links break after refresh, so never restore them from storage.
-      media = media.filter((m) => m?.src && !String(m.src).startsWith("blob:"));
-      if (!media.length) media = [{ type: "image", src: FALLBACK_IMAGE, name: "default" }];
-
-      return {
-        ...slide,
-        image: media[0]?.src || FALLBACK_IMAGE,
-        images: media.filter((m) => m.type === "image").map((m) => m.src),
-        media,
-        imageNames: slide.imageNames || media.map((m) => m.name).filter(Boolean)
-      };
-    })
-  };
+  const slides = (merged.heroSlides || DEFAULT_DATA.heroSlides).map((slide) => {
+    const oldImages = slide.images && slide.images.length ? slide.images : [slide.image || FALLBACK_IMAGE];
+    let media = slide.media && slide.media.length
+      ? slide.media
+      : oldImages.map((src, i) => ({ type: "image", src, name: slide.imageNames?.[i] || `image-${i + 1}` }));
+    media = media.filter((m) => m?.src && !String(m.src).startsWith("blob:"));
+    if (!media.length) media = [{ type: "image", src: FALLBACK_IMAGE, name: "default" }];
+    return { ...slide, image: media[0]?.src || FALLBACK_IMAGE, images: media.filter((m) => m.type === "image").map((m) => m.src), media };
+  });
+  return { ...merged, heroSlides: slides };
 }
 
 function loadData() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? normalizeData(JSON.parse(saved)) : DEFAULT_DATA;
+    return saved ? normalizeData(JSON.parse(saved)) : normalizeData(DEFAULT_DATA);
   } catch {
-    return DEFAULT_DATA;
+    return normalizeData(DEFAULT_DATA);
   }
 }
 
-function safeSaveSettings(data) {
-  const compact = removeLargeImagesFromData(data);
+function compactForStorage(data) {
+  return {
+    ...data,
+    heroSlides: (data.heroSlides || []).map((s) => ({
+      ...s,
+      image: FALLBACK_IMAGE,
+      images: [FALLBACK_IMAGE],
+      media: [{ type: "image", src: FALLBACK_IMAGE, name: "default" }]
+    }))
+  };
+}
+
+function saveLocal(data) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(compact));
-    return { ok: true, message: "تم حفظ الإعدادات. الصور تبقى للجلسة الحالية فقط لتجنب امتلاء ذاكرة المتصفح." };
-  } catch (error) {
-    try {
-      localStorage.removeItem(STORAGE_KEY);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(removeLargeImagesFromData(DEFAULT_DATA)));
-    } catch {}
-    return { ok: false, message: "لم يتم الحفظ بسبب امتلاء ذاكرة المتصفح. تم منع حفظ الصور الكبيرة داخل localStorage." };
-  }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(compactForStorage(data)));
+  } catch {}
 }
-
-function runSmallTests() {
-  const sample = normalizeData({ heroSlides: [{ titleHe: "t", titleAr: "ع" }] });
-  console.assert(sample.heroSlides[0].images.length === 1, "normalizeData should add fallback image array");
-  const cleaned = removeLargeImagesFromData({ heroSlides: [{ media: [{ type: "video", src: "blob:test", name: "a.mp4" }], images: ["data:image/png;base64,AAA"], image: "data:image/png;base64,AAA", imageNames: ["a.png"] }] });
-  console.assert(cleaned.heroSlides[0].images[0] === FALLBACK_IMAGE, "removeLargeImagesFromData should remove large media");
-  console.assert(cleaned.heroSlides[0].media[0].src === FALLBACK_IMAGE, "removeLargeImagesFromData should reset media to fallback");
-}
-
-if (typeof window !== "undefined") runSmallTests();
 
 const t = (data, heKey, arKey) => (data.language === "ar" ? data[arKey] : data[heKey]);
 const itemT = (data, item, heKey, arKey) => (data.language === "ar" ? item?.[arKey] : item?.[heKey]);
 
 function applyFirebaseSettings(base, remote) {
   if (!remote) return base;
-
   const next = { ...base };
 
-  // اللغة من Firebase: اكتب ar للعربي أو he للعبري
-  if (remote.language === "ar" || remote.language === "he") {
-    next.language = remote.language;
-  }
-
-  // أسماء المحل منفصلة حسب اللغة
-  // storeNameAr يظهر فقط عند اللغة العربية
-  // storeNameHe يظهر فقط عند اللغة العبرية
+  if (remote.language === "ar" || remote.language === "he") next.language = remote.language;
   if (remote.storeNameAr) next.businessNameAr = remote.storeNameAr;
   if (remote.storeNameHe) next.businessNameHe = remote.storeNameHe;
-
-  // توافق مع الحقل القديم storeName: نعتبره عربي فقط حتى لا يظهر العربي عند اختيار العبرية
-  if (remote.storeName && !remote.storeNameAr) {
-    next.businessNameAr = remote.storeName;
-  }
-
-  // وصف المحل منفصل حسب اللغة
+  if (remote.storeName && !remote.storeNameAr) next.businessNameAr = remote.storeName;
   if (remote.sloganAr) next.sloganAr = remote.sloganAr;
   if (remote.sloganHe) next.sloganHe = remote.sloganHe;
-
   if (remote.phone) next.phone = remote.phone;
   if (remote.primaryColor) next.primaryColor = remote.primaryColor;
   if (remote.secondaryColor) next.backgroundColor = remote.secondaryColor;
-  if (remote.tickerSpeed !== undefined) next.tickerSpeed = Number(remote.tickerSpeed) || next.tickerSpeed;
-
-  // العروض منفصلة حسب اللغة
   if (remote.offerTitleAr) next.offerTitleAr = remote.offerTitleAr;
   if (remote.offerTitleHe) next.offerTitleHe = remote.offerTitleHe;
   if (remote.offerTextAr) next.offerTextAr = remote.offerTextAr;
   if (remote.offerTextHe) next.offerTextHe = remote.offerTextHe;
+  if (remote.offerTitle && !remote.offerTitleAr) next.offerTitleAr = remote.offerTitle;
+  if (remote.offerText && !remote.offerTextAr) next.offerTextAr = remote.offerText;
+  if (remote.offerPercent !== undefined) next.offerPercent = String(remote.offerPercent).includes("%") ? String(remote.offerPercent) : `${remote.offerPercent}%`;
+  if (remote.tickerSpeed !== undefined) next.tickerSpeed = Number(remote.tickerSpeed) || next.tickerSpeed;
 
-  // توافق مع الحقول القديمة: نعتبرها عربية فقط حتى لا تظهر عند اختيار العبرية
-  if (remote.offerTitle && !remote.offerTitleAr) {
-    next.offerTitleAr = remote.offerTitle;
-  }
-
-  if (remote.offerText && !remote.offerTextAr) {
-    next.offerTextAr = remote.offerText;
-  }
-
-  if (remote.offerPercent !== undefined) {
-    next.offerPercent = String(remote.offerPercent).includes("%")
-      ? String(remote.offerPercent)
-      : `${remote.offerPercent}%`;
-  }
-
-  // صور متعددة من Firebase
-  if (
-    remote.heroImages &&
-    Array.isArray(remote.heroImages) &&
-    remote.heroImages.length > 0
-  ) {
+  if (remote.heroImages && Array.isArray(remote.heroImages) && remote.heroImages.length > 0) {
     const images = remote.heroImages.filter(Boolean);
-
-    const firstSlide =
-      next.heroSlides?.[0] || DEFAULT_DATA.heroSlides[0];
-
-    next.heroSlides = [
-      {
-        ...firstSlide,
-        image: images[0],
-        images: images,
-        media: images.map((img, index) => ({
-          type: "image",
-          src: img,
-          name: `firebase-image-${index}`
-        }))
-      }
-    ];
-  }
-  else if (remote.heroImageUrl) {
-    next.heroImageUrl = remote.heroImageUrl;
-
-    const firstSlide =
-      next.heroSlides?.[0] || DEFAULT_DATA.heroSlides[0];
-
-    next.heroSlides = [
-      {
-        ...firstSlide,
-        image: remote.heroImageUrl,
-        images: [remote.heroImageUrl],
-        media: [
-          {
-            type: "image",
-            src: remote.heroImageUrl,
-            name: "firebase-image"
-          }
-        ]
-      }
-    ];
+    const firstSlide = next.heroSlides?.[0] || DEFAULT_DATA.heroSlides[0];
+    next.heroSlides = [{
+      ...firstSlide,
+      image: images[0],
+      images,
+      media: images.map((img, index) => ({ type: "image", src: img, name: `firebase-image-${index}` }))
+    }];
+  } else if (remote.heroImageUrl) {
+    const firstSlide = next.heroSlides?.[0] || DEFAULT_DATA.heroSlides[0];
+    next.heroSlides = [{
+      ...firstSlide,
+      image: remote.heroImageUrl,
+      images: [remote.heroImageUrl],
+      media: [{ type: "image", src: remote.heroImageUrl, name: "firebase-image" }]
+    }];
   }
 
-  // شريط الأخبار منفصل حسب اللغة
-  if (remote.tickerTextAr) {
-    next.tickerText = remote.tickerTextAr;
-    next.tickerAr = [remote.tickerTextAr];
-  }
+  if (remote.tickerTextAr) next.tickerAr = [remote.tickerTextAr];
+  if (remote.tickerTextHe) next.tickerHe = [remote.tickerTextHe];
+  if (remote.tickerText && !remote.tickerTextAr) next.tickerAr = [remote.tickerText];
 
-  if (remote.tickerTextHe) {
-    next.tickerHe = [remote.tickerTextHe];
-  }
-
-  // توافق مع الحقل القديم tickerText: نعتبره عربي فقط
-  if (remote.tickerText && !remote.tickerTextAr) {
-    next.tickerText = remote.tickerText;
-    next.tickerAr = [remote.tickerText];
-  }
-
-  // أسعار المنتجات من Firebase
   if (remote.prices && Array.isArray(remote.prices) && remote.prices.length > 0) {
-    next.prices = remote.prices.map((p) => ({
+    next.prices = remote.prices.map((p, i) => ({
       nameHe: p.nameHe || "",
       nameAr: p.nameAr || "",
       price: String(p.price ?? "0"),
       unitHe: p.unitHe || "",
       unitAr: p.unitAr || "",
       change: p.change || "0",
-      direction: p.direction || "flat"
+      direction: p.direction || "flat",
+      icon: p.icon || DEFAULT_DATA.prices[i % DEFAULT_DATA.prices.length]?.icon || "package"
     }));
   }
 
-  // أسعار صرف اختيارية من Firebase بدل API إذا بدك تتحكم يدويًا
   if (remote.exchangeUSD !== undefined) next.exchangeUSD = remote.exchangeUSD;
   if (remote.exchangeEUR !== undefined) next.exchangeEUR = remote.exchangeEUR;
   if (remote.exchangeJOD !== undefined) next.exchangeJOD = remote.exchangeJOD;
 
-  return next;
+  return normalizeData(next);
 }
+
 function toFirebaseSettings(data) {
   return {
-    // حقول قديمة للتوافق مع النسخ السابقة
-    storeName: data.businessNameAr || "",
-    offerTitle: data.offerTitleAr || "",
-    offerText: data.offerTextAr || "",
-    tickerText: data.tickerText || data.tickerAr?.[0] || "",
-
-    // حقول جديدة منفصلة حسب اللغة
-    language: data.language || "ar",
+    language: data.language || "he",
     storeNameAr: data.businessNameAr || "",
     storeNameHe: data.businessNameHe || "",
     sloganAr: data.sloganAr || "",
@@ -304,14 +353,13 @@ function toFirebaseSettings(data) {
     phone: data.phone || "",
     primaryColor: data.primaryColor || "#f5b21a",
     secondaryColor: data.backgroundColor || "#05070b",
-    tickerSpeed: Number(data.tickerSpeed || 60),
     offerTitleAr: data.offerTitleAr || "",
     offerTitleHe: data.offerTitleHe || "",
     offerTextAr: data.offerTextAr || "",
     offerTextHe: data.offerTextHe || "",
     offerPercent: Number(String(data.offerPercent || "0").replace("%", "")) || 0,
-    heroImageUrl: data.heroImageUrl || data.heroSlides?.[0]?.image || "",
-    tickerTextAr: data.tickerAr?.[0] || data.tickerText || "",
+    tickerSpeed: Number(data.tickerSpeed || 95),
+    tickerTextAr: data.tickerAr?.[0] || "",
     tickerTextHe: data.tickerHe?.[0] || "",
     prices: (data.prices || []).map((p) => ({
       nameHe: p.nameHe || "",
@@ -320,79 +368,83 @@ function toFirebaseSettings(data) {
       unitHe: p.unitHe || "",
       unitAr: p.unitAr || "",
       change: p.change || "0",
-      direction: p.direction || "flat"
+      direction: p.direction || "flat",
+      icon: p.icon || "package"
     })),
-    currency: "ILS",
     updatedAt: new Date().toISOString()
   };
 }
 
-if (typeof document !== "undefined" && !document.getElementById("tv-pro-runtime-styles")) {
-  const style = document.createElement("style");
-  style.id = "tv-pro-runtime-styles";
-  style.innerHTML = `
-    @keyframes tickerMove {
-      0% { transform: translateX(-5%); }
-      100% { transform: translateX(105%); }
-    }
-    @keyframes priceWheel {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(-50%); }
-    }
-    @keyframes softGlow {
-      0%,100% { box-shadow: 0 0 10px rgba(245,178,26,.22), inset 0 0 10px rgba(245,178,26,.08); }
-      50% { box-shadow: 0 0 24px rgba(245,178,26,.55), inset 0 0 16px rgba(245,178,26,.15); }
-    }
-    @keyframes numberPulse {
-      0%,100% { transform: scale(1); text-shadow: 0 0 10px rgba(255,255,255,.35); }
-      50% { transform: scale(1.045); text-shadow: 0 0 18px rgba(245,178,26,.8); }
-    }
-    @keyframes iconFloat {
-      0%,100% { transform: translateY(0); }
-      50% { transform: translateY(-2px); }
-    }
-    .tv-price-wheel { animation: priceWheel 36s linear infinite; }
-    .tv-glow { animation: softGlow 3.5s ease-in-out infinite; }
-    .tv-number { animation: numberPulse 2.8s ease-in-out infinite; display:inline-block; }
-    .tv-icon { animation: iconFloat 3s ease-in-out infinite; }
-    .tv-ticker { animation-name: tickerMove; animation-timing-function: linear; animation-iteration-count: infinite; display:inline-block; padding-inline-start: 100%; }
-  `;
-  document.head.appendChild(style);
+function ProductIcon({ type }) {
+  const props = { size: 22, strokeWidth: 1.8 };
+  const key = String(type || "").toLowerCase();
+  if (key.includes("cement") || key.includes("מלט")) return <Package {...props} />;
+  if (key.includes("steel") || key.includes("ברזל")) return <Layers {...props} />;
+  if (key.includes("paint") || key.includes("צבע")) return <PaintBucket {...props} />;
+  if (key.includes("gypsum") || key.includes("גבס")) return <ScrollText {...props} />;
+  if (key.includes("sand") || key.includes("חול")) return <Building2 {...props} />;
+  if (key.includes("seal") || key.includes("איטום")) return <ShieldCheck {...props} />;
+  return <Package {...props} />;
+}
+
+function PriceRow({ p, data }) {
+  const dirClass = p.direction === "up" ? "up" : p.direction === "down" ? "down" : "flat";
+  const arrow = p.direction === "up" ? "↑" : p.direction === "down" ? "↓" : "–";
+  return (
+    <div className="price-row">
+      <div className="prod-icon"><ProductIcon type={p.icon || p.nameHe} /></div>
+      <div>
+        <div className="prod-name">{itemT(data, p, "nameHe", "nameAr")}</div>
+        <div className="prod-unit">{itemT(data, p, "unitHe", "unitAr")}</div>
+      </div>
+      <div className="prod-price">₪{p.price}</div>
+      <div className={`prod-change ${dirClass}`}>{arrow} {p.change}</div>
+    </div>
+  );
+}
+
+function CurrencyPill({ icon, label, value, change }) {
+  return (
+    <div className="data-pill">
+      <div className="pill-icon">{icon}</div>
+      <div>
+        <div className="pill-label">{label}</div>
+        <div className="pill-value">{value} {change && <span className="pill-change">{change}</span>}</div>
+      </div>
+    </div>
+  );
 }
 
 export default function HamoudaPremiumDisplay() {
+  injectTvTheme();
+
   const [data, setData] = useState(loadData);
   const [draft, setDraft] = useState(data);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [slideIndex, setSlideIndex] = useState(0);
   const [imageIndex, setImageIndex] = useState(0);
   const [now, setNow] = useState(new Date());
-  const [fx, setFx] = useState({ loading: true, usdIls: "--", eurIls: "--", jodIls: "--", eurUsd: "--" });
-  const [notice, setNotice] = useState("");
+  const [fx, setFx] = useState({ loading: true, usdIls: "--", eurIls: "--", eurUsd: "--", jodIls: "--" });
   const [firebaseSettingsId, setFirebaseSettingsId] = useState(null);
 
   const isAr = data.language === "ar";
-  const dir = "rtl";
-  const langClass = isAr ? "font-['Aref_Ruqaa',serif]" : "font-['Heebo',Arial,sans-serif]";
-  const scale = Number(data.textScale || 1);
-  const currentSlide = data.heroSlides[slideIndex % Math.max(1, data.heroSlides.length)] || data.heroSlides[0];
-  const slideMedia = currentSlide?.media?.length
-    ? currentSlide.media
-    : (currentSlide?.images?.length ? currentSlide.images : [currentSlide?.image || FALLBACK_IMAGE]).map((src) => ({ type: "image", src, name: "image" }));
-  const currentMedia = slideMedia[imageIndex % slideMedia.length] || { type: "image", src: FALLBACK_IMAGE, name: "fallback" };
+  const locale = isAr ? "ar" : "he";
+  const currentSlide = data.heroSlides?.[0] || DEFAULT_DATA.heroSlides[0];
+  const slideMedia = currentSlide?.media?.length ? currentSlide.media : [{ type: "image", src: FALLBACK_IMAGE, name: "fallback" }];
+  const currentMedia = slideMedia[imageIndex % Math.max(1, slideMedia.length)] || { type: "image", src: FALLBACK_IMAGE };
 
   useEffect(() => {
-    const unsub = onSnapshot(collection(db, "settings"), (snapshot) => {
-      if (snapshot.empty) return;
-      const firstDoc = snapshot.docs[0];
-      setFirebaseSettingsId(firstDoc.id);
-      const remote = firstDoc.data();
-      setData((current) => applyFirebaseSettings(current, remote));
-      setDraft((current) => applyFirebaseSettings(current, remote));
-    }, (error) => {
-      console.error("Firebase settings error:", error);
-      setNotice("تعذر الاتصال بـ Firebase. تأكد من قواعد Firestore والإنترنت.");
-    });
+    const unsub = onSnapshot(
+      collection(db, "settings"),
+      (snapshot) => {
+        if (snapshot.empty) return;
+        const firstDoc = snapshot.docs[0];
+        setFirebaseSettingsId(firstDoc.id);
+        const remote = firstDoc.data();
+        setData((current) => applyFirebaseSettings(current, remote));
+        setDraft((current) => applyFirebaseSettings(current, remote));
+      },
+      (error) => console.error("Firebase settings error:", error)
+    );
     return () => unsub();
   }, []);
 
@@ -402,14 +454,11 @@ export default function HamoudaPremiumDisplay() {
   }, []);
 
   useEffect(() => {
-    setSlideIndex(0);
-  }, []);
-
-  useEffect(() => {
     const mediaCount = slideMedia.length || 1;
-    const i = setInterval(() => setImageIndex((v) => (v + 1) % mediaCount), 8000);
-    return () => clearInterval(i);
-  }, [slideIndex, slideMedia.length]);
+    const seconds = Math.max(4, Number(data.slideSeconds || 8));
+    const timer = setInterval(() => setImageIndex((v) => (v + 1) % mediaCount), seconds * 1000);
+    return () => clearInterval(timer);
+  }, [slideMedia.length, data.slideSeconds]);
 
   useEffect(() => {
     async function getRates() {
@@ -423,11 +472,11 @@ export default function HamoudaPremiumDisplay() {
           loading: false,
           usdIls: usdIls ? usdIls.toFixed(3) : "--",
           eurIls: usdIls && eur ? (usdIls / eur).toFixed(3) : "--",
-          jodIls: usdIls && jod ? (usdIls / jod).toFixed(3) : "--",
-          eurUsd: eur ? (1 / eur).toFixed(3) : "--"
+          eurUsd: eur ? (1 / eur).toFixed(3) : "--",
+          jodIls: usdIls && jod ? (usdIls / jod).toFixed(3) : "--"
         });
       } catch {
-        setFx({ loading: false, usdIls: "--", eurIls: "--", jodIls: "--", eurUsd: "--" });
+        setFx({ loading: false, usdIls: "--", eurIls: "--", eurUsd: "--", jodIls: "--" });
       }
     }
     getRates();
@@ -435,30 +484,30 @@ export default function HamoudaPremiumDisplay() {
     return () => clearInterval(i);
   }, []);
 
-  const tickerText = useMemo(() => (isAr ? data.tickerAr : data.tickerHe).join("     •     "), [data, isAr]);
+  const tickerText = useMemo(() => {
+    const arr = isAr ? data.tickerAr : data.tickerHe;
+    return (arr && arr.length ? arr : DEFAULT_DATA.tickerHe).join("     •     ");
+  }, [data, isAr]);
+
+  const topProducts = isAr ? data.topProductsAr : data.topProductsHe;
 
   const saveSettings = async () => {
-    const result = safeSaveSettings(draft);
+    saveLocal(draft);
     setData(draft);
     setSettingsOpen(false);
     try {
       const targetId = firebaseSettingsId || "main";
       await setDoc(doc(db, "settings", targetId), toFirebaseSettings(draft), { merge: true });
       setFirebaseSettingsId(targetId);
-      setNotice("تم حفظ الإعدادات على Firebase وستظهر على شاشة التلفزيون تلقائيًا.");
     } catch (error) {
       console.error("Firebase save error:", error);
-      setNotice(result.message + " لكن لم يتم الحفظ على Firebase. افحص قواعد Firestore.");
     }
-    setTimeout(() => setNotice(""), 6500);
   };
-
-  const updateDraft = (key, value) => setDraft((d) => ({ ...d, [key]: value }));
 
   const toggleLanguage = () => {
     setData((d) => {
       const next = { ...d, language: d.language === "he" ? "ar" : "he" };
-      safeSaveSettings(next);
+      saveLocal(next);
       const targetId = firebaseSettingsId || "main";
       setDoc(doc(db, "settings", targetId), toFirebaseSettings(next), { merge: true }).catch(console.error);
       setFirebaseSettingsId(targetId);
@@ -466,300 +515,147 @@ export default function HamoudaPremiumDisplay() {
     });
   };
 
-  return (
-    <div dir={dir} className={`min-h-screen overflow-hidden text-white ${langClass}`} style={{ background: data.backgroundColor, fontSize: `${16 * scale}px` }}>
-      <div className="absolute inset-0 opacity-30" style={{ background: `radial-gradient(circle at 20% 20%, ${data.primaryColor}33, transparent 30%), radial-gradient(circle at 80% 40%, #38bdf833, transparent 28%)` }} />
-      {notice && (
-        <div className="fixed bottom-4 left-4 z-[120] max-w-md rounded-2xl border border-amber-300/40 bg-black/80 p-4 text-sm text-white  ">
-          <div className="flex items-start gap-2"><AlertTriangle className="mt-0.5 h-5 w-5 text-amber-300" /><span>{notice}</span></div>
-        </div>
-      )}
+  const updateDraft = (key, value) => setDraft((d) => ({ ...d, [key]: value }));
 
-      <div className="hidden">
-        <Button onClick={toggleLanguage} className="rounded-2xl bg-white/15   hover:bg-white/25">
-          <Languages className="ml-2 h-4 w-4" /> {data.language === "he" ? "עברית" : "عربي"}
-        </Button>
-        <Button onClick={() => { setDraft(data); setSettingsOpen(true); }} className="rounded-2xl " style={{ background: data.primaryColor, color: "#111827" }}>
-          <Settings className="ml-2 h-4 w-4" /> {isAr ? "الإعدادات" : "הגדרות"}
-        </Button>
+  return (
+    <div dir="rtl" className="tv-root">
+      <div className="hidden-controls">
+        <button className="control-btn" onClick={() => { setDraft(data); setSettingsOpen(true); }}><Settings size={16} /></button>
+        <button className="control-btn" onClick={toggleLanguage}><Languages size={16} /></button>
       </div>
 
-      <main className="relative z-10 flex h-screen flex-col gap-2.5 p-4">
-        <header className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 rounded-[1.5rem] border border-white/10 bg-white/10 px-4 py-2.5  ">
-          <div className="flex items-center gap-3">
-            <div className="grid h-12 w-12 place-items-center rounded-2xl text-2xl font-black " style={{ background: `linear-gradient(135deg, ${data.primaryColor}, #fff1a8)`, color: "#08111f" }}>{data.logoText}</div>
+      <div className="pixel-shell">
+        <header className="topbar glass-panel">
+          <div className="brand">
+            <div className="logo-box">{data.logoText}</div>
             <div>
-              <h1 className="text-2xl font-black tracking-tight">{t(data, "businessNameHe", "businessNameAr")}</h1>
-              <p className="mt-0.5 text-sm text-white/75">{t(data, "sloganHe", "sloganAr")}</p>
+              <div className="brand-title">{t(data, "businessNameHe", "businessNameAr")}</div>
+              <div className="brand-sub">{t(data, "sloganHe", "sloganAr")}</div>
             </div>
           </div>
 
-          <div className="flex items-center justify-center gap-2">
-            <InfoPill icon="€" label={isAr ? "يورو" : "אירו"} value={`${data.exchangeEUR ?? fx.eurIls} €`} change="↑ 0.25%" color={data.primaryColor} />
-            <InfoPill icon="$" label={isAr ? "دولار" : "דולר"} value={`${data.exchangeUSD ?? fx.usdIls} $`} change="↑ 0.18%" color={data.primaryColor} />
-            <InfoPill icon="د" label={isAr ? "دينار" : "דינר"} value={`${data.exchangeJOD ?? fx.jodIls} JD`} change="" color={data.primaryColor} />
-            <InfoPill icon="☎" label={isAr ? "هاتف" : "טלפון"} value={data.phone} change="" color={data.primaryColor} />
+          <div className="top-pills">
+            <CurrencyPill icon={<Euro size={28} />} label={isAr ? "يورو" : "אירו"} value={`${data.exchangeEUR ?? fx.eurIls} €`} change="↑ 0.25%" />
+            <CurrencyPill icon={<DollarSign size={28} />} label={isAr ? "دولار" : "דולר"} value={`${data.exchangeUSD ?? fx.usdIls} $`} change="↑ 0.18%" />
+            <CurrencyPill icon={<Phone size={28} />} label={isAr ? "هاتف الطلبات" : "טלפון להזמנות"} value={data.phone} />
           </div>
 
-          <div className="flex items-center justify-end gap-3 text-left">
-            <div className="grid h-12 w-12 place-items-center rounded-2xl border border-yellow-400/30 bg-black/30 text-2xl tv-glow">📅</div>
+          <div className="time-box">
+            <div className="pill-icon"><CalendarDays size={28} /></div>
             <div>
-              <div className="text-3xl font-black leading-none" style={{ color: data.primaryColor }}>{now.toLocaleTimeString(isAr ? "ar" : "he", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}</div>
-              <div className="mt-1 text-xs text-white/70">{now.toLocaleDateString(isAr ? "ar" : "he", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</div>
+              <div className="date-main">{now.toLocaleDateString(locale, { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</div>
+              <div className="time-main">{now.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit", second: "2-digit" })}</div>
             </div>
           </div>
         </header>
 
-        <section className="grid flex-1 grid-cols-[1.45fr_.95fr] gap-2.5 min-h-0">
-          <Card className="relative overflow-hidden rounded-[1.7rem] border-white/10 bg-black/30  ">
-            <div key={`${slideIndex}-${imageIndex}-${data.language}`} className="absolute inset-0">
+        <section className="main-grid">
+          <aside className="prices-card glass-panel">
+            <div className="section-title">{isAr ? "أسعار اليوم" : "מחירי היום"} <BadgePercent size={20} /></div>
+            <div className="price-list">
+              {(data.prices || []).slice(0, 8).map((p, i) => <PriceRow key={`${p.nameHe}-${i}`} p={p} data={data} />)}
+            </div>
+            <div className="small-note">* {isAr ? "الأسعار تتحدث حسب البيانات" : "המחירים מתעדכנים בזמן אמת"}</div>
+          </aside>
+
+          <main className="hero-card glass-panel">
+            <div className="hero-media">
               {currentMedia.type === "video" ? (
-                <video src={currentMedia.src} className="h-full w-full object-contain" autoPlay muted loop playsInline />
+                <video src={currentMedia.src} autoPlay muted loop playsInline />
               ) : (
-                <img src={currentMedia.src || FALLBACK_IMAGE} className="h-full w-full object-contain" alt="slide" onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }} />
+                <img src={currentMedia.src || FALLBACK_IMAGE} alt="slide" onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }} />
               )}
-              <div className="absolute inset-0 bg-black/25 pointer-events-none" />
-              <div className="absolute right-5 top-5 rounded-full px-4 py-1.5 text-sm font-bold" style={{ background: data.primaryColor, color: "#0b1220" }}>{itemT(data, currentSlide, "tagHe", "tagAr")}</div>
-              <div className="absolute bottom-6 right-6 max-w-3xl rounded-3xl bg-black/70 p-5">
-                <h2 className="text-4xl font-black leading-tight">{itemT(data, currentSlide, "titleHe", "titleAr")}</h2>
-                <p className="mt-2 text-lg text-white/85">{itemT(data, currentSlide, "subtitleHe", "subtitleAr")}</p>
+            </div>
+            <div className="hero-dark" />
+            <div className="hero-arrow arrow-right">›</div>
+            <div className="hero-arrow arrow-left">‹</div>
+            <div className="hero-content">
+              <div className="hero-title">
+                {isAr ? "كل ما" : "כל מה"}
+                <span className="gold">{isAr ? "تحتاجه" : "שהקבלן צריך"}</span>
+                {isAr ? "في مكان واحد" : "במקום אחד"}
+              </div>
+              <div className="hero-subtitle">{itemT(data, currentSlide, "subtitleHe", "subtitleAr")}</div>
+            </div>
+            <div className="dots">
+              {slideMedia.slice(0, 6).map((_, i) => <span key={i} className={`dot ${i === imageIndex % slideMedia.length ? "active" : ""}`} />)}
+            </div>
+            <div className="hero-service-bar">
+              <div className="service-box">
+                <div className="service-icon"><Truck size={28} /></div>
+                <div><div className="service-title">{isAr ? "توصيل سريع" : "אספקה מהירה"}</div><div className="service-sub">{isAr ? "للطلبات الكبيرة" : "להזמנות גדולות"}</div></div>
+              </div>
+              <div className="service-box">
+                <div className="service-icon"><Award size={28} /></div>
+                <div><div className="service-title">{isAr ? "جودة مضمونة" : "איכות ללא פשרות"}</div><div className="service-sub">{isAr ? "منتجات مختارة" : "מוצרים ממותגים ומובילים"}</div></div>
+              </div>
+              <div className="service-box">
+                <div className="service-icon"><ShieldCheck size={28} /></div>
+                <div><div className="service-title">{isAr ? "خدمة احترافية" : "שירות מקצועי"}</div><div className="service-sub">{isAr ? "من الطلب حتى التسليم" : "ליווי עד סיום הפרויקט"}</div></div>
               </div>
             </div>
-          </Card>
+          </main>
 
-          <div className="grid grid-rows-[1fr_auto] gap-2.5 min-h-0">
-            <Card className="rounded-[1.5rem] border-white/10 bg-white/10   min-h-0 overflow-hidden">
-              <CardContent className="h-full p-3">
-                <h3 className="mb-2 text-xl font-black" style={{ color: data.primaryColor }}>{isAr ? "الأسعار المباشرة" : "מחירים חיים"}</h3>
-                <div className="relative h-[calc(100%-2.2rem)] overflow-hidden rounded-2xl">
-                  <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 h-10 bg-gradient-to-b from-[#111827] to-transparent" />
-                  <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-10 h-10 bg-gradient-to-t from-[#111827] to-transparent" />
-                  <div className="tv-price-wheel space-y-2 pb-3">
-                    {[...data.prices, ...data.prices].map((p, i) => (
-                      <div key={i} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/35 px-3 py-2.5">
-                        <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-yellow-400/30 bg-black/35 text-2xl tv-icon">
-                          {productIcon(itemT(data, p, "nameHe", "nameAr"))}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="truncate text-base font-black text-white">{itemT(data, p, "nameHe", "nameAr")}</div>
-                          <div className="text-xs text-white/55">{itemT(data, p, "unitHe", "unitAr")}</div>
-                        </div>
-                        <div className="text-left">
-                          <div className="tv-number text-3xl font-black text-white">₪{p.price}</div>
-                          <div className={p.direction === "up" ? "text-green-400" : p.direction === "down" ? "text-red-400" : "text-white/50"}>
-                            {p.direction === "up" ? "↑" : p.direction === "down" ? "↓" : "—"} {p.change}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="rounded-[1.5rem] border-white/10 bg-white/10  ">
-              <CardContent className="grid grid-cols-[1fr_auto] items-center gap-3 p-3">
-                <div>
-                  <div className="text-sm font-bold text-white/65">{t(data, "offerTitleHe", "offerTitleAr")}</div>
-                  <div className="mt-1 text-xl font-black">{t(data, "offerTextHe", "offerTextAr")}</div>
-                </div>
-                <div className="tv-glow rounded-2xl px-4 py-2 text-3xl font-black" style={{ background: data.primaryColor, color: "#08111f" }}>{data.offerPercent}</div>
-              </CardContent>
-            </Card>
-          </div>
+          <aside className="offer-card glass-panel">
+            <div className="offer-title">{t(data, "offerTitleHe", "offerTitleAr")} 🔥</div>
+            <div className="offer-percent">{data.offerPercent}</div>
+            <div className="offer-word">{isAr ? "خصم" : "הנחה"}</div>
+            <div className="offer-text">{t(data, "offerTextHe", "offerTextAr")}</div>
+            <div className="offer-button">{isAr ? "لفترة محدودة!" : "לתקופה מוגבלת!"}</div>
+          </aside>
         </section>
 
-        <section className="rounded-[1.4rem] border border-white/10 bg-white/10 p-2.5  ">
-          <div className="flex items-center gap-2 overflow-hidden">
-            <h3 className="shrink-0 px-2 text-base font-black" style={{ color: data.primaryColor }}>{isAr ? "الأكثر طلباً" : "הכי מבוקש"}</h3>
-            <div className="grid flex-1 grid-cols-6 gap-2">
-              {(isAr ? data.topProductsAr : data.topProductsHe).slice(0, 6).map((item, i) => <div key={i} className="truncate rounded-xl bg-black/25 px-3 py-2 text-center text-sm font-bold">{i + 1}. {item}</div>)}
+        <section className="ticker-wrap glass-panel">
+          <div className="ticker-label"><Volume2 size={28} /> {isAr ? "عروض وتحديثات" : "מבצעים ועדכונים"}</div>
+          <div className="ticker-window">
+            <div className="ticker-track" style={{ animationDuration: `${Math.max(25, Number(data.tickerSpeed || 95))}s` }}>
+              {tickerText}     •     {tickerText}
             </div>
           </div>
         </section>
 
-        <footer className="relative overflow-hidden rounded-[1.2rem] border border-yellow-400/30 bg-black/45 py-2 tv-glow">
-          <div className="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-xl px-3 py-1 text-sm font-black" style={{ background: data.primaryColor, color: "#08111f" }}>
-            {isAr ? "الأخبار" : "חדשות ועדכונים"} 🔊
-          </div>
-          <div
-            className="tv-ticker whitespace-nowrap text-lg font-bold"
-            style={{ animationDuration: `${Math.max(20, Number(data.tickerSpeed || 60))}s` }}
-          >
-            {tickerText}     •     {tickerText}
-          </div>
-        </footer>
-      </main>
+        <nav className="bottom-nav glass-panel">
+          <div className="nav-item"><Wrench size={30} /> {isAr ? "أدوات عمل" : "כלי עבודה"}</div>
+          <div className="nav-item"><ShieldCheck size={30} /> {isAr ? "مواد عزل" : "חומרי איטום"}</div>
+          <div className="nav-item"><PaintBucket size={30} /> {isAr ? "دهانات" : "צבעים"}</div>
+          <div className="nav-item"><ScrollText size={30} /> {isAr ? "جبص" : "גבס"}</div>
+          <div className="nav-item"><Layers size={30} /> {isAr ? "حديد" : "ברזל"}</div>
+          <div className="nav-item"><Package size={30} /> {isAr ? "إسمنت" : "מלט"}</div>
+          <div className="nav-item active"><Home size={32} /> {isAr ? "الرئيسية" : "דף הבית"}</div>
+        </nav>
+      </div>
 
       {settingsOpen && (
-          <aside className="fixed left-0 top-0 z-[100] h-screen w-[540px] overflow-y-auto border-r border-white/10 bg-slate-950 p-5 text-white" dir="rtl">
-            <div className="mb-5 flex items-center justify-between">
-              <h2 className="text-3xl font-black">لوحة الإعدادات</h2>
-              <Button variant="ghost" onClick={() => setSettingsOpen(false)}><X /></Button>
-            </div>
+        <aside className="settings-drawer">
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"1vw"}}>
+            <h2 style={{fontSize:"1.6vw",fontWeight:1000}}>لوحة الإعدادات</h2>
+            <button className="control-btn" onClick={() => setSettingsOpen(false)}>إغلاق</button>
+          </div>
 
-            <SettingsSection title="اللغة والبيانات العامة">
-              <label className="mb-3 block"><span className="mb-1 block text-sm text-white/65">لغة الشاشة</span><select className="w-full rounded-xl bg-slate-900 p-3" value={draft.language} onChange={(e) => updateDraft("language", e.target.value)}><option value="he">עברית</option><option value="ar">العربية</option></select></label>
-              <Input label="اسم المحل عبري" value={draft.businessNameHe} onChange={(v) => updateDraft("businessNameHe", v)} />
-              <Input label="اسم المحل عربي" value={draft.businessNameAr} onChange={(v) => updateDraft("businessNameAr", v)} />
-              <Input label="الشعار النصي" value={draft.logoText} onChange={(v) => updateDraft("logoText", v)} />
-              <Input label="وصف عبري" value={draft.sloganHe} onChange={(v) => updateDraft("sloganHe", v)} />
-              <Input label="وصف عربي" value={draft.sloganAr} onChange={(v) => updateDraft("sloganAr", v)} />
-              <Input label="رقم الهاتف" value={draft.phone} onChange={(v) => updateDraft("phone", v)} />
-            </SettingsSection>
+          <div className="settings-box">
+            <label>لغة الشاشة
+              <select value={draft.language} onChange={(e) => updateDraft("language", e.target.value)}>
+                <option value="he">עברית</option>
+                <option value="ar">العربية</option>
+              </select>
+            </label>
+            <label>اسم المحل عبري <input value={draft.businessNameHe} onChange={(e) => updateDraft("businessNameHe", e.target.value)} /></label>
+            <label>اسم المحل عربي <input value={draft.businessNameAr} onChange={(e) => updateDraft("businessNameAr", e.target.value)} /></label>
+            <label>رقم الهاتف <input value={draft.phone} onChange={(e) => updateDraft("phone", e.target.value)} /></label>
+          </div>
 
-            <SettingsSection title="الألوان والأحجام">
-              <Input type="color" label="اللون الرئيسي" value={draft.primaryColor} onChange={(v) => updateDraft("primaryColor", v)} />
-              <Input type="color" label="لون الخلفية" value={draft.backgroundColor} onChange={(v) => updateDraft("backgroundColor", v)} />
-              <Input type="number" step="0.05" label="حجم الخط العام" value={draft.textScale} onChange={(v) => updateDraft("textScale", Number(v))} />
-              <Input type="number" label="مدة تغيير السلايد بالثواني" value={draft.slideSeconds} onChange={(v) => updateDraft("slideSeconds", Number(v))} />
-              <Input type="number" label="سرعة شريط الأخبار" value={draft.tickerSpeed} onChange={(v) => updateDraft("tickerSpeed", Number(v))} />
-            </SettingsSection>
+          <div className="settings-box">
+            <label>عنوان العرض عبري <input value={draft.offerTitleHe} onChange={(e) => updateDraft("offerTitleHe", e.target.value)} /></label>
+            <label>عنوان العرض عربي <input value={draft.offerTitleAr} onChange={(e) => updateDraft("offerTitleAr", e.target.value)} /></label>
+            <label>نص العرض عبري <input value={draft.offerTextHe} onChange={(e) => updateDraft("offerTextHe", e.target.value)} /></label>
+            <label>نص العرض عربي <input value={draft.offerTextAr} onChange={(e) => updateDraft("offerTextAr", e.target.value)} /></label>
+            <label>نسبة الخصم <input value={draft.offerPercent} onChange={(e) => updateDraft("offerPercent", e.target.value)} /></label>
+            <label>سرعة شريط الأخبار <input type="number" value={draft.tickerSpeed} onChange={(e) => updateDraft("tickerSpeed", Number(e.target.value))} /></label>
+          </div>
 
-            <SettingsSection title="السلايدات والوسائط - صور وفيديوهات">
-              <Input label="رابط الصورة الرئيسية من Firebase / الإنترنت" value={draft.heroImageUrl || ""} onChange={(v) => updateDraft("heroImageUrl", v)} />
-              <div className="mb-3 rounded-2xl border border-amber-300/30 bg-amber-300/10 p-3 text-sm text-amber-100">ملاحظة مهمة: لتجنب خطأ QuotaExceededError، النصوص والأسعار والألوان تُحفظ الآن على Firebase وتظهر على شاشة التلفزيون مباشرة. الصور والفيديوهات تحتاج روابط خارجية أو رفع مؤقت من نفس الجهاز لأن Storage غير مفعل.</div>
-              {draft.heroSlides.map((s, i) => <div key={i} className="mb-4 rounded-2xl bg-white/5 p-3">
-                <Input label="العنوان عبري" value={s.titleHe} onChange={(v) => updateArray("heroSlides", i, "titleHe", v, setDraft)} />
-                <Input label="العنوان عربي" value={s.titleAr} onChange={(v) => updateArray("heroSlides", i, "titleAr", v, setDraft)} />
-                <Input label="الوصف عبري" value={s.subtitleHe} onChange={(v) => updateArray("heroSlides", i, "subtitleHe", v, setDraft)} />
-                <Input label="الوصف عربي" value={s.subtitleAr} onChange={(v) => updateArray("heroSlides", i, "subtitleAr", v, setDraft)} />
-                <Input label="التصنيف عبري" value={s.tagHe} onChange={(v) => updateArray("heroSlides", i, "tagHe", v, setDraft)} />
-                <Input label="التصنيف عربي" value={s.tagAr} onChange={(v) => updateArray("heroSlides", i, "tagAr", v, setDraft)} />
-                <MultiImageUploader label="اختر عدة صور أو فيديوهات من جهازك" onChange={(media, names) => updateSlideImages(i, media, names, setDraft)} />
-                <div className="mt-2 text-xs text-white/55">عدد الوسائط داخل هذا السلايد: {(s.media || s.images || [s.image]).length}</div>
-                {!!s.imageNames?.length && <div className="mt-1 text-xs text-white/45">{s.imageNames.join(" • ")}</div>}
-                <Button variant="destructive" className="mt-2 w-full" onClick={() => removeItem("heroSlides", i, setDraft)}><Trash2 className="ml-2 h-4 w-4" /> حذف السلايد</Button>
-              </div>)}
-              <Button className="w-full" onClick={() => addItem("heroSlides", { titleHe: "כותרת חדשה", titleAr: "عنوان جديد", subtitleHe: "תיאור קצר", subtitleAr: "وصف مختصر", image: FALLBACK_IMAGE, images: [FALLBACK_IMAGE], media: [{ type: "image", src: FALLBACK_IMAGE, name: "default" }], imageNames: [], tagHe: "חדש", tagAr: "جديد" }, setDraft)}><ImagePlus className="ml-2 h-4 w-4" /> إضافة سلايد</Button>
-            </SettingsSection>
-
-            <SettingsSection title="الأسعار بلغتين">
-              {draft.prices.map((p, i) => <div key={i} className="mb-4 rounded-2xl bg-white/5 p-3">
-                <Input label="اسم المنتج عبري" value={p.nameHe} onChange={(v) => updateArray("prices", i, "nameHe", v, setDraft)} />
-                <Input label="اسم المنتج عربي" value={p.nameAr} onChange={(v) => updateArray("prices", i, "nameAr", v, setDraft)} />
-                <Input label="السعر" value={p.price} onChange={(v) => updateArray("prices", i, "price", v, setDraft)} />
-                <Input label="الوحدة عبري" value={p.unitHe} onChange={(v) => updateArray("prices", i, "unitHe", v, setDraft)} />
-                <Input label="الوحدة عربي" value={p.unitAr} onChange={(v) => updateArray("prices", i, "unitAr", v, setDraft)} />
-                <Input label="التغير" value={p.change} onChange={(v) => updateArray("prices", i, "change", v, setDraft)} />
-                <label className="mt-2 block text-sm text-white/60">اتجاه السعر</label>
-                <select className="mt-1 w-full rounded-xl bg-slate-900 p-3" value={p.direction} onChange={(e) => updateArray("prices", i, "direction", e.target.value, setDraft)}>
-                  <option value="up">ارتفاع</option><option value="down">انخفاض</option><option value="flat">ثابت</option>
-                </select>
-                <Button variant="destructive" className="mt-2 w-full" onClick={() => removeItem("prices", i, setDraft)}><Trash2 className="ml-2 h-4 w-4" /> حذف السعر</Button>
-              </div>)}
-              <Button className="w-full" onClick={() => addItem("prices", { nameHe: "מוצר חדש", nameAr: "منتج جديد", price: "0", unitHe: "יח׳", unitAr: "قطعة", change: "0", direction: "flat" }, setDraft)}><Plus className="ml-2 h-4 w-4" /> إضافة منتج</Button>
-            </SettingsSection>
-
-            <SettingsSection title="العروض وشريط الأخبار بلغتين">
-              <Input label="عنوان العرض عبري" value={draft.offerTitleHe} onChange={(v) => updateDraft("offerTitleHe", v)} />
-              <Input label="عنوان العرض عربي" value={draft.offerTitleAr} onChange={(v) => updateDraft("offerTitleAr", v)} />
-              <Input label="نص العرض عبري" value={draft.offerTextHe} onChange={(v) => updateDraft("offerTextHe", v)} />
-              <Input label="نص العرض عربي" value={draft.offerTextAr} onChange={(v) => updateDraft("offerTextAr", v)} />
-              <Input label="نسبة الخصم" value={draft.offerPercent} onChange={(v) => updateDraft("offerPercent", v)} />
-              <Input label="شريط أخبار Firebase سطر واحد" value={draft.tickerText || ""} onChange={(v) => updateDraft("tickerText", v)} />
-              <Textarea label="شريط الأخبار عبري - كل سطر إعلان" value={draft.tickerHe.join(NL)} onChange={(v) => updateDraft("tickerHe", v.split(NL).filter(Boolean))} />
-              <Textarea label="شريط الأخبار عربي - كل سطر إعلان" value={draft.tickerAr.join(NL)} onChange={(v) => updateDraft("tickerAr", v.split(NL).filter(Boolean))} />
-              <Textarea label="الأكثر طلباً عبري" value={draft.topProductsHe.join(NL)} onChange={(v) => updateDraft("topProductsHe", v.split(NL).filter(Boolean))} />
-              <Textarea label="الأكثر طلباً عربي" value={draft.topProductsAr.join(NL)} onChange={(v) => updateDraft("topProductsAr", v.split(NL).filter(Boolean))} />
-            </SettingsSection>
-
-            <Button onClick={saveSettings} className="sticky bottom-4 mt-6 h-14 w-full rounded-2xl text-xl font-black " style={{ background: draft.primaryColor, color: "#08111f" }}><Save className="ml-2 h-5 w-5" /> حفظ وتشغيل على الشاشة</Button>
-          </aside>
-        )}
+          <button className="control-btn" style={{width:"100%",height:"3vw",fontSize:"1.1vw"}} onClick={saveSettings}>حفظ وتشغيل</button>
+        </aside>
+      )}
     </div>
   );
-}
-
-function InfoPill({ icon, label, value, change, color }) {
-  return (
-    <div className="flex min-w-[145px] items-center gap-2 rounded-2xl border border-yellow-400/20 bg-black/35 px-3 py-2 tv-glow">
-      <div className="grid h-10 w-10 place-items-center rounded-full border border-yellow-400/30 bg-black/40 text-2xl tv-icon" style={{ color }}>
-        {icon}
-      </div>
-      <div className="text-center leading-tight">
-        <div className="text-[10px] text-white/55">{label}</div>
-        <div className="text-sm font-black" style={{ color }}>{value}</div>
-        {change ? <div className="text-[10px] font-bold text-green-400">{change}</div> : null}
-      </div>
-    </div>
-  );
-}
-
-function productIcon(name = "") {
-  const n = String(name).toLowerCase();
-  if (n.includes("מלט") || n.includes("إسمنت") || n.includes("اسمنت")) return "🏗️";
-  if (n.includes("ברזל") || n.includes("حديد")) return "🔩";
-  if (n.includes("גבס") || n.includes("جبص") || n.includes("جبس")) return "◻️";
-  if (n.includes("צבע") || n.includes("دهان")) return "🎨";
-  if (n.includes("חול") || n.includes("رمل")) return "⛰️";
-  if (n.includes("איטום") || n.includes("عزل")) return "🛡️";
-  return "📦";
-}
-
-function SettingsSection({ title, children }) {
-  return <section className="mb-5 rounded-3xl border border-white/10 bg-white/5 p-4"><h3 className="mb-3 text-xl font-black text-amber-300">{title}</h3>{children}</section>;
-}
-
-function Input({ label, value, onChange, type = "text", step }) {
-  return <label className="mb-3 block"><span className="mb-1 block text-sm text-white/65">{label}</span><input type={type} step={step} value={value} onChange={(e) => onChange(e.target.value)} className="w-full rounded-xl border border-white/10 bg-slate-900 p-3 outline-none focus:border-amber-300" /></label>;
-}
-
-function Textarea({ label, value, onChange }) {
-  return <label className="mb-3 block"><span className="mb-1 block text-sm text-white/65">{label}</span><textarea value={value} onChange={(e) => onChange(e.target.value)} rows={5} className="w-full rounded-xl border border-white/10 bg-slate-900 p-3 outline-none focus:border-amber-300" /></label>;
-}
-
-function MultiImageUploader({ label, onChange }) {
-  return <label className="mb-3 block cursor-pointer rounded-xl border border-dashed border-amber-300/40 bg-amber-300/10 p-4 text-center hover:bg-amber-300/15">
-    <Upload className="mx-auto mb-2 h-6 w-6 text-amber-300" />
-    <span className="text-sm text-white/80">{label}</span>
-    <input type="file" accept="image/*,video/*" multiple className="hidden" onChange={async (e) => {
-      const files = Array.from(e.target.files || []);
-      if (!files.length) return;
-      const media = await Promise.all(files.map(async (file) => ({
-        type: file.type.startsWith("video/") ? "video" : "image",
-        src: await readFileAsDataUrl(file),
-        name: file.name
-      })));
-      const names = files.map((file) => file.name);
-      onChange(media, names);
-      e.target.value = "";
-    }} />
-  </label>;
-}
-
-function readFileAsDataUrl(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(String(reader.result || ""));
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
-
-function updateArray(key, index, field, value, setDraft) {
-  setDraft((d) => ({ ...d, [key]: d[key].map((item, i) => i === index ? { ...item, [field]: value } : item) }));
-}
-
-function updateSlideImages(index, media, names, setDraft) {
-  const normalizedMedia = (media || []).map((item) => typeof item === "string" ? { type: "image", src: item, name: "image" } : item);
-  const first = normalizedMedia[0] || { type: "image", src: FALLBACK_IMAGE, name: "default" };
-  setDraft((d) => ({
-    ...d,
-    heroSlides: d.heroSlides.map((item, i) => i === index ? {
-      ...item,
-      image: first.src || FALLBACK_IMAGE,
-      images: normalizedMedia.filter((m) => m.type === "image").map((m) => m.src),
-      media: normalizedMedia.length ? normalizedMedia : [{ type: "image", src: FALLBACK_IMAGE, name: "default" }],
-      imageNames: names || normalizedMedia.map((m) => m.name).filter(Boolean)
-    } : item)
-  }));
-}
-
-function addItem(key, item, setDraft) {
-  setDraft((d) => ({ ...d, [key]: [...d[key], item] }));
-}
-
-function removeItem(key, index, setDraft) {
-  setDraft((d) => ({ ...d, [key]: d[key].filter((_, i) => i !== index) }));
 }
