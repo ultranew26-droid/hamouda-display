@@ -29,7 +29,7 @@ const DEFAULT_DATA = {
   backgroundColor: "#05070b",
   textScale: 0.66,
   slideSeconds: 30,
-  tickerSpeed: 24,
+  tickerSpeed: 60,
   heroImageUrl: "",
   tickerText: "",
   logoText: "ח",
@@ -182,6 +182,7 @@ function applyFirebaseSettings(base, remote) {
   if (remote.phone) next.phone = remote.phone;
   if (remote.primaryColor) next.primaryColor = remote.primaryColor;
   if (remote.secondaryColor) next.backgroundColor = remote.secondaryColor;
+  if (remote.tickerSpeed !== undefined) next.tickerSpeed = Number(remote.tickerSpeed) || next.tickerSpeed;
 
   // العروض منفصلة حسب اللغة
   if (remote.offerTitleAr) next.offerTitleAr = remote.offerTitleAr;
@@ -282,6 +283,7 @@ function applyFirebaseSettings(base, remote) {
   // أسعار صرف اختيارية من Firebase بدل API إذا بدك تتحكم يدويًا
   if (remote.exchangeUSD !== undefined) next.exchangeUSD = remote.exchangeUSD;
   if (remote.exchangeEUR !== undefined) next.exchangeEUR = remote.exchangeEUR;
+  if (remote.exchangeJOD !== undefined) next.exchangeJOD = remote.exchangeJOD;
 
   return next;
 }
@@ -302,6 +304,7 @@ function toFirebaseSettings(data) {
     phone: data.phone || "",
     primaryColor: data.primaryColor || "#f5b21a",
     secondaryColor: data.backgroundColor || "#05070b",
+    tickerSpeed: Number(data.tickerSpeed || 60),
     offerTitleAr: data.offerTitleAr || "",
     offerTitleHe: data.offerTitleHe || "",
     offerTextAr: data.offerTextAr || "",
@@ -329,6 +332,7 @@ if (typeof document !== "undefined" && !document.getElementById("hamouda-tv-pro-
   style.id = "hamouda-tv-pro-style";
   style.innerHTML = `
     @keyframes tickerMove { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+    @keyframes rateGlow { 0%,100% { box-shadow: 0 0 10px rgba(245,178,26,.18); transform: scale(1); } 50% { box-shadow: 0 0 22px rgba(245,178,26,.55); transform: scale(1.025); } }
     @keyframes softPulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.04); opacity: .88; } }
     @keyframes goldGlow { 0%,100% { box-shadow: 0 0 10px rgba(245,178,26,.25), inset 0 0 12px rgba(245,178,26,.08); } 50% { box-shadow: 0 0 24px rgba(245,178,26,.75), inset 0 0 18px rgba(245,178,26,.18); } }
     @keyframes imageFade { from { opacity: .55; transform: scale(1.015); } to { opacity: 1; transform: scale(1); } }
@@ -338,7 +342,10 @@ if (typeof document !== "undefined" && !document.getElementById("hamouda-tv-pro-
     .tv-gold-glow { animation: goldGlow 3.2s ease-in-out infinite; }
     .tv-price-pulse { animation: softPulse 2.3s ease-in-out infinite; text-shadow: 0 0 16px rgba(245,178,26,.45); }
     .tv-image-fade { animation: imageFade .9s ease both; }
-    .tv-ticker { display:inline-block; animation: tickerMove 32s linear infinite; padding-left:100%; }
+    .tv-ticker { display:inline-block; padding-left:100%; will-change: transform; }
+    .rate-pill-pro { border: 1px solid rgba(245,178,26,.28); background: linear-gradient(180deg, rgba(15,23,42,.92), rgba(2,6,23,.92)); animation: rateGlow 4s ease-in-out infinite; }
+    .rate-icon-pro { width: 38px; height: 38px; border-radius: 14px; display: grid; place-items: center; font-size: 22px; background: radial-gradient(circle at 30% 25%, rgba(255,255,255,.35), rgba(245,178,26,.12) 45%, rgba(0,0,0,.5)); border: 1px solid rgba(245,178,26,.35); }
+    .hidden-admin-controls { display: none !important; }
     .tv-shimmer { background: linear-gradient(90deg, #fff, #f5b21a, #fff); background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: shimmer 4s linear infinite; }
     @keyframes priceWheelMove { from { transform: translateY(0); } to { transform: translateY(-50%); } }
     .price-wheel-mask { height: calc(100% - 2.8rem); overflow: hidden; position: relative; }
@@ -360,7 +367,7 @@ export default function HamoudaPremiumDisplay() {
   const [slideIndex, setSlideIndex] = useState(0);
   const [imageIndex, setImageIndex] = useState(0);
   const [now, setNow] = useState(new Date());
-  const [fx, setFx] = useState({ loading: true, usdIls: "--", eurIls: "--", eurUsd: "--" });
+  const [fx, setFx] = useState({ loading: true, usdIls: "--", eurIls: "--", jodIls: "--", eurUsd: "--" });
   const [notice, setNotice] = useState("");
   const [firebaseSettingsId, setFirebaseSettingsId] = useState(null);
 
@@ -411,14 +418,16 @@ export default function HamoudaPremiumDisplay() {
         const j = await r.json();
         const usdIls = j?.rates?.ILS;
         const eur = j?.rates?.EUR;
+        const jod = j?.rates?.JOD;
         setFx({
           loading: false,
           usdIls: usdIls ? usdIls.toFixed(3) : "--",
           eurIls: usdIls && eur ? (usdIls / eur).toFixed(3) : "--",
+          jodIls: usdIls && jod ? (usdIls / jod).toFixed(3) : "--",
           eurUsd: eur ? (1 / eur).toFixed(3) : "--"
         });
       } catch {
-        setFx({ loading: false, usdIls: "--", eurIls: "--", eurUsd: "--" });
+        setFx({ loading: false, usdIls: "--", eurIls: "--", jodIls: "--", eurUsd: "--" });
       }
     }
     getRates();
@@ -466,7 +475,7 @@ export default function HamoudaPremiumDisplay() {
         </div>
       )}
 
-      <div className="fixed left-4 top-4 z-50 flex gap-2">
+      <div className="hidden-admin-controls fixed left-4 top-4 z-50 flex gap-2">
         <Button onClick={toggleLanguage} className="rounded-2xl bg-white/15   hover:bg-white/25">
           <Languages className="ml-2 h-4 w-4" /> {data.language === "he" ? "עברית" : "عربي"}
         </Button>
@@ -485,10 +494,11 @@ export default function HamoudaPremiumDisplay() {
             </div>
           </div>
 
-          <div className="flex items-center justify-center gap-3" dir={dir}>
-            <InfoPill label={isAr ? "هاتف" : "טלפון"} value={`📞 ${data.phone}`} color={data.primaryColor} />
-            <InfoPill label={isAr ? "دولار" : "דולר"} value={`$ ${data.exchangeUSD ?? fx.usdIls}`} color={data.primaryColor} />
-            <InfoPill label={isAr ? "يورو" : "אירו"} value={`€ ${data.exchangeEUR ?? fx.eurIls}`} color={data.primaryColor} />
+          <div className="flex items-center justify-center gap-3" dir="ltr">
+            <RatePill icon="€" label={isAr ? "يورو" : "אירו"} value={`${data.exchangeEUR ?? fx.eurIls} ₪`} color={data.primaryColor} />
+            <RatePill icon="$" label={isAr ? "دولار" : "דולר"} value={`${data.exchangeUSD ?? fx.usdIls} ₪`} color={data.primaryColor} />
+            <RatePill icon="د" label={isAr ? "دينار" : "דינר"} value={`${data.exchangeJOD ?? fx.jodIls} ₪`} color={data.primaryColor} />
+            <RatePill icon="☎" label={isAr ? "هاتف" : "טלפון"} value={data.phone} color={data.primaryColor} />
           </div>
 
           <div className="text-right" dir={dir}>
@@ -560,7 +570,10 @@ export default function HamoudaPremiumDisplay() {
         <footer className="rounded-[1.2rem] border border-amber-300/25 bg-black/60 p-2" dir={dir}>
           <div className="mb-1 text-right text-sm font-black" style={{ color: data.primaryColor }}>{isAr ? "أخبار وتحديثات" : "חדשות ועדכונים"} 🔊</div>
           <div className="overflow-hidden rounded-xl border border-white/10 bg-black/45 py-2">
-            <div className="tv-ticker whitespace-nowrap text-xl font-black">
+            <div
+              className="tv-ticker whitespace-nowrap text-xl font-black"
+              style={{ animation: `tickerMove ${Number(data.tickerSpeed || 60)}s linear infinite` }}
+            >
               {tickerText}     •     {tickerText}
             </div>
           </div>
@@ -652,6 +665,18 @@ export default function HamoudaPremiumDisplay() {
             <Button onClick={saveSettings} className="sticky bottom-4 mt-6 h-14 w-full rounded-2xl text-xl font-black " style={{ background: draft.primaryColor, color: "#08111f" }}><Save className="ml-2 h-5 w-5" /> حفظ وتشغيل على الشاشة</Button>
           </aside>
         )}
+    </div>
+  );
+}
+
+function RatePill({ icon, label, value, color }) {
+  return (
+    <div className="rate-pill-pro flex min-w-[145px] items-center justify-center gap-2 rounded-2xl px-3 py-2 text-center">
+      <div className="rate-icon-pro" style={{ color }}>{icon}</div>
+      <div>
+        <div className="text-[10px] text-white/55">{label}</div>
+        <div className="text-base font-black" style={{ color }}>{value}</div>
+      </div>
     </div>
   );
 }
