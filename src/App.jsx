@@ -95,9 +95,9 @@ const DEFAULT_DATA = {
 };
 
 function injectTvTheme() {
-  if (typeof document === "undefined" || document.getElementById("hamouda-tv-pixel-theme")) return;
+  if (typeof document === "undefined" || document.getElementById("hamouda-tv-pixel-theme-v2")) return;
   const style = document.createElement("style");
-  style.id = "hamouda-tv-pixel-theme";
+  style.id = "hamouda-tv-pixel-theme-v2";
   style.innerHTML = `
     :root {
       --gold: #f5b21a;
@@ -210,8 +210,27 @@ function injectTvTheme() {
     .up { color:#24ff65; } .down { color:#ff4052; } .flat { color:rgba(255,255,255,.68); }
     .small-note { font-size:.62vw; color:rgba(255,255,255,.64); text-align:center; margin-top:.25vw; }
     .hero-card { position:relative; overflow:hidden; min-height:0; }
-    .hero-media { position:absolute; inset:0; display:grid; place-items:center; background:#050911; }
-    .hero-media img,.hero-media video { width:100%; height:100%; object-fit:contain; opacity:.96; transition:opacity .65s ease; }
+    .hero-media {
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#050911;
+      overflow:hidden;
+    }
+    .hero-media img,
+    .hero-media video {
+      max-width:100%;
+      max-height:100%;
+      width:auto;
+      height:auto;
+      object-fit:contain;
+      object-position:center center;
+      display:block;
+      opacity:.96;
+      transition:opacity .65s ease;
+    }
     .hero-dark { position:absolute; inset:0; background:linear-gradient(90deg, rgba(0,0,0,.22), rgba(0,0,0,.10), rgba(0,0,0,.35)); pointer-events:none; }
     .hero-content { position:absolute; top:12%; right:6%; width:47%; text-align:right; }
     .hero-title { font-size:3.15vw; line-height:1.02; font-weight:1000; color:white; text-shadow:0 .12vw .1vw #000, 0 0 18px rgba(0,0,0,.7); }
