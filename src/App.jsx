@@ -282,6 +282,32 @@ function injectTvTheme() {
     @keyframes shimmer { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
     @keyframes pulseGold { 0%,100% { transform:scale(1); } 50% { transform:scale(1.035); } }
     @keyframes valueGlow { 0%,100% { text-shadow:0 0 8px rgba(255,245,214,.48); } 50% { text-shadow:0 0 18px rgba(255,245,214,.9); } }
+
+    /* Clean hero: hide all overlay text, icons, arrows and dots over image */
+    .hero-content, .hero-title, .hero-subtitle, .hero-arrow, .dots, .hero-service-bar, .service-box, .hero-dark {
+      display:none !important;
+    }
+    .hero-media {
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#050911;
+      overflow:hidden;
+    }
+    .hero-media img,
+    .hero-media video {
+      max-width:100%;
+      max-height:100%;
+      width:auto;
+      height:auto;
+      object-fit:contain;
+      object-position:center center;
+      display:block;
+      opacity:1;
+    }
+
     @media (max-aspect-ratio: 14/9) {
       .topbar { grid-template-columns: 1.6fr 2.2fr 1.5fr; }
       .main-grid { grid-template-columns: 24.5vw 1fr 24vw; }
@@ -625,34 +651,6 @@ export default function HamoudaPremiumDisplay() {
               ) : (
                 <img src={currentMedia.src || FALLBACK_IMAGE} alt="slide" onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }} />
               )}
-            </div>
-            <div className="hero-dark" />
-            <div className="hero-arrow arrow-right">›</div>
-            <div className="hero-arrow arrow-left">‹</div>
-            <div className="hero-content">
-              <div className="hero-title">
-                {isAr ? "كل ما" : "כל מה"}
-                <span className="gold">{isAr ? "تحتاجه" : "שהקבלן צריך"}</span>
-                {isAr ? "في مكان واحد" : "במקום אחד"}
-              </div>
-              <div className="hero-subtitle">{itemT(data, currentSlide, "subtitleHe", "subtitleAr")}</div>
-            </div>
-            <div className="dots">
-              {slideMedia.slice(0, 6).map((_, i) => <span key={i} className={`dot ${i === imageIndex % slideMedia.length ? "active" : ""}`} />)}
-            </div>
-            <div className="hero-service-bar">
-              <div className="service-box">
-                <div className="service-icon"><Truck size={28} /></div>
-                <div><div className="service-title">{isAr ? "توصيل سريع" : "אספקה מהירה"}</div><div className="service-sub">{isAr ? "للطلبات الكبيرة" : "להזמנות גדולות"}</div></div>
-              </div>
-              <div className="service-box">
-                <div className="service-icon"><Award size={28} /></div>
-                <div><div className="service-title">{isAr ? "جودة مضمونة" : "איכות ללא פשרות"}</div><div className="service-sub">{isAr ? "منتجات مختارة" : "מוצרים ממותגים ומובילים"}</div></div>
-              </div>
-              <div className="service-box">
-                <div className="service-icon"><ShieldCheck size={28} /></div>
-                <div><div className="service-title">{isAr ? "خدمة احترافية" : "שירות מקצועי"}</div><div className="service-sub">{isAr ? "من الطلب حتى التسليم" : "ליווי עד סיום הפרויקט"}</div></div>
-              </div>
             </div>
           </main>
 
