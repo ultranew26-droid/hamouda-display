@@ -332,8 +332,8 @@ if (typeof document !== "undefined" && !document.getElementById("tv-pro-runtime-
   style.id = "tv-pro-runtime-styles";
   style.innerHTML = `
     @keyframes tickerMove {
-      0% { transform: translateX(-10%); }
-      100% { transform: translateX(110%); }
+      0% { transform: translateX(-5%); }
+      100% { transform: translateX(105%); }
     }
     @keyframes priceWheel {
       0% { transform: translateY(0); }
@@ -341,28 +341,21 @@ if (typeof document !== "undefined" && !document.getElementById("tv-pro-runtime-
     }
     @keyframes softGlow {
       0%,100% { box-shadow: 0 0 10px rgba(245,178,26,.22), inset 0 0 10px rgba(245,178,26,.08); }
-      50% { box-shadow: 0 0 30px rgba(245,178,26,.65), inset 0 0 18px rgba(245,178,26,.18); }
+      50% { box-shadow: 0 0 24px rgba(245,178,26,.55), inset 0 0 16px rgba(245,178,26,.15); }
     }
     @keyframes numberPulse {
-      0%,100% { transform: scale(1); text-shadow: 0 0 10px rgba(255,255,255,.35), 0 0 14px rgba(245,178,26,.35); }
-      50% { transform: scale(1.055); text-shadow: 0 0 22px rgba(245,178,26,.95), 0 0 30px rgba(255,255,255,.35); }
+      0%,100% { transform: scale(1); text-shadow: 0 0 10px rgba(255,255,255,.35); }
+      50% { transform: scale(1.045); text-shadow: 0 0 18px rgba(245,178,26,.8); }
     }
     @keyframes iconFloat {
       0%,100% { transform: translateY(0); }
-      50% { transform: translateY(-3px); }
+      50% { transform: translateY(-2px); }
     }
-    @keyframes imageFade {
-      0% { opacity: .55; transform: scale(1.012); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-    .tv-price-wheel { animation: priceWheel 42s linear infinite; }
-    .tv-card-glow, .tv-glow { animation: softGlow 3.5s ease-in-out infinite; }
-    .tv-logo-glow { box-shadow: 0 0 28px rgba(245,178,26,.55); }
+    .tv-price-wheel { animation: priceWheel 36s linear infinite; }
+    .tv-glow { animation: softGlow 3.5s ease-in-out infinite; }
     .tv-number { animation: numberPulse 2.8s ease-in-out infinite; display:inline-block; }
-    .tv-icon-glow, .tv-icon { animation: iconFloat 3s ease-in-out infinite; box-shadow: 0 0 14px rgba(245,178,26,.18); }
+    .tv-icon { animation: iconFloat 3s ease-in-out infinite; }
     .tv-ticker { animation-name: tickerMove; animation-timing-function: linear; animation-iteration-count: infinite; display:inline-block; padding-inline-start: 100%; }
-    .tv-image-fade { animation: imageFade .65s ease-out; }
-    .tv-offer-number { text-shadow: 0 0 18px rgba(245,178,26,.8), 0 0 34px rgba(245,178,26,.55); animation: numberPulse 2.2s ease-in-out infinite; }
   `;
   document.head.appendChild(style);
 }
@@ -491,123 +484,111 @@ export default function HamoudaPremiumDisplay() {
         </Button>
       </div>
 
-      <main className="relative z-10 flex h-screen flex-col gap-2.5 p-3">
-        <header className="grid grid-cols-[1.1fr_auto_1fr] items-center gap-3 rounded-[1.35rem] border border-yellow-400/25 bg-black/55 px-4 py-2 shadow-[0_0_28px_rgba(245,178,26,.12)]">
+      <main className="relative z-10 flex h-screen flex-col gap-2.5 p-4">
+        <header className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 rounded-[1.5rem] border border-white/10 bg-white/10 px-4 py-2.5  ">
           <div className="flex items-center gap-3">
-            <div className="grid h-16 w-16 place-items-center rounded-2xl border border-yellow-400/50 text-4xl font-black tv-logo-glow" style={{ background: `linear-gradient(135deg, ${data.primaryColor}, #fff1a8)`, color: "#08111f" }}>{data.logoText}</div>
+            <div className="grid h-12 w-12 place-items-center rounded-2xl text-2xl font-black " style={{ background: `linear-gradient(135deg, ${data.primaryColor}, #fff1a8)`, color: "#08111f" }}>{data.logoText}</div>
             <div>
-              <h1 className="text-4xl font-black tracking-tight drop-shadow-[0_0_8px_rgba(255,255,255,.25)]">{t(data, "businessNameHe", "businessNameAr")}</h1>
-              <p className="mt-0.5 text-lg text-white/80">{t(data, "sloganHe", "sloganAr")}</p>
+              <h1 className="text-2xl font-black tracking-tight">{t(data, "businessNameHe", "businessNameAr")}</h1>
+              <p className="mt-0.5 text-sm text-white/75">{t(data, "sloganHe", "sloganAr")}</p>
             </div>
           </div>
 
           <div className="flex items-center justify-center gap-2">
             <InfoPill icon="€" label={isAr ? "يورو" : "אירו"} value={`${data.exchangeEUR ?? fx.eurIls} €`} change="↑ 0.25%" color={data.primaryColor} />
             <InfoPill icon="$" label={isAr ? "دولار" : "דולר"} value={`${data.exchangeUSD ?? fx.usdIls} $`} change="↑ 0.18%" color={data.primaryColor} />
-            <InfoPill icon="☎" label={isAr ? "هاتف" : "טלפון להזמנות"} value={data.phone} change="" color={data.primaryColor} />
+            <InfoPill icon="د" label={isAr ? "دينار" : "דינר"} value={`${data.exchangeJOD ?? fx.jodIls} JD`} change="" color={data.primaryColor} />
+            <InfoPill icon="☎" label={isAr ? "هاتف" : "טלפון"} value={data.phone} change="" color={data.primaryColor} />
           </div>
 
-          <div className="flex items-center justify-end gap-4 text-left">
-            <div className="grid h-14 w-14 place-items-center rounded-2xl border border-yellow-400/40 bg-black/50 text-3xl tv-card-glow">📅</div>
+          <div className="flex items-center justify-end gap-3 text-left">
+            <div className="grid h-12 w-12 place-items-center rounded-2xl border border-yellow-400/30 bg-black/30 text-2xl tv-glow">📅</div>
             <div>
-              <div className="text-4xl font-black leading-none" style={{ color: data.primaryColor }}>{now.toLocaleTimeString(isAr ? "ar" : "he", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}</div>
-              <div className="mt-1 text-sm text-white/75">{now.toLocaleDateString(isAr ? "ar" : "he", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</div>
+              <div className="text-3xl font-black leading-none" style={{ color: data.primaryColor }}>{now.toLocaleTimeString(isAr ? "ar" : "he", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}</div>
+              <div className="mt-1 text-xs text-white/70">{now.toLocaleDateString(isAr ? "ar" : "he", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</div>
             </div>
           </div>
         </header>
 
-        <section className="grid flex-1 grid-cols-[0.76fr_1.52fr_0.78fr] gap-3 min-h-0">
-          <Card className="rounded-[1.4rem] border-yellow-400/40 bg-black/45 shadow-[0_0_24px_rgba(245,178,26,.18)] min-h-0 overflow-hidden">
-            <CardContent className="flex h-full flex-col p-3">
-              <div className="mb-2 flex items-center justify-center gap-4">
-                <div className="h-px flex-1 bg-yellow-400/60" />
-                <h3 className="shrink-0 text-2xl font-black" style={{ color: data.primaryColor }}>{isAr ? "أسعار اليوم" : "מחירי היום"}</h3>
-                <span className="text-2xl">🏷️</span>
-                <div className="h-px flex-1 bg-yellow-400/60" />
-              </div>
-              <div className="relative flex-1 overflow-hidden rounded-2xl border border-yellow-400/20 bg-black/25">
-                <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 h-12 bg-gradient-to-b from-[#05070b] to-transparent" />
-                <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-10 h-12 bg-gradient-to-t from-[#05070b] to-transparent" />
-                <div className="tv-price-wheel space-y-2 p-2 pb-5">
-                  {[...data.prices, ...data.prices].map((p, i) => (
-                    <div key={i} className="group flex items-center gap-3 rounded-2xl border border-white/10 bg-gradient-to-l from-black/60 to-slate-900/70 px-3 py-2.5 shadow-[inset_0_0_16px_rgba(255,255,255,.04)]">
-                      <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border border-yellow-400/35 bg-black/55 text-3xl tv-icon-glow">
-                        {productIcon(itemT(data, p, "nameHe", "nameAr"))}
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="truncate text-lg font-black text-white">{itemT(data, p, "nameHe", "nameAr")}</div>
-                        <div className="text-sm text-white/60">{itemT(data, p, "unitHe", "unitAr")}</div>
-                      </div>
-                      <div className="text-left">
-                        <div className="tv-number text-4xl font-black text-white">₪{p.price}</div>
-                        <div className={p.direction === "up" ? "text-green-400 font-black" : p.direction === "down" ? "text-red-400 font-black" : "text-white/60 font-black"}>
-                          {p.direction === "up" ? "↑" : p.direction === "down" ? "↓" : "—"} {p.change}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="mt-2 text-center text-xs text-white/60">* {isAr ? "الأسعار تتحدث مباشرة" : "המחירים מתעדכנים בזמן אמת"}</div>
-            </CardContent>
-          </Card>
-
-          <Card className="relative overflow-hidden rounded-[1.4rem] border-yellow-400/40 bg-black/45 shadow-[0_0_32px_rgba(245,178,26,.22)]">
+        <section className="grid flex-1 grid-cols-[1.45fr_.95fr] gap-2.5 min-h-0">
+          <Card className="relative overflow-hidden rounded-[1.7rem] border-white/10 bg-black/30  ">
             <div key={`${slideIndex}-${imageIndex}-${data.language}`} className="absolute inset-0">
               {currentMedia.type === "video" ? (
-                <video src={currentMedia.src} className="h-full w-full object-cover" autoPlay muted loop playsInline />
+                <video src={currentMedia.src} className="h-full w-full object-contain" autoPlay muted loop playsInline />
               ) : (
-                <img src={currentMedia.src || FALLBACK_IMAGE} className="h-full w-full object-cover tv-image-fade" alt="slide" onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }} />
+                <img src={currentMedia.src || FALLBACK_IMAGE} className="h-full w-full object-contain" alt="slide" onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }} />
               )}
-              <div className="absolute inset-0 bg-gradient-to-l from-black/80 via-black/30 to-black/60 pointer-events-none" />
-              <button className="absolute left-6 top-1/2 z-20 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-yellow-400/60 bg-black/60 text-3xl font-black tv-card-glow" style={{ color: data.primaryColor }}>‹</button>
-              <button className="absolute right-6 top-1/2 z-20 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-yellow-400/60 bg-black/60 text-3xl font-black tv-card-glow" style={{ color: data.primaryColor }}>›</button>
-              <div className="absolute right-5 top-5 rounded-full px-5 py-2 text-base font-black tv-card-glow" style={{ background: data.primaryColor, color: "#0b1220" }}>{itemT(data, currentSlide, "tagHe", "tagAr")}</div>
-              <div className="absolute bottom-24 right-8 left-8 rounded-3xl bg-black/75 p-6 text-center shadow-[0_0_30px_rgba(0,0,0,.65)]">
-                <h2 className="text-6xl font-black leading-tight drop-shadow-[0_0_10px_rgba(255,255,255,.25)]">{itemT(data, currentSlide, "titleHe", "titleAr")}</h2>
-                <p className="mt-3 text-2xl font-bold text-white/90">{itemT(data, currentSlide, "subtitleHe", "subtitleAr")}</p>
-              </div>
-              <div className="absolute bottom-4 left-8 right-8 grid grid-cols-3 gap-3 rounded-2xl border border-white/10 bg-black/55 p-3">
-                <Feature icon="🚚" title={isAr ? "توصيل سريع" : "אספקה מהירה"} text={isAr ? "للطلبات الكبيرة" : "להזמנות גדולות"} color={data.primaryColor} />
-                <Feature icon="🏅" title={isAr ? "جودة مضمونة" : "איכות ללא פשרות"} text={isAr ? "منتجات مختارة" : "מוצרים מובילים"} color={data.primaryColor} />
-                <Feature icon="🛡️" title={isAr ? "خدمة مهنية" : "שירות מקצועי"} text={isAr ? "من الطلب حتى التسليم" : "עד סיום הפרויקט"} color={data.primaryColor} />
-              </div>
-              <div className="absolute bottom-[7.8rem] left-1/2 flex -translate-x-1/2 gap-2">
-                {(slideMedia || []).slice(0, 7).map((_, i) => <span key={i} className={`h-3 w-3 rounded-full ${i === imageIndex % slideMedia.length ? "bg-yellow-400" : "bg-white/45"}`} />)}
+              <div className="absolute inset-0 bg-black/25 pointer-events-none" />
+              <div className="absolute right-5 top-5 rounded-full px-4 py-1.5 text-sm font-bold" style={{ background: data.primaryColor, color: "#0b1220" }}>{itemT(data, currentSlide, "tagHe", "tagAr")}</div>
+              <div className="absolute bottom-6 right-6 max-w-3xl rounded-3xl bg-black/70 p-5">
+                <h2 className="text-4xl font-black leading-tight">{itemT(data, currentSlide, "titleHe", "titleAr")}</h2>
+                <p className="mt-2 text-lg text-white/85">{itemT(data, currentSlide, "subtitleHe", "subtitleAr")}</p>
               </div>
             </div>
           </Card>
 
-          <Card className="relative overflow-hidden rounded-[1.4rem] border-yellow-400/45 bg-black/55 shadow-[0_0_35px_rgba(245,178,26,.22)]">
-            <CardContent className="flex h-full flex-col items-center justify-center p-6 text-center">
-              <div className="mb-5 text-4xl font-black text-white">{t(data, "offerTitleHe", "offerTitleAr")} 🔥</div>
-              <div className="tv-offer-number text-[9rem] font-black leading-none" style={{ color: data.primaryColor }}>{data.offerPercent}</div>
-              <div className="mt-2 text-4xl font-black text-white">{isAr ? "خصم" : "הנחה"}</div>
-              <div className="mt-4 text-2xl font-black text-white/95">{t(data, "offerTextHe", "offerTextAr")}</div>
-              <div className="mt-10 rounded-2xl px-8 py-4 text-3xl font-black tv-card-glow" style={{ background: data.primaryColor, color: "#08111f" }}>{isAr ? "لفترة محدودة!" : "לתקופה מוגבלת!"}</div>
-            </CardContent>
-          </Card>
+          <div className="grid grid-rows-[1fr_auto] gap-2.5 min-h-0">
+            <Card className="rounded-[1.5rem] border-white/10 bg-white/10   min-h-0 overflow-hidden">
+              <CardContent className="h-full p-3">
+                <h3 className="mb-2 text-xl font-black" style={{ color: data.primaryColor }}>{isAr ? "الأسعار المباشرة" : "מחירים חיים"}</h3>
+                <div className="relative h-[calc(100%-2.2rem)] overflow-hidden rounded-2xl">
+                  <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 h-10 bg-gradient-to-b from-[#111827] to-transparent" />
+                  <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-10 h-10 bg-gradient-to-t from-[#111827] to-transparent" />
+                  <div className="tv-price-wheel space-y-2 pb-3">
+                    {[...data.prices, ...data.prices].map((p, i) => (
+                      <div key={i} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/35 px-3 py-2.5">
+                        <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-yellow-400/30 bg-black/35 text-2xl tv-icon">
+                          {productIcon(itemT(data, p, "nameHe", "nameAr"))}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="truncate text-base font-black text-white">{itemT(data, p, "nameHe", "nameAr")}</div>
+                          <div className="text-xs text-white/55">{itemT(data, p, "unitHe", "unitAr")}</div>
+                        </div>
+                        <div className="text-left">
+                          <div className="tv-number text-3xl font-black text-white">₪{p.price}</div>
+                          <div className={p.direction === "up" ? "text-green-400" : p.direction === "down" ? "text-red-400" : "text-white/50"}>
+                            {p.direction === "up" ? "↑" : p.direction === "down" ? "↓" : "—"} {p.change}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="rounded-[1.5rem] border-white/10 bg-white/10  ">
+              <CardContent className="grid grid-cols-[1fr_auto] items-center gap-3 p-3">
+                <div>
+                  <div className="text-sm font-bold text-white/65">{t(data, "offerTitleHe", "offerTitleAr")}</div>
+                  <div className="mt-1 text-xl font-black">{t(data, "offerTextHe", "offerTextAr")}</div>
+                </div>
+                <div className="tv-glow rounded-2xl px-4 py-2 text-3xl font-black" style={{ background: data.primaryColor, color: "#08111f" }}>{data.offerPercent}</div>
+              </CardContent>
+            </Card>
+          </div>
         </section>
 
-        <footer className="relative overflow-hidden rounded-[1.2rem] border border-yellow-400/40 bg-black/60 py-3 shadow-[0_0_24px_rgba(245,178,26,.23)]">
-          <div className="absolute right-0 top-0 bottom-0 z-20 flex items-center gap-2 rounded-l-3xl px-6 text-lg font-black" style={{ background: data.primaryColor, color: "#08111f" }}>
-            📣 {isAr ? "عروض وتحديثات" : "מבצעים ועדכונים"}
+        <section className="rounded-[1.4rem] border border-white/10 bg-white/10 p-2.5  ">
+          <div className="flex items-center gap-2 overflow-hidden">
+            <h3 className="shrink-0 px-2 text-base font-black" style={{ color: data.primaryColor }}>{isAr ? "الأكثر طلباً" : "הכי מבוקש"}</h3>
+            <div className="grid flex-1 grid-cols-6 gap-2">
+              {(isAr ? data.topProductsAr : data.topProductsHe).slice(0, 6).map((item, i) => <div key={i} className="truncate rounded-xl bg-black/25 px-3 py-2 text-center text-sm font-bold">{i + 1}. {item}</div>)}
+            </div>
+          </div>
+        </section>
+
+        <footer className="relative overflow-hidden rounded-[1.2rem] border border-yellow-400/30 bg-black/45 py-2 tv-glow">
+          <div className="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-xl px-3 py-1 text-sm font-black" style={{ background: data.primaryColor, color: "#08111f" }}>
+            {isAr ? "الأخبار" : "חדשות ועדכונים"} 🔊
           </div>
           <div
-            className="tv-ticker whitespace-nowrap text-2xl font-black"
-            style={{ animationDuration: `${Math.max(22, Number(data.tickerSpeed || 65))}s` }}
+            className="tv-ticker whitespace-nowrap text-lg font-bold"
+            style={{ animationDuration: `${Math.max(20, Number(data.tickerSpeed || 60))}s` }}
           >
-            {tickerText}     •     {tickerText}     •     {tickerText}
+            {tickerText}     •     {tickerText}
           </div>
         </footer>
-
-        <nav className="grid grid-cols-7 gap-2 rounded-[1.2rem] border border-white/10 bg-black/45 p-2">
-          {["🏠", "🛍️", "🔩", "◻️", "🎨", "🛡️", "🛠️"].map((ic, i) => {
-            const labelsHe = ["דף הבית", "מלט", "ברזל", "גבס", "צבעים", "חומרי איטום", "כלי עבודה"];
-            const labelsAr = ["الرئيسية", "إسمنت", "حديد", "جبص", "دهانات", "مواد عزل", "أدوات"];
-            return <div key={i} className={`flex items-center justify-center gap-2 rounded-2xl border px-3 py-3 text-lg font-black ${i === 0 ? "border-yellow-400/70 bg-yellow-400/90 text-slate-950 tv-card-glow" : "border-white/10 bg-white/5 text-white"}`}><span>{ic}</span><span>{isAr ? labelsAr[i] : labelsHe[i]}</span></div>;
-          })}
-        </nav>
       </main>
 
       {settingsOpen && (
@@ -714,19 +695,6 @@ function productIcon(name = "") {
   if (n.includes("חול") || n.includes("رمل")) return "⛰️";
   if (n.includes("איטום") || n.includes("عزل")) return "🛡️";
   return "📦";
-}
-
-
-function Feature({ icon, title, text, color }) {
-  return (
-    <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/45 px-4 py-3">
-      <div className="grid h-12 w-12 place-items-center rounded-2xl border border-yellow-400/35 bg-black/40 text-3xl" style={{ color }}>{icon}</div>
-      <div>
-        <div className="text-xl font-black text-white">{title}</div>
-        <div className="text-sm text-white/65">{text}</div>
-      </div>
-    </div>
-  );
 }
 
 function SettingsSection({ title, children }) {
