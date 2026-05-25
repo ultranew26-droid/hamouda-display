@@ -157,7 +157,44 @@ function injectTvTheme() {
     .prices-card { padding:.8vw; display:flex; flex-direction:column; min-height:0; }
     .section-title { display:flex; align-items:center; justify-content:center; gap:.8vw; color:var(--gold); font-size:1.25vw; font-weight:1000; margin:.1vw 0 .7vw; }
     .section-title:before,.section-title:after { content:""; height:1px; width:4.1vw; background:linear-gradient(90deg, transparent, var(--gold), transparent); }
-    .price-list { display:flex; flex-direction:column; gap:.42vw; min-height:0; overflow:hidden; }
+    .price-list {
+      display:flex;
+      flex-direction:column;
+      gap:.42vw;
+      overflow:hidden;
+      height:100%;
+      min-height:0;
+      position:relative;
+    }
+    .price-list:before,
+    .price-list:after {
+      content:"";
+      position:absolute;
+      left:0;
+      right:0;
+      height:1.2vw;
+      z-index:2;
+      pointer-events:none;
+    }
+    .price-list:before {
+      top:0;
+      background:linear-gradient(180deg, rgba(6,10,17,.96), transparent);
+    }
+    .price-list:after {
+      bottom:0;
+      background:linear-gradient(0deg, rgba(6,10,17,.96), transparent);
+    }
+    .price-track {
+      display:flex;
+      flex-direction:column;
+      gap:.42vw;
+      animation: priceWheel 60s linear infinite;
+      will-change:transform;
+    }
+    @keyframes priceWheel {
+      0% { transform:translateY(0); }
+      100% { transform:translateY(-50%); }
+    }
     .price-row {
       height:3.75vw; flex:0 0 3.75vw; display:grid; grid-template-columns:3vw 1fr 5.5vw 2.35vw; align-items:center; gap:.52vw;
       border-radius:.65vw; padding:.35vw .55vw; border:1px solid rgba(255,255,255,.10);
@@ -553,7 +590,11 @@ export default function HamoudaPremiumDisplay() {
           <aside className="prices-card glass-panel">
             <div className="section-title">{isAr ? "أسعار اليوم" : "מחירי היום"} <BadgePercent size={20} /></div>
             <div className="price-list">
-              {(data.prices || []).slice(0, 8).map((p, i) => <PriceRow key={`${p.nameHe}-${i}`} p={p} data={data} />)}
+              <div className="price-track">
+                {[...(data.prices || []), ...(data.prices || [])].map((p, i) => (
+                  <PriceRow key={`${p.nameHe}-${i}`} p={p} data={data} />
+                ))}
+              </div>
             </div>
             <div className="small-note">* {isAr ? "الأسعار تتحدث حسب البيانات" : "המחירים מתעדכנים בזמן אמת"}</div>
           </aside>
