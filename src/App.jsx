@@ -61,6 +61,8 @@ const DEFAULT_DATA = {
   slideSeconds: 8,
   tickerSpeed: 95,
   musicUrl: "https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3",
+  backgroundMusicUrl: "",
+  backgroundMusicVolume: 0.07,
   heroImageUrl: "",
   tickerText: "",
   alertText: "",
@@ -387,6 +389,8 @@ function injectTvTheme() {
 function normalizeData(input) {
   const merged = { ...DEFAULT_DATA, ...(input || {}) };
   merged.musicUrl = String(merged.musicUrl || DEFAULT_DATA.musicUrl || "");
+  merged.backgroundMusicUrl = String(merged.backgroundMusicUrl || "");
+  merged.backgroundMusicVolume = Math.min(1, Math.max(0, Number(merged.backgroundMusicVolume ?? 0.07) || 0.07));
   const slides = (merged.heroSlides || DEFAULT_DATA.heroSlides).map((slide) => {
     const oldImages = slide.images && slide.images.length ? slide.images : [slide.image || FALLBACK_IMAGE];
     let media = slide.media && slide.media.length
@@ -464,6 +468,11 @@ function applyFirebaseSettings(base, remote) {
   if (remote.goldPrice !== undefined) next.goldPrice = String(remote.goldPrice || "--");
   if (remote.newsApiKey !== undefined) next.newsApiKey = String(remote.newsApiKey || "");
   if (remote.musicUrl !== undefined) next.musicUrl = String(remote.musicUrl || "");
+  if (remote.backgroundMusicUrl !== undefined) next.backgroundMusicUrl = String(remote.backgroundMusicUrl || "");
+  if (remote.backgroundMusicVolume !== undefined) {
+    const vol = Number(remote.backgroundMusicVolume);
+    next.backgroundMusicVolume = Number.isFinite(vol) ? Math.min(1, Math.max(0, vol)) : 0.07;
+  }
   if (remote.constructionNews !== undefined) {
     next.constructionNews = Array.isArray(remote.constructionNews)
       ? remote.constructionNews.filter(Boolean).map(String)
@@ -546,6 +555,8 @@ function toFirebaseSettings(data) {
     offerPercent: Number(String(data.offerPercent || "0").replace("%", "")) || 0,
     tickerSpeed: Number(data.tickerSpeed || 95),
     musicUrl: data.musicUrl || "",
+    backgroundMusicUrl: data.backgroundMusicUrl || "",
+    backgroundMusicVolume: Number(data.backgroundMusicVolume ?? 0.07),
     alertText: data.alertText || "",
     goldPrice: data.goldPrice || "--",
     newsApiKey: data.newsApiKey || "",
@@ -685,6 +696,35 @@ export default function HamoudaPremiumDisplay() {
 
     return () => clearInterval(timer);
   }, [data.projectImages?.length, data.musicUrl]);
+
+  useEffect(() => {
+    const musicUrl = String(data.backgroundMusicUrl || "").trim();
+    if (!musicUrl) return;
+
+    const bgMusic = new Audio(musicUrl);
+    bgMusic.loop = true;
+    bgMusic.volume = Math.min(1, Math.max(0, Number(data.backgroundMusicVolume ?? 0.07) || 0.07));
+    bgMusic.preload = "auto";
+
+    const tryPlay = () => {
+      bgMusic.play().catch(() => {});
+    };
+
+    tryPlay();
+
+    // Browsers may block autoplay until the first click/touch/key press.
+    window.addEventListener("click", tryPlay, { once: true });
+    window.addEventListener("touchstart", tryPlay, { once: true });
+    window.addEventListener("keydown", tryPlay, { once: true });
+
+    return () => {
+      bgMusic.pause();
+      bgMusic.currentTime = 0;
+      window.removeEventListener("click", tryPlay);
+      window.removeEventListener("touchstart", tryPlay);
+      window.removeEventListener("keydown", tryPlay);
+    };
+  }, [data.backgroundMusicUrl, data.backgroundMusicVolume]);
 
   useEffect(() => {
     async function getRates() {
@@ -975,6 +1015,24 @@ export default function HamoudaPremiumDisplay() {
                 value={draft.musicUrl || ""}
                 onChange={(e) => updateDraft("musicUrl", e.target.value)}
                 placeholder="https://...mp3"
+              />
+            </label>
+            <label>رابط الموسيقى الخلفية المستمرة MP3
+              <input
+                value={draft.backgroundMusicUrl || ""}
+                onChange={(e) => updateDraft("backgroundMusicUrl", e.target.value)}
+                placeholder="https://...mp3"
+              />
+            </label>
+            <label>مستوى صوت الموسيقى الخلفية 0.01 - 1
+              <input
+                type="number"
+                min="0"
+                max="1"
+                step="0.01"
+                value={draft.backgroundMusicVolume ?? 0.07}
+                onChange={(e) => updateDraft("backgroundMusicVolume", Number(e.target.value))}
+                placeholder="0.07"
               />
             </label>
             <label>سرعة شريط الأخبار <input type="number" value={draft.tickerSpeed} onChange={(e) => updateDraft("tickerSpeed", Number(e.target.value))} /></label>
