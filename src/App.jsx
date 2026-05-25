@@ -13,7 +13,6 @@ import {
   Award,
   Volume2,
   CloudSun,
-  Fuel,
   AlertTriangle,
   Gem,
   Settings,
@@ -64,8 +63,6 @@ const DEFAULT_DATA = {
   heroImageUrl: "",
   tickerText: "",
   alertText: "",
-  fuel95: "--",
-  diesel: "--",
   goldPrice: "--",
   newsApiKey: "",
   constructionNews: [],
@@ -313,23 +310,6 @@ function injectTvTheme() {
       animation: alertPulse 1.8s ease-in-out infinite;
       text-shadow:0 0 10px rgba(0,0,0,.65);
     }
-    .fuel-row {
-      position:relative;
-      width:100%;
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:.55vw;
-      margin-top:1vw;
-    }
-    .fuel-box {
-      border:1px solid rgba(245,178,26,.35);
-      border-radius:.65vw;
-      padding:.55vw .45vw;
-      background:rgba(0,0,0,.32);
-      box-shadow:inset 0 0 18px rgba(245,178,26,.05);
-    }
-    .fuel-label { font-size:.72vw; color:rgba(255,255,255,.70); font-weight:900; }
-    .fuel-value { margin-top:.15vw; font-size:1.05vw; color:var(--gold2); font-weight:1000; text-shadow:0 0 10px rgba(245,178,26,.45); }
     @keyframes alertPulse { 0%,100% { opacity:.92; transform:translateX(-50%) scale(1); } 50% { opacity:1; transform:translateX(-50%) scale(1.025); } }
     @keyframes tickerMove { 0% { transform:translateX(0); } 100% { transform:translateX(45%); } }
     @keyframes shimmer { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
@@ -435,8 +415,6 @@ function applyFirebaseSettings(base, remote) {
   if (remote.offerPercent !== undefined) next.offerPercent = String(remote.offerPercent).includes("%") ? String(remote.offerPercent) : `${remote.offerPercent}%`;
   if (remote.tickerSpeed !== undefined) next.tickerSpeed = Number(remote.tickerSpeed) || next.tickerSpeed;
   if (remote.alertText !== undefined) next.alertText = String(remote.alertText || "");
-  if (remote.fuel95 !== undefined) next.fuel95 = String(remote.fuel95 || "--");
-  if (remote.diesel !== undefined) next.diesel = String(remote.diesel || "--");
   if (remote.goldPrice !== undefined) next.goldPrice = String(remote.goldPrice || "--");
   if (remote.newsApiKey !== undefined) next.newsApiKey = String(remote.newsApiKey || "");
   if (remote.constructionNews !== undefined) {
@@ -505,8 +483,6 @@ function toFirebaseSettings(data) {
     offerPercent: Number(String(data.offerPercent || "0").replace("%", "")) || 0,
     tickerSpeed: Number(data.tickerSpeed || 95),
     alertText: data.alertText || "",
-    fuel95: data.fuel95 || "--",
-    diesel: data.diesel || "--",
     goldPrice: data.goldPrice || "--",
     newsApiKey: data.newsApiKey || "",
     constructionNews: data.constructionNews || [],
@@ -707,11 +683,7 @@ export default function HamoudaPremiumDisplay() {
     const base = (arr && arr.length ? arr : DEFAULT_DATA.tickerHe);
     const manualNews = Array.isArray(data.constructionNews) ? data.constructionNews : [];
     const newsItems = [...manualNews, ...constructionNews].filter(Boolean);
-    const fuelItems = [
-      data.fuel95 && data.fuel95 !== "--" ? `${isAr ? "بنزين 95" : "בנזין 95"}: ₪${data.fuel95}` : "",
-      data.diesel && data.diesel !== "--" ? `${isAr ? "سولار" : "סולר"}: ₪${data.diesel}` : ""
-    ].filter(Boolean);
-    return [...base, ...fuelItems, ...newsItems.map((n) => `🏗️ ${n}`)].join("     •     ");
+    return [...base, ...newsItems.map((n) => `🏗️ ${n}`)].join("     •     ");
   }, [data, isAr, constructionNews]);
 
   const topProducts = isAr ? data.topProductsAr : data.topProductsHe;
@@ -809,16 +781,6 @@ export default function HamoudaPremiumDisplay() {
             <div className="offer-word">{isAr ? "خصم" : "הנחה"}</div>
             <div className="offer-text">{t(data, "offerTextHe", "offerTextAr")}</div>
             <div className="offer-button">{isAr ? "لفترة محدودة!" : "לתקופה מוגבלת!"}</div>
-            <div className="fuel-row">
-              <div className="fuel-box">
-                <div className="fuel-label"><Fuel size={16} /> {isAr ? "بنزين 95" : "בנזין 95"}</div>
-                <div className="fuel-value">₪{data.fuel95 || "--"}</div>
-              </div>
-              <div className="fuel-box">
-                <div className="fuel-label"><Fuel size={16} /> {isAr ? "سولار" : "סולר"}</div>
-                <div className="fuel-value">₪{data.diesel || "--"}</div>
-              </div>
-            </div>
           </aside>
         </section>
 
@@ -869,8 +831,6 @@ export default function HamoudaPremiumDisplay() {
             <label>نسبة الخصم <input value={draft.offerPercent} onChange={(e) => updateDraft("offerPercent", e.target.value)} /></label>
             <label>سرعة شريط الأخبار <input type="number" value={draft.tickerSpeed} onChange={(e) => updateDraft("tickerSpeed", Number(e.target.value))} /></label>
             <label>تنبيه فوري <input value={draft.alertText || ""} onChange={(e) => updateDraft("alertText", e.target.value)} /></label>
-            <label>بنزين 95 <input value={draft.fuel95 || ""} onChange={(e) => updateDraft("fuel95", e.target.value)} /></label>
-            <label>سولار <input value={draft.diesel || ""} onChange={(e) => updateDraft("diesel", e.target.value)} /></label>
             <label>سعر الذهب يدوي اختياري <input value={draft.goldPrice || ""} onChange={(e) => updateDraft("goldPrice", e.target.value)} /></label>
             <label>NewsAPI Key اختياري <input value={draft.newsApiKey || ""} onChange={(e) => updateDraft("newsApiKey", e.target.value)} /></label>
             <label>أخبار بناء يدوية، افصل بينها بـ | <input value={(draft.constructionNews || []).join(" | ")} onChange={(e) => updateDraft("constructionNews", e.target.value.split("|").map(x => x.trim()).filter(Boolean))} /></label>
