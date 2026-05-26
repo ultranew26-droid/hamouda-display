@@ -128,55 +128,71 @@ function injectTvTheme() {
     * { box-sizing: border-box; }
     body { margin: 0; overflow: hidden; background:#03060b; }
     .tv-root {
-      width: 100vw; height: 100vh; color: #fff; overflow: hidden;
-      background:
-        radial-gradient(circle at 50% 0%, rgba(245,178,26,.13), transparent 30%),
-        radial-gradient(circle at 90% 70%, rgba(245,178,26,.10), transparent 35%),
-        linear-gradient(180deg, #03060b 0%, #06101e 54%, #03060b 100%);
+      position:relative;
+      isolation:isolate;
+      width: 100vw;
+      height: 100vh;
+      color: #fff;
+      overflow: hidden;
+      background:#03060b;
       font-family: Heebo, Arial, sans-serif;
     }
+
+    /* Dynamic construction background controlled from Firebase: backgroundImages */
     .background-slideshow {
       position: fixed;
       inset: 0;
       z-index: 0;
       overflow: hidden;
-      background:#03060b;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(245,178,26,.15), transparent 34%),
+        linear-gradient(180deg, #03060b 0%, #06101e 56%, #03060b 100%);
       pointer-events:none;
     }
+
     .background-slideshow img {
       position:absolute;
       inset:0;
       width:100%;
       height:100%;
       object-fit:cover;
-      filter: blur(10px) brightness(.32) saturate(1.15);
-      transform: scale(1.12);
+      object-position:center center;
+      filter: blur(8px) brightness(.42) saturate(1.18);
+      transform: scale(1.10);
       opacity:0;
-      transition: opacity 1.4s ease-in-out;
+      transition: opacity 1.35s ease-in-out;
       will-change: opacity, transform;
     }
+
     .background-slideshow img.active {
       opacity:1;
       animation: bgSlowZoom 18s ease-in-out infinite;
     }
+
     .background-vignette {
       position:fixed;
       inset:0;
       z-index:1;
       pointer-events:none;
       background:
-        radial-gradient(circle at 50% 20%, rgba(245,178,26,.14), transparent 34%),
-        linear-gradient(180deg, rgba(3,6,11,.62), rgba(3,6,11,.84));
+        radial-gradient(circle at 50% 22%, rgba(245,178,26,.12), transparent 30%),
+        radial-gradient(circle at 85% 65%, rgba(245,178,26,.10), transparent 34%),
+        linear-gradient(180deg, rgba(3,6,11,.58), rgba(3,6,11,.78));
     }
-    .pixel-shell, .hidden-controls, .live-alert, .settings-drawer { position: relative; z-index: 2; }
+
+    .pixel-shell, .hidden-controls, .live-alert, .settings-drawer {
+      position: relative;
+      z-index: 2;
+    }
+
     @keyframes bgSlowZoom {
-      0%,100% { transform:scale(1.12); }
-      50% { transform:scale(1.19); }
+      0%,100% { transform:scale(1.10); }
+      50% { transform:scale(1.17); }
     }
     .pixel-shell { height: 100%; padding: .85vw; display:flex; flex-direction:column; gap:.8vw; }
     .glass-panel {
       border: 1px solid rgba(245,178,26,.38);
-      background: linear-gradient(180deg, rgba(12,20,33,.92), rgba(4,9,15,.94));
+      background: linear-gradient(180deg, rgba(12,20,33,.82), rgba(4,9,15,.88));
       border-radius: 1.25vw;
       box-shadow: 0 0 0 1px rgba(255,255,255,.04) inset, 0 0 28px rgba(245,178,26,.12);
     }
@@ -756,11 +772,14 @@ export default function HamoudaPremiumDisplay() {
 
   useEffect(() => {
     const count = data.backgroundImages?.length || 1;
+    setBgIndex((v) => v % count);
+
     const timer = setInterval(() => {
       setBgIndex((v) => (v + 1) % count);
     }, 15000);
+
     return () => clearInterval(timer);
-  }, [data.backgroundImages?.length]);
+  }, [(data.backgroundImages || []).join("|")]);
 
   useEffect(() => {
     const musicUrl = String(data.backgroundMusicUrl || "").trim();
