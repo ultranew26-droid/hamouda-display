@@ -22,7 +22,11 @@ import {
   BadgePercent,
   Drill,
   ScrollText,
-  Building2
+  Building2,
+  Bot,
+  MessageCircle,
+  Sparkles,
+  Zap
 } from "lucide-react";
 import { db } from "./firebase";
 import { collection, doc, onSnapshot, setDoc } from "firebase/firestore";
@@ -438,6 +442,241 @@ function injectTvTheme() {
       opacity:1;
     }
 
+
+    /* HAMOODI AI cinematic product layer */
+    .ai-cinema-layer {
+      position:absolute;
+      inset:.9vw;
+      z-index:5;
+      pointer-events:none;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      align-items:center;
+      gap:1vw;
+    }
+    .ai-speaker {
+      align-self:start;
+      max-width:31vw;
+      border:1px solid rgba(34,211,238,.35);
+      background:linear-gradient(135deg, rgba(4,10,18,.76), rgba(8,20,35,.55));
+      border-radius:1.1vw;
+      padding:.85vw 1vw;
+      box-shadow:0 0 28px rgba(34,211,238,.18), inset 0 0 22px rgba(34,211,238,.06);
+      backdrop-filter: blur(8px);
+    }
+    .ai-speaker-head {
+      display:flex;
+      align-items:center;
+      gap:.55vw;
+      color:#7ee7ff;
+      font-size:.9vw;
+      font-weight:1000;
+      letter-spacing:.05em;
+    }
+    .ai-orb {
+      width:2.6vw;
+      height:2.6vw;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      color:#07111f;
+      background:radial-gradient(circle at 35% 28%, #fff, #5ee7ff 30%, #006c93 78%);
+      box-shadow:0 0 26px rgba(34,211,238,.85), 0 0 58px rgba(245,178,26,.22);
+      animation: aiOrbFloat 2.7s ease-in-out infinite;
+    }
+    .ai-speech {
+      margin-top:.55vw;
+      color:white;
+      font-size:1.15vw;
+      line-height:1.35;
+      font-weight:1000;
+      text-shadow:0 0 12px #000;
+    }
+    .voice-wave {
+      height:1.05vw;
+      margin-top:.6vw;
+      display:flex;
+      align-items:center;
+      gap:.16vw;
+      overflow:hidden;
+    }
+    .voice-wave span {
+      width:.16vw;
+      height:.25vw;
+      border-radius:9px;
+      background:#62eaff;
+      box-shadow:0 0 8px rgba(98,234,255,.9);
+      animation: voiceBeat 1.1s ease-in-out infinite;
+    }
+    .voice-wave span:nth-child(2n){ animation-delay:.13s; background:#ffd45b; }
+    .voice-wave span:nth-child(3n){ animation-delay:.25s; height:.8vw; }
+    .voice-wave span:nth-child(4n){ animation-delay:.36s; height:.55vw; }
+
+    .cinematic-stage {
+      justify-self:end;
+      align-self:center;
+      width:24vw;
+      height:24vw;
+      position:relative;
+      display:grid;
+      place-items:center;
+      border-radius:2vw;
+      background:
+        radial-gradient(circle at 50% 55%, rgba(245,178,26,.18), transparent 36%),
+        radial-gradient(circle at 50% 45%, rgba(34,211,238,.16), transparent 42%),
+        linear-gradient(180deg, rgba(5,10,18,.34), rgba(0,0,0,.26));
+      border:1px solid rgba(245,178,26,.22);
+      box-shadow: inset 0 0 45px rgba(255,255,255,.035), 0 0 55px rgba(34,211,238,.12);
+      overflow:hidden;
+      backdrop-filter: blur(3px);
+    }
+    .scan-ring, .scan-ring.two {
+      position:absolute;
+      width:18vw;
+      height:18vw;
+      border-radius:50%;
+      border:2px solid rgba(34,211,238,.22);
+      box-shadow:0 0 20px rgba(34,211,238,.18);
+      animation: spinRing 9s linear infinite;
+    }
+    .scan-ring.two {
+      width:14vw;
+      height:14vw;
+      border-color:rgba(245,178,26,.25);
+      animation-duration:6s;
+      animation-direction:reverse;
+    }
+    .stage-base {
+      position:absolute;
+      bottom:3.1vw;
+      width:15vw;
+      height:1.1vw;
+      border-radius:50%;
+      background:radial-gradient(ellipse at center, rgba(245,178,26,.9), rgba(245,178,26,.2) 45%, transparent 70%);
+      filter:blur(.12vw);
+      opacity:.9;
+      animation: baseGlow 2.4s ease-in-out infinite;
+    }
+    .product-holo {
+      position:relative;
+      z-index:2;
+      width:10.8vw;
+      height:10.8vw;
+      display:grid;
+      place-items:center;
+      color:#07111f;
+      border-radius:1.4vw;
+      background:linear-gradient(135deg, #ffd65c, #f0a300);
+      box-shadow:0 0 48px rgba(245,178,26,.55), inset 0 0 18px rgba(255,255,255,.42);
+    }
+    .product-holo svg { width:5.6vw; height:5.6vw; stroke-width:1.6; }
+    .product-caption {
+      position:absolute;
+      bottom:.85vw;
+      left:1vw;
+      right:1vw;
+      text-align:center;
+      z-index:3;
+      padding:.45vw .6vw;
+      border-radius:.7vw;
+      background:rgba(0,0,0,.55);
+      border:1px solid rgba(245,178,26,.28);
+      backdrop-filter:blur(5px);
+    }
+    .product-caption b { display:block; font-size:1vw; color:#fff; }
+    .product-caption span { display:block; margin-top:.15vw; color:#ffd65c; font-size:1.35vw; font-weight:1000; }
+    .cinematic-alert {
+      position:absolute;
+      top:.8vw;
+      right:.8vw;
+      left:.8vw;
+      text-align:center;
+      color:#7ee7ff;
+      font-size:.78vw;
+      font-weight:1000;
+      letter-spacing:.08em;
+      text-shadow:0 0 12px rgba(34,211,238,.85);
+    }
+
+    .product-holo.steel {
+      animation: riseSteel 2.8s ease-in-out infinite;
+      background:linear-gradient(135deg, #d9e5ef, #64748b);
+    }
+    .product-holo.cement {
+      animation: cementTurn 4s ease-in-out infinite;
+      background:linear-gradient(135deg, #f5d59a, #8b6b3c);
+    }
+    .product-holo.paint {
+      animation: paintPop 3s ease-in-out infinite;
+      background:linear-gradient(135deg, #ff72c6, #7c3aed);
+      color:#fff;
+    }
+    .product-holo.electric {
+      animation: electricPulse 1.45s ease-in-out infinite;
+      background:linear-gradient(135deg, #a5f3fc, #0284c7);
+    }
+    .product-holo.wood {
+      animation: woodSlide 3.2s ease-in-out infinite;
+      background:linear-gradient(135deg, #f6c06a, #8b4a16);
+    }
+    .product-holo.plumbing, .product-holo.seal, .product-holo.gypsum, .product-holo.default {
+      animation: smoothFloat 3.2s ease-in-out infinite;
+    }
+
+    .paint-flow {
+      position:absolute;
+      top:-20%;
+      left:12%;
+      width:4vw;
+      height:16vw;
+      border-radius:0 0 2vw 2vw;
+      opacity:0;
+      background:linear-gradient(180deg, rgba(255,114,198,.0), rgba(255,114,198,.9), rgba(124,58,237,.85));
+      filter:blur(.06vw);
+      animation: paintPour 3s ease-in-out infinite;
+    }
+    .electric-spark {
+      position:absolute;
+      inset:18%;
+      border-radius:50%;
+      border:1px dashed rgba(125,231,255,.55);
+      opacity:0;
+      animation:electricSpark 1.45s ease-in-out infinite;
+    }
+    .steel-bars {
+      position:absolute;
+      bottom:6.2vw;
+      display:flex;
+      gap:.22vw;
+      z-index:1;
+      opacity:.7;
+    }
+    .steel-bars i {
+      display:block;
+      width:.28vw;
+      height:7.2vw;
+      border-radius:.2vw;
+      background:linear-gradient(180deg, #e5eef7, #64748b);
+      transform-origin:bottom;
+      animation: barRise 2.8s ease-in-out infinite;
+    }
+    .steel-bars i:nth-child(2n){ animation-delay:.12s; height:8.2vw; }
+    .steel-bars i:nth-child(3n){ animation-delay:.22s; height:6.4vw; }
+
+    @keyframes aiOrbFloat { 0%,100%{ transform:translateY(0) scale(1);} 50%{ transform:translateY(-.25vw) scale(1.05);} }
+    @keyframes voiceBeat { 0%,100%{ height:.25vw; opacity:.55;} 50%{ height:1vw; opacity:1;} }
+    @keyframes spinRing { to{ transform:rotate(360deg);} }
+    @keyframes baseGlow { 0%,100%{ opacity:.6; transform:scaleX(.85);} 50%{ opacity:1; transform:scaleX(1.08);} }
+    @keyframes riseSteel { 0%{ transform:translateY(4vw) scale(.9); opacity:.45;} 45%,70%{ transform:translateY(0) scale(1); opacity:1;} 100%{ transform:translateY(-.3vw) scale(1.02); opacity:.9;} }
+    @keyframes cementTurn { 0%,100%{ transform:perspective(700px) rotateY(-18deg) translateY(0);} 50%{ transform:perspective(700px) rotateY(18deg) translateY(-.7vw);} }
+    @keyframes paintPop { 0%,100%{ transform:scale(.95) translateY(.4vw);} 50%{ transform:scale(1.05) translateY(-.45vw);} }
+    @keyframes electricPulse { 0%,100%{ transform:scale(.96); filter:brightness(1);} 50%{ transform:scale(1.06); filter:brightness(1.5);} }
+    @keyframes woodSlide { 0%{ transform:translateX(2vw); opacity:.4;} 45%,100%{ transform:translateX(0); opacity:1;} }
+    @keyframes smoothFloat { 0%,100%{ transform:translateY(.35vw);} 50%{ transform:translateY(-.55vw);} }
+    @keyframes paintPour { 0%,16%{ transform:translateY(-8vw); opacity:0;} 38%,65%{ transform:translateY(1.4vw); opacity:.85;} 100%{ transform:translateY(8vw); opacity:0;} }
+    @keyframes electricSpark { 0%,100%{ opacity:0; transform:scale(.75) rotate(0deg);} 50%{ opacity:1; transform:scale(1.12) rotate(18deg);} }
+    @keyframes barRise { 0%{ transform:scaleY(.05); opacity:.15;} 42%,72%{ transform:scaleY(1); opacity:.85;} 100%{ transform:scaleY(.75); opacity:.25;} }
+
     @media (max-aspect-ratio: 14/9) {
       .topbar { grid-template-columns: 1.6fr 2.2fr 1.5fr; }
       .main-grid { grid-template-columns: 24.5vw 1fr 24vw; }
@@ -690,6 +929,71 @@ function CurrencyPill({ icon, label, value, change }) {
   );
 }
 
+function cinematicType(product) {
+  const text = `${product?.icon || ""} ${product?.nameHe || ""} ${product?.nameAr || ""}`.toLowerCase();
+  if (text.includes("steel") || text.includes("ברזל") || text.includes("حديد")) return "steel";
+  if (text.includes("cement") || text.includes("מלט") || text.includes("إسمنت") || text.includes("اسمنت")) return "cement";
+  if (text.includes("paint") || text.includes("צבע") || text.includes("دهان")) return "paint";
+  if (text.includes("חשמל") || text.includes("electric") || text.includes("كهرباء") || text.includes("سلك")) return "electric";
+  if (text.includes("wood") || text.includes("עץ") || text.includes("خشب")) return "wood";
+  if (text.includes("pvc") || text.includes("سباكة") || text.includes("אינסטלציה")) return "plumbing";
+  if (text.includes("seal") || text.includes("איטום") || text.includes("عزل")) return "seal";
+  if (text.includes("gypsum") || text.includes("גבס") || text.includes("جبص")) return "gypsum";
+  return "default";
+}
+
+function aiSentence(data, product) {
+  const name = itemT(data, product, "nameHe", "nameAr");
+  const price = product?.price || "0";
+  const unit = itemT(data, product, "unitHe", "unitAr");
+  if (data.language === "ar") {
+    return `HAMOODI AI يعرض الآن ${name} بسعر ₪${price} / ${unit} بحركة سينمائية تلقائية.`;
+  }
+  return `HAMOODI AI מציג עכשיו ${name} במחיר ₪${price} / ${unit} עם אנימציה חכמה.`;
+}
+
+function CinematicProduct({ product, data }) {
+  const type = cinematicType(product);
+  const name = itemT(data, product, "nameHe", "nameAr");
+  const unit = itemT(data, product, "unitHe", "unitAr");
+  return (
+    <div className="ai-cinema-layer">
+      <div className="ai-speaker">
+        <div className="ai-speaker-head">
+          <div className="ai-orb"><Bot size={22} /></div>
+          <span>HAMOODI AI</span>
+          <Sparkles size={18} />
+        </div>
+        <div className="ai-speech">
+          {aiSentence(data, product)}
+        </div>
+        <div className="voice-wave">
+          {Array.from({ length: 34 }).map((_, i) => <span key={i} />)}
+        </div>
+      </div>
+
+      <div className="cinematic-stage">
+        <div className="cinematic-alert">{data.language === "ar" ? "فتح المنتج تلقائياً بواسطة الذكاء الاصطناعي" : "פתיחה אוטומטית על ידי AI"}</div>
+        <div className="scan-ring" />
+        <div className="scan-ring two" />
+        <div className="stage-base" />
+        {type === "paint" && <div className="paint-flow" />}
+        {type === "electric" && <div className="electric-spark" />}
+        {type === "steel" && <div className="steel-bars">{Array.from({ length: 16 }).map((_, i) => <i key={i} />)}</div>}
+
+        <div className={`product-holo ${type}`}>
+          <ProductIcon type={product?.icon || product?.nameHe || product?.nameAr} />
+        </div>
+
+        <div className="product-caption">
+          <b>{name}</b>
+          <span>₪{product?.price} / {unit}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function HamoudaPremiumDisplay() {
   injectTvTheme();
 
@@ -705,6 +1009,7 @@ export default function HamoudaPremiumDisplay() {
   const [gold, setGold] = useState({ loading: true, price: "--" });
   const [constructionNews, setConstructionNews] = useState([]);
   const [firebaseSettingsId, setFirebaseSettingsId] = useState(null);
+  const [activeCinematicIndex, setActiveCinematicIndex] = useState(0);
 
   const isAr = data.language === "ar";
   const locale = isAr ? "ar" : "he";
@@ -719,6 +1024,7 @@ export default function HamoudaPremiumDisplay() {
     (isAr ? "مشروع من أعمالنا" : "פרויקט מהעבודות שלנו");
   const backgroundImages = data.backgroundImages?.length ? data.backgroundImages : (DEFAULT_DATA.backgroundImages || []);
   const currentBackground = backgroundImages[bgIndex % Math.max(1, backgroundImages.length)] || FALLBACK_IMAGE;
+  const activeCinematicProduct = (data.prices || [])[activeCinematicIndex % Math.max(1, (data.prices || []).length)] || DEFAULT_DATA.prices[0];
 
   useEffect(() => {
     const unsub = onSnapshot(
@@ -740,6 +1046,14 @@ export default function HamoudaPremiumDisplay() {
     const clock = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(clock);
   }, []);
+
+  useEffect(() => {
+    const count = Math.max(1, data.prices?.length || 1);
+    const timer = setInterval(() => {
+      setActiveCinematicIndex((v) => (v + 1) % count);
+    }, 7000);
+    return () => clearInterval(timer);
+  }, [data.prices?.length]);
 
   useEffect(() => {
     const mediaCount = slideMedia.length || 1;
@@ -1005,6 +1319,8 @@ export default function HamoudaPremiumDisplay() {
                 <img src={currentMedia.src || FALLBACK_IMAGE} alt="slide" onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }} />
               )}
             </div>
+
+            <CinematicProduct product={activeCinematicProduct} data={data} />
           </main>
 
           <aside className="projects-card glass-panel">
