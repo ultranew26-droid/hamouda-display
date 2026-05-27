@@ -439,104 +439,24 @@ function injectTvTheme() {
     }
 
 
-    /* ===== HAMOODI AI CINEMATIC PRODUCT STAGE - واضح وقوي ===== */
-    .ai-cinema-stage {
-      position:absolute;
-      inset:0;
-      overflow:hidden;
-      background:
-        radial-gradient(circle at 50% 36%, rgba(245,178,26,.24), transparent 28%),
-        radial-gradient(circle at 22% 80%, rgba(34,211,238,.18), transparent 32%),
-        linear-gradient(180deg, rgba(2,6,12,.94), rgba(0,0,0,.98));
-    }
-    .ai-cinema-bg-media {
-      position:absolute; inset:0; opacity:.28; filter: blur(4px) brightness(.62) saturate(1.2); transform:scale(1.08);
-    }
-    .ai-cinema-bg-media img,.ai-cinema-bg-media video { width:100%; height:100%; object-fit:cover; }
-    .ai-cinema-scan {
-      position:absolute; inset:-20%; pointer-events:none;
-      background:linear-gradient(100deg, transparent 0%, transparent 40%, rgba(34,211,238,.32) 48%, rgba(245,178,26,.22) 52%, transparent 60%, transparent 100%);
-      animation: aiScanSweep 4.5s ease-in-out infinite;
-      mix-blend-mode:screen;
-    }
-    @keyframes aiScanSweep { 0%{transform:translateX(-75%)} 55%,100%{transform:translateX(75%)} }
-    .ai-orb-box {
-      position:absolute; top:1.05vw; right:1.2vw; width:42%; min-height:8.7vw;
-      border:1px solid rgba(34,211,238,.55); border-radius:1.15vw; padding:1vw 1.2vw;
-      background:linear-gradient(135deg, rgba(4,12,22,.82), rgba(2,7,13,.62));
-      box-shadow:0 0 32px rgba(34,211,238,.22), inset 0 0 26px rgba(34,211,238,.08);
-      backdrop-filter: blur(10px); z-index:6;
-    }
-    .ai-orb-head { display:flex; align-items:center; gap:.65vw; color:#8ff3ff; font-size:1vw; font-weight:1000; letter-spacing:.02em; }
-    .ai-orb-icon {
-      width:2.8vw; height:2.8vw; border-radius:50%; display:grid; place-items:center; color:#06121f;
-      background:radial-gradient(circle at 35% 30%, #fff, #58e9ff 38%, #0ea5e9 70%);
-      box-shadow:0 0 24px rgba(34,211,238,.9); animation: aiOrbPulse 1.7s ease-in-out infinite;
-    }
-    @keyframes aiOrbPulse { 0%,100%{transform:scale(1); filter:brightness(1)} 50%{transform:scale(1.08); filter:brightness(1.25)} }
-    .ai-orb-text { margin-top:.55vw; font-size:1.25vw; line-height:1.35; font-weight:1000; text-shadow:0 0 14px rgba(255,255,255,.25); }
-    .ai-wave { margin-top:.7vw; height:1vw; display:flex; gap:.14vw; align-items:center; justify-content:center; direction:ltr; }
-    .ai-wave span { width:.12vw; min-width:2px; height:.35vw; border-radius:2px; background:linear-gradient(180deg,#7df9ff,#f5b21a); animation: waveTalk .9s ease-in-out infinite; box-shadow:0 0 8px rgba(34,211,238,.7); }
-    .ai-wave span:nth-child(2n){ animation-delay:.12s } .ai-wave span:nth-child(3n){ animation-delay:.24s } .ai-wave span:nth-child(4n){ animation-delay:.36s }
-    @keyframes waveTalk { 0%,100%{height:.25vw} 50%{height:1vw} }
-    .product-cinema-wrap { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding-top:2vw; }
-    .product-platform {
-      position:absolute; bottom:5.7vw; left:50%; width:22vw; height:4vw; transform:translateX(-50%);
-      border-radius:50%; background:radial-gradient(ellipse at center, rgba(245,178,26,.48), rgba(34,211,238,.16) 48%, transparent 70%);
-      filter:blur(.15vw); animation: platformPulse 2s ease-in-out infinite;
-    }
-    @keyframes platformPulse { 0%,100%{opacity:.65; transform:translateX(-50%) scale(1)} 50%{opacity:1; transform:translateX(-50%) scale(1.08)} }
-    .product-caption {
-      position:absolute; bottom:1.15vw; left:5%; right:5%; height:4.2vw; border-radius:.8vw;
-      border:1px solid rgba(245,178,26,.55); background:rgba(0,0,0,.72); display:grid; grid-template-columns:1fr 1fr 1fr; align-items:center; gap:.7vw; padding:.55vw 1vw; z-index:5;
-      box-shadow:0 0 22px rgba(245,178,26,.18);
-    }
-    .product-caption .cap-title { color:white; font-size:1.25vw; font-weight:1000; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .product-caption .cap-price { color:#ffdc63; font-size:2vw; font-weight:1000; text-align:center; text-shadow:0 0 18px rgba(245,178,26,.8); }
-    .product-caption .cap-unit { color:rgba(255,255,255,.7); font-size:.9vw; font-weight:900; text-align:left; }
-    .ai-big-title { position:absolute; top:1.4vw; left:1.4vw; z-index:4; color:#8ff3ff; font-weight:1000; font-size:1.05vw; text-shadow:0 0 12px rgba(34,211,238,.75); }
 
-    .cinema-object { position:relative; z-index:3; transform-style:preserve-3d; }
-    .cement-bag {
-      width:11vw; height:15vw; border-radius:1.2vw 1.2vw .75vw .75vw; padding:1.25vw .8vw; text-align:center;
-      background:linear-gradient(135deg,#d8bb7c,#f4d78d 32%,#ad8750 68%,#3b2e22);
-      border:1px solid rgba(255,235,173,.75); box-shadow:0 1.4vw 4vw rgba(0,0,0,.55), inset 0 0 2vw rgba(255,255,255,.22);
-      animation: cementRotate 4.2s ease-in-out infinite;
-    }
-    .cement-bag:before { content:""; position:absolute; inset:.45vw; border:2px dashed rgba(20,30,45,.42); border-radius:.85vw; }
-    .cement-logo { font-size:1.35vw; font-weight:1000; color:#0b1728; margin-top:2vw; }
-    .cement-weight { font-size:2.05vw; font-weight:1000; color:#0b1728; margin-top:1.4vw; }
-    .cement-dust { position:absolute; width:18vw; height:7vw; bottom:5vw; left:50%; transform:translateX(-50%); background:radial-gradient(ellipse, rgba(218,188,120,.42), transparent 70%); filter:blur(.6vw); animation:dustMove 2.5s ease-in-out infinite; }
-    @keyframes cementRotate { 0%,100%{transform:perspective(900px) rotateY(-18deg) translateY(0)} 50%{transform:perspective(900px) rotateY(18deg) translateY(-.7vw)} }
-    @keyframes dustMove { 0%,100%{opacity:.35; transform:translateX(-50%) scale(.9)} 50%{opacity:.85; transform:translateX(-50%) scale(1.12)} }
-
-    .steel-scene { width:22vw; height:18vw; display:flex; align-items:flex-end; justify-content:center; gap:.38vw; overflow:visible; }
-    .steel-bar { width:.74vw; border-radius:.35vw .35vw 0 0; background:linear-gradient(90deg,#6f7b86,#f4f7fb,#2b333b); box-shadow:0 0 18px rgba(125,211,252,.75); transform-origin:bottom; animation: steelRise 4.2s cubic-bezier(.17,.9,.2,1) infinite; }
-    .steel-bar:nth-child(1){height:10vw;animation-delay:0s}.steel-bar:nth-child(2){height:14vw;animation-delay:.12s}.steel-bar:nth-child(3){height:12vw;animation-delay:.24s}.steel-bar:nth-child(4){height:17vw;animation-delay:.36s}.steel-bar:nth-child(5){height:13vw;animation-delay:.48s}.steel-bar:nth-child(6){height:15vw;animation-delay:.6s}.steel-bar:nth-child(7){height:11vw;animation-delay:.72s}.steel-bar:nth-child(8){height:16vw;animation-delay:.84s}
-    @keyframes steelRise { 0%{transform:translateY(18vw) scaleY(.15); opacity:0} 24%{transform:translateY(0) scaleY(1); opacity:1} 72%{transform:translateY(0) scaleY(1); opacity:1} 100%{transform:translateY(-1.5vw) scaleY(1); opacity:0} }
-
-    .paint-scene { width:25vw; height:18vw; position:relative; }
-    .paint-pour { position:absolute; top:-7vw; left:9vw; width:6vw; height:17vw; border-radius:0 0 2.4vw 2.4vw; background:linear-gradient(180deg,#ff4cc9,#8b5cf6 50%,#22d3ee); filter:drop-shadow(0 0 20px rgba(236,72,153,.9)); animation: paintPour 4.2s ease-in-out infinite; }
-    .paint-splash { position:absolute; bottom:2vw; left:3vw; width:19vw; height:5.5vw; border-radius:50%; background:radial-gradient(ellipse,#ff4cc9 0%,#8b5cf6 42%,rgba(34,211,238,.65) 63%,transparent 72%); animation: splashGrow 4.2s ease-in-out infinite; filter:blur(.1vw); }
-    .paint-can { position:absolute; bottom:4vw; right:5vw; width:7vw; height:8vw; border-radius:.7vw; background:linear-gradient(90deg,#e5e7eb,#ffffff,#8b949e); border:1px solid white; box-shadow:0 1vw 2vw rgba(0,0,0,.45); overflow:hidden; }
-    .paint-can:before { content:"צבע"; position:absolute; inset:auto 0 2.4vw 0; color:#0b1728; text-align:center; font-size:1.4vw; font-weight:1000; }
-    .paint-can:after { content:""; position:absolute; left:0; right:0; bottom:0; height:2.3vw; background:linear-gradient(90deg,#ff4cc9,#8b5cf6,#22d3ee); }
-    @keyframes paintPour { 0%{transform:translateY(-13vw) scaleY(.25); opacity:0} 22%{transform:translateY(0) scaleY(1); opacity:1} 74%{transform:translateY(0) scaleY(1); opacity:1} 100%{transform:translateY(6vw) scaleY(.45); opacity:0} }
-    @keyframes splashGrow { 0%{transform:scale(.2); opacity:0} 25%{transform:scale(1); opacity:.95} 80%{transform:scale(1.08); opacity:.8} 100%{transform:scale(1.25); opacity:0} }
-
-    .electric-scene { position:relative; width:23vw; height:17vw; }
-    .wire-coil { position:absolute; bottom:3.4vw; left:50%; width:12vw; height:12vw; transform:translateX(-50%); border:.9vw solid #111827; border-top-color:#f5b21a; border-right-color:#22d3ee; border-radius:50%; box-shadow:0 0 35px rgba(34,211,238,.65); animation: coilSpin 3.2s linear infinite; }
-    .bolt { position:absolute; left:45%; top:1vw; width:5vw; height:12vw; background:#fef08a; clip-path:polygon(47% 0, 88% 0, 61% 39%, 100% 39%, 32% 100%, 47% 55%, 12% 55%); filter:drop-shadow(0 0 22px #facc15); animation: boltFlash 1.2s ease-in-out infinite; }
-    @keyframes coilSpin { to{transform:translateX(-50%) rotate(360deg)} }
-    @keyframes boltFlash { 0%,100%{opacity:.45; transform:scale(.95)} 50%{opacity:1; transform:scale(1.08)} }
-
-    .wood-scene { width:25vw; height:18vw; position:relative; }
-    .wood-plank { position:absolute; left:4vw; width:17vw; height:2.1vw; border-radius:.35vw; background:linear-gradient(90deg,#8a4f21,#d49a55,#6b3f1c); box-shadow:0 .5vw 1.6vw rgba(0,0,0,.35), inset 0 0 1vw rgba(255,255,255,.12); animation: woodSlide 4.2s ease-in-out infinite; }
-    .wood-plank:nth-child(1){bottom:4vw;animation-delay:0s}.wood-plank:nth-child(2){bottom:6vw;animation-delay:.12s}.wood-plank:nth-child(3){bottom:8vw;animation-delay:.24s}.wood-plank:nth-child(4){bottom:10vw;animation-delay:.36s}.wood-plank:nth-child(5){bottom:12vw;animation-delay:.48s}
-    @keyframes woodSlide { 0%{transform:translateX(28vw); opacity:0} 25%,75%{transform:translateX(0); opacity:1} 100%{transform:translateX(-22vw); opacity:0} }
-
-    .default-box-product { width:12vw; height:12vw; border-radius:1.2vw; display:grid; place-items:center; background:linear-gradient(135deg,#ffdc63,#c48a00); color:#07111f; box-shadow:0 0 50px rgba(245,178,26,.55); animation: defaultFloat 3s ease-in-out infinite; }
-    @keyframes defaultFloat { 0%,100%{transform:translateY(0) rotate(-2deg)} 50%{transform:translateY(-1vw) rotate(2deg)} }
+    /* ===== HAMOODI AI CINEMATIC STAGE - REAL VISIBLE MOTION ===== */
+    .ai-cinema-stage{position:absolute;inset:0;overflow:hidden;background:radial-gradient(circle at 50% 36%,rgba(245,178,26,.22),transparent 28%),radial-gradient(circle at 25% 75%,rgba(34,211,238,.18),transparent 34%),linear-gradient(180deg,rgba(2,6,12,.96),rgba(0,0,0,.99));}
+    .ai-cinema-scan{position:absolute;inset:-20%;background:linear-gradient(100deg,transparent 0%,transparent 39%,rgba(34,211,238,.36) 47%,rgba(245,178,26,.28) 52%,transparent 61%,transparent 100%);animation:aiScanSweep 4.2s ease-in-out infinite;mix-blend-mode:screen;pointer-events:none;z-index:2;}
+    @keyframes aiScanSweep{0%{transform:translateX(-75%)}55%,100%{transform:translateX(75%)}}
+    .ai-cinema-title{position:absolute;top:1vw;left:1.2vw;z-index:7;color:#8ff3ff;font-size:1vw;font-weight:1000;text-shadow:0 0 14px rgba(34,211,238,.8)}
+    .ai-orb-box{position:absolute;top:1vw;right:1.15vw;width:43%;min-height:8.2vw;border:1px solid rgba(34,211,238,.62);border-radius:1.15vw;padding:.85vw 1vw;background:linear-gradient(135deg,rgba(4,12,22,.9),rgba(2,7,13,.68));box-shadow:0 0 34px rgba(34,211,238,.28),inset 0 0 26px rgba(34,211,238,.09);backdrop-filter:blur(10px);z-index:8;}
+    .ai-orb-head{display:flex;align-items:center;gap:.6vw;color:#8ff3ff;font-size:1vw;font-weight:1000;letter-spacing:.02em}.ai-orb-icon{width:2.7vw;height:2.7vw;border-radius:50%;display:grid;place-items:center;color:#06121f;background:radial-gradient(circle at 35% 30%,#fff,#58e9ff 38%,#0ea5e9 70%);box-shadow:0 0 24px rgba(34,211,238,.9);animation:aiOrbPulse 1.5s ease-in-out infinite}@keyframes aiOrbPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+    .ai-orb-text{margin-top:.45vw;font-size:1.18vw;line-height:1.35;font-weight:1000;text-shadow:0 0 12px rgba(255,255,255,.25)}
+    .ai-wave{margin-top:.55vw;height:.95vw;display:flex;gap:.13vw;align-items:center;justify-content:center;direction:ltr}.ai-wave span{width:.12vw;min-width:2px;height:.3vw;border-radius:2px;background:linear-gradient(180deg,#7df9ff,#f5b21a);animation:waveTalk .85s ease-in-out infinite;box-shadow:0 0 8px rgba(34,211,238,.7)}.ai-wave span:nth-child(2n){animation-delay:.12s}.ai-wave span:nth-child(3n){animation-delay:.24s}.ai-wave span:nth-child(4n){animation-delay:.36s}@keyframes waveTalk{0%,100%{height:.25vw}50%{height:.95vw}}
+    .product-cinema-wrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding-top:2.5vw;z-index:4}.product-platform{position:absolute;bottom:5.7vw;left:50%;width:23vw;height:4vw;transform:translateX(-50%);border-radius:50%;background:radial-gradient(ellipse at center,rgba(245,178,26,.58),rgba(34,211,238,.18) 48%,transparent 70%);filter:blur(.14vw);animation:platformPulse 2s ease-in-out infinite}@keyframes platformPulse{0%,100%{opacity:.65;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.1)}}
+    .product-caption{position:absolute;bottom:1vw;left:5%;right:5%;height:4.3vw;border-radius:.85vw;border:1px solid rgba(245,178,26,.6);background:rgba(0,0,0,.75);display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;gap:.7vw;padding:.55vw 1vw;z-index:9;box-shadow:0 0 25px rgba(245,178,26,.2)}.cap-title{color:white;font-size:1.25vw;font-weight:1000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.cap-price{color:#ffdc63;font-size:2vw;font-weight:1000;text-align:center;text-shadow:0 0 18px rgba(245,178,26,.85)}.cap-unit{color:rgba(255,255,255,.7);font-size:.9vw;font-weight:900;text-align:left}
+    .cinema-object{position:relative;z-index:5;transform-style:preserve-3d}.cement-bag{width:11vw;height:15vw;border-radius:1.2vw 1.2vw .75vw .75vw;padding:1.25vw .8vw;text-align:center;background:linear-gradient(135deg,#d8bb7c,#f4d78d 32%,#ad8750 68%,#3b2e22);border:1px solid rgba(255,235,173,.75);box-shadow:0 1.4vw 4vw rgba(0,0,0,.55),inset 0 0 2vw rgba(255,255,255,.22);animation:cementRotate 4s ease-in-out infinite}.cement-bag:before{content:"";position:absolute;inset:.45vw;border:2px dashed rgba(20,30,45,.42);border-radius:.85vw}.cement-logo{font-size:1.35vw;font-weight:1000;color:#0b1728;margin-top:2vw}.cement-weight{font-size:2.05vw;font-weight:1000;color:#0b1728;margin-top:1.4vw}.cement-dust{position:absolute;width:18vw;height:7vw;bottom:5vw;left:50%;transform:translateX(-50%);background:radial-gradient(ellipse,rgba(218,188,120,.42),transparent 70%);filter:blur(.6vw);animation:dustMove 2.4s ease-in-out infinite}@keyframes cementRotate{0%,100%{transform:perspective(900px) rotateY(-22deg) translateY(0)}50%{transform:perspective(900px) rotateY(22deg) translateY(-.7vw)}}@keyframes dustMove{0%,100%{opacity:.35;transform:translateX(-50%) scale(.9)}50%{opacity:.85;transform:translateX(-50%) scale(1.12)}}
+    .steel-scene{width:23vw;height:18vw;display:flex;align-items:flex-end;justify-content:center;gap:.38vw;overflow:visible}.steel-bar{width:.78vw;border-radius:.35vw .35vw 0 0;background:linear-gradient(90deg,#6f7b86,#f4f7fb,#2b333b);box-shadow:0 0 18px rgba(125,211,252,.85);transform-origin:bottom;animation:steelRise 4s cubic-bezier(.17,.9,.2,1) infinite}.steel-bar:nth-child(1){height:10vw;animation-delay:0s}.steel-bar:nth-child(2){height:14vw;animation-delay:.12s}.steel-bar:nth-child(3){height:12vw;animation-delay:.24s}.steel-bar:nth-child(4){height:17vw;animation-delay:.36s}.steel-bar:nth-child(5){height:13vw;animation-delay:.48s}.steel-bar:nth-child(6){height:15vw;animation-delay:.6s}.steel-bar:nth-child(7){height:11vw;animation-delay:.72s}.steel-bar:nth-child(8){height:16vw;animation-delay:.84s}@keyframes steelRise{0%{transform:translateY(18vw) scaleY(.15);opacity:0}24%{transform:translateY(0) scaleY(1);opacity:1}72%{transform:translateY(0) scaleY(1);opacity:1}100%{transform:translateY(-1.4vw) scaleY(1);opacity:0}}
+    .paint-scene{width:25vw;height:18vw;position:relative}.paint-pour{position:absolute;top:-7vw;left:9vw;width:6vw;height:17vw;border-radius:0 0 2.4vw 2.4vw;background:linear-gradient(180deg,#ff4cc9,#8b5cf6 50%,#22d3ee);filter:drop-shadow(0 0 20px rgba(236,72,153,.95));animation:paintPour 4s ease-in-out infinite}.paint-splash{position:absolute;bottom:2vw;left:3vw;width:19vw;height:5.5vw;border-radius:50%;background:radial-gradient(ellipse,#ff4cc9 0%,#8b5cf6 42%,rgba(34,211,238,.65) 63%,transparent 72%);animation:splashGrow 4s ease-in-out infinite;filter:blur(.1vw)}.paint-can{position:absolute;bottom:4vw;right:5vw;width:7vw;height:8vw;border-radius:.7vw;background:linear-gradient(90deg,#e5e7eb,#fff,#8b949e);border:1px solid white;box-shadow:0 1vw 2vw rgba(0,0,0,.45);overflow:hidden}.paint-can:before{content:"צבע";position:absolute;inset:auto 0 2.4vw 0;color:#0b1728;text-align:center;font-size:1.4vw;font-weight:1000}.paint-can:after{content:"";position:absolute;left:0;right:0;bottom:0;height:2.3vw;background:linear-gradient(90deg,#ff4cc9,#8b5cf6,#22d3ee)}@keyframes paintPour{0%{transform:translateY(-13vw) scaleY(.25);opacity:0}22%{transform:translateY(0) scaleY(1);opacity:1}74%{transform:translateY(0) scaleY(1);opacity:1}100%{transform:translateY(6vw) scaleY(.45);opacity:0}}@keyframes splashGrow{0%{transform:scale(.2);opacity:0}25%{transform:scale(1);opacity:.95}80%{transform:scale(1.08);opacity:.8}100%{transform:scale(1.25);opacity:0}}
+    .electric-scene{position:relative;width:23vw;height:17vw}.wire-coil{position:absolute;bottom:3.4vw;left:50%;width:12vw;height:12vw;transform:translateX(-50%);border:.9vw solid #111827;border-top-color:#f5b21a;border-right-color:#22d3ee;border-radius:50%;box-shadow:0 0 35px rgba(34,211,238,.65);animation:coilSpin 3s linear infinite}.bolt{position:absolute;left:45%;top:1vw;width:5vw;height:12vw;background:#fef08a;clip-path:polygon(47% 0,88% 0,61% 39%,100% 39%,32% 100%,47% 55%,12% 55%);filter:drop-shadow(0 0 22px #facc15);animation:boltFlash 1.1s ease-in-out infinite}@keyframes coilSpin{to{transform:translateX(-50%) rotate(360deg)}}@keyframes boltFlash{0%,100%{opacity:.45;transform:scale(.95)}50%{opacity:1;transform:scale(1.08)}}
+    .wood-scene{width:25vw;height:18vw;position:relative}.wood-plank{position:absolute;left:4vw;width:17vw;height:2.1vw;border-radius:.35vw;background:linear-gradient(90deg,#8a4f21,#d49a55,#6b3f1c);box-shadow:0 .5vw 1.6vw rgba(0,0,0,.35),inset 0 0 1vw rgba(255,255,255,.12);animation:woodSlide 4s ease-in-out infinite}.wood-plank:nth-child(1){bottom:4vw;animation-delay:0s}.wood-plank:nth-child(2){bottom:6vw;animation-delay:.12s}.wood-plank:nth-child(3){bottom:8vw;animation-delay:.24s}.wood-plank:nth-child(4){bottom:10vw;animation-delay:.36s}.wood-plank:nth-child(5){bottom:12vw;animation-delay:.48s}@keyframes woodSlide{0%{transform:translateX(28vw);opacity:0}25%,75%{transform:translateX(0);opacity:1}100%{transform:translateX(-22vw);opacity:0}}
+    .default-box-product{width:12vw;height:12vw;border-radius:1.2vw;display:grid;place-items:center;background:linear-gradient(135deg,#ffdc63,#c48a00);color:#07111f;box-shadow:0 0 50px rgba(245,178,26,.55);animation:defaultFloat 3s ease-in-out infinite}@keyframes defaultFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-1vw) rotate(2deg)}}
 
     @media (max-aspect-ratio: 14/9) {
       .topbar { grid-template-columns: 1.6fr 2.2fr 1.5fr; }
@@ -778,18 +698,6 @@ function PriceRow({ p, data }) {
   );
 }
 
-function CurrencyPill({ icon, label, value, change }) {
-  return (
-    <div className="data-pill">
-      <div className="pill-icon">{icon}</div>
-      <div>
-        <div className="pill-label">{label}</div>
-        <div className="pill-value">{value} {change && <span className="pill-change">{change}</span>}</div>
-      </div>
-    </div>
-  );
-}
-
 
 function getCinemaKind(item) {
   const txt = `${item?.icon || ""} ${item?.nameHe || ""} ${item?.nameAr || ""}`.toLowerCase();
@@ -808,20 +716,13 @@ function CinematicProductStage({ item, data, media, fallback }) {
   const unit = itemT(data, item, "unitHe", "unitAr") || "";
   const price = item?.price ?? "--";
   const aiText = isAr
-    ? `HAMOODI AI يعرض الآن ${name} بسعر ₪${price} / ${unit}. شاهد الحركة السينمائية للمنتج.`
+    ? `HAMOODI AI يعرض الآن ${name} بسعر ₪${price} / ${unit}. الحركة تعمل تلقائياً.`
     : `HAMOODI AI מציג עכשיו ${name} במחיר ₪${price} / ${unit}. האנימציה פועלת אוטומטית.`;
 
   return (
     <div className="ai-cinema-stage">
-      <div className="ai-cinema-bg-media">
-        {media?.type === "video" ? (
-          <video src={media.src} autoPlay muted loop playsInline />
-        ) : (
-          <img src={media?.src || fallback} alt="background" onError={(e) => { e.currentTarget.src = fallback; }} />
-        )}
-      </div>
       <div className="ai-cinema-scan" />
-      <div className="ai-big-title">{isAr ? "فتح تلقائي بواسطة الذكاء الاصطناعي" : "פתיחה אוטומטית על ידי AI"}</div>
+      <div className="ai-cinema-title">{isAr ? "فتح تلقائي بواسطة الذكاء الاصطناعي" : "פתיחה אוטומטית על ידי AI"}</div>
 
       <div className="ai-orb-box">
         <div className="ai-orb-head">
@@ -843,38 +744,29 @@ function CinematicProductStage({ item, data, media, fallback }) {
             </div>
           </>
         )}
-        {kind === "steel" && (
-          <div className="cinema-object steel-scene">
-            {Array.from({ length: 8 }).map((_, i) => <div className="steel-bar" key={i} />)}
-          </div>
-        )}
-        {kind === "paint" && (
-          <div className="cinema-object paint-scene">
-            <div className="paint-pour" />
-            <div className="paint-splash" />
-            <div className="paint-can" />
-          </div>
-        )}
-        {kind === "electric" && (
-          <div className="cinema-object electric-scene">
-            <div className="wire-coil" />
-            <div className="bolt" />
-          </div>
-        )}
-        {kind === "wood" && (
-          <div className="cinema-object wood-scene">
-            {Array.from({ length: 5 }).map((_, i) => <div className="wood-plank" key={i} />)}
-          </div>
-        )}
-        {kind === "default" && (
-          <div className="cinema-object default-box-product"><ProductIcon type={item?.icon || item?.nameHe} /></div>
-        )}
+        {kind === "steel" && <div className="cinema-object steel-scene">{Array.from({ length: 8 }).map((_, i) => <div className="steel-bar" key={i} />)}</div>}
+        {kind === "paint" && <div className="cinema-object paint-scene"><div className="paint-pour" /><div className="paint-splash" /><div className="paint-can" /></div>}
+        {kind === "electric" && <div className="cinema-object electric-scene"><div className="wire-coil" /><div className="bolt" /></div>}
+        {kind === "wood" && <div className="cinema-object wood-scene">{Array.from({ length: 5 }).map((_, i) => <div className="wood-plank" key={i} />)}</div>}
+        {kind === "default" && <div className="cinema-object default-box-product"><ProductIcon type={item?.icon || item?.nameHe} /></div>}
       </div>
 
       <div className="product-caption">
         <div className="cap-title">{name}</div>
         <div className="cap-price">₪{price}</div>
         <div className="cap-unit">{unit}</div>
+      </div>
+    </div>
+  );
+}
+
+function CurrencyPill({ icon, label, value, change }) {
+  return (
+    <div className="data-pill">
+      <div className="pill-icon">{icon}</div>
+      <div>
+        <div className="pill-label">{label}</div>
+        <div className="pill-value">{value} {change && <span className="pill-change">{change}</span>}</div>
       </div>
     </div>
   );
@@ -896,13 +788,6 @@ export default function HamoudaPremiumDisplay() {
   const [constructionNews, setConstructionNews] = useState([]);
   const [firebaseSettingsId, setFirebaseSettingsId] = useState(null);
   const [cinematicIndex, setCinematicIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCinematicIndex((v) => (v + 1) % Math.max(1, (data.prices || []).length));
-    }, 4200);
-    return () => clearInterval(timer);
-  }, [data.prices]);
 
   const isAr = data.language === "ar";
   const locale = isAr ? "ar" : "he";
@@ -969,6 +854,14 @@ export default function HamoudaPremiumDisplay() {
 
     return () => clearInterval(timer);
   }, [data.projectImages?.length, data.musicUrl]);
+
+  useEffect(() => {
+    const count = Math.max(1, (data.prices || []).length);
+    const timer = setInterval(() => {
+      setCinematicIndex((v) => (v + 1) % count);
+    }, 4200);
+    return () => clearInterval(timer);
+  }, [data.prices]);
 
   useEffect(() => {
     const count = data.backgroundImages?.length || 1;
