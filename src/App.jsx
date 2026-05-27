@@ -677,6 +677,184 @@ function injectTvTheme() {
     @keyframes electricSpark { 0%,100%{ opacity:0; transform:scale(.75) rotate(0deg);} 50%{ opacity:1; transform:scale(1.12) rotate(18deg);} }
     @keyframes barRise { 0%{ transform:scaleY(.05); opacity:.15;} 42%,72%{ transform:scaleY(1); opacity:.85;} 100%{ transform:scaleY(.75); opacity:.25;} }
 
+
+    /* ===== EXTRA VISIBLE CINEMATIC MOTIONS V2 ===== */
+    .ai-cinema-layer {
+      grid-template-columns: .95fr 1.15fr !important;
+      gap:1.15vw !important;
+    }
+    .ai-speaker { max-width:29vw !important; }
+    .cinematic-stage {
+      width:27vw !important;
+      height:27vw !important;
+      border-color:rgba(34,211,238,.35) !important;
+      box-shadow:0 0 70px rgba(34,211,238,.22), inset 0 0 60px rgba(245,178,26,.08) !important;
+    }
+    .cinematic-stage:before {
+      content:"";
+      position:absolute;
+      inset:-20%;
+      background:conic-gradient(from 0deg, transparent, rgba(34,211,238,.20), transparent, rgba(245,178,26,.22), transparent);
+      animation: aiScanSweep 4.5s linear infinite;
+      opacity:.75;
+    }
+    .product-holo { display:none !important; }
+    .stage-scene {
+      position:relative;
+      z-index:3;
+      width:19vw;
+      height:17vw;
+      display:grid;
+      place-items:center;
+      transform-style:preserve-3d;
+    }
+
+    .steel-scene { align-items:end; }
+    .steel-scene .steel-bar-big {
+      position:absolute;
+      bottom:1.6vw;
+      width:.62vw;
+      border-radius:.35vw;
+      background:linear-gradient(90deg,#e8f4ff,#64748b,#f8fbff);
+      box-shadow:0 0 16px rgba(125,211,252,.75);
+      transform-origin:bottom;
+      animation: steelFromGround 2.6s cubic-bezier(.2,.8,.2,1) infinite;
+    }
+    .steel-scene .steel-bar-big:nth-child(1){ height:10vw; right:4.2vw; animation-delay:.00s; }
+    .steel-scene .steel-bar-big:nth-child(2){ height:12vw; right:5.45vw; animation-delay:.10s; }
+    .steel-scene .steel-bar-big:nth-child(3){ height:9.5vw; right:6.7vw; animation-delay:.20s; }
+    .steel-scene .steel-bar-big:nth-child(4){ height:12.7vw; right:8vw; animation-delay:.30s; }
+    .steel-scene .steel-bar-big:nth-child(5){ height:10.8vw; right:9.3vw; animation-delay:.40s; }
+    .steel-scene .steel-bar-big:nth-child(6){ height:13.2vw; right:10.6vw; animation-delay:.50s; }
+    .steel-scene .steel-floor-crack {
+      position:absolute;
+      bottom:1.1vw;
+      width:16vw;
+      height:1.5vw;
+      border-radius:50%;
+      background:radial-gradient(ellipse at center, rgba(125,211,252,.75), rgba(245,178,26,.22) 36%, transparent 72%);
+      filter:blur(.12vw);
+      animation: crackFlash 2.6s ease-in-out infinite;
+    }
+
+    .cement-scene .cement-bag {
+      width:10.8vw;
+      height:14vw;
+      border-radius:1.6vw 1.6vw 1vw 1vw;
+      background:linear-gradient(135deg,#f4d49a,#b68b4a 55%,#6b4b23);
+      border:1px solid rgba(255,255,255,.28);
+      box-shadow:0 0 45px rgba(245,178,26,.55), inset -1vw 0 2vw rgba(0,0,0,.25);
+      display:grid;
+      place-items:center;
+      text-align:center;
+      color:#07111f;
+      font-weight:1000;
+      font-size:1.25vw;
+      animation: cement3DSpin 3.6s ease-in-out infinite;
+    }
+    .cement-scene .cement-bag:before { content:"50 KG"; position:absolute; bottom:2vw; font-size:1.1vw; color:rgba(7,17,31,.75); }
+    .cement-scene .dust {
+      position:absolute;
+      bottom:1.4vw;
+      width:15vw;
+      height:3vw;
+      border-radius:50%;
+      background:radial-gradient(ellipse at center, rgba(244,212,154,.45), transparent 72%);
+      filter:blur(.25vw);
+      animation:dustWave 2.4s ease-in-out infinite;
+    }
+
+    .paint-scene .paint-can {
+      position:absolute;
+      bottom:2.3vw;
+      width:9vw;
+      height:7.2vw;
+      border-radius:1vw 1vw .65vw .65vw;
+      background:linear-gradient(135deg,#ffffff,#dbeafe 35%,#7c3aed 36%,#ec4899 72%,#fb7185);
+      box-shadow:0 0 42px rgba(236,72,153,.55), inset 0 0 18px rgba(255,255,255,.35);
+      animation: canPop 3s ease-in-out infinite;
+    }
+    .paint-scene .paint-lid { position:absolute; top:-.7vw; left:.8vw; right:.8vw; height:1.2vw; border-radius:50%; background:#f8fafc; box-shadow:0 0 12px rgba(255,255,255,.75); }
+    .paint-scene .paint-stream {
+      position:absolute;
+      top:-6vw;
+      left:50%;
+      width:3.8vw;
+      height:17vw;
+      transform:translateX(-50%);
+      border-radius:0 0 2vw 2vw;
+      background:linear-gradient(180deg, transparent, rgba(236,72,153,.98) 28%, rgba(124,58,237,.92) 78%, rgba(245,178,26,.75));
+      filter:drop-shadow(0 0 18px rgba(236,72,153,.95));
+      animation: paintWaterfall 3s ease-in-out infinite;
+    }
+    .paint-scene .paint-splash {
+      position:absolute;
+      bottom:1.4vw;
+      width:15vw;
+      height:2.2vw;
+      border-radius:50%;
+      background:radial-gradient(ellipse at center, rgba(236,72,153,.9), rgba(124,58,237,.45) 45%, transparent 72%);
+      animation:splashPulse 3s ease-in-out infinite;
+    }
+
+    .electric-scene .bolt {
+      width:7vw;
+      height:13vw;
+      clip-path:polygon(58% 0, 16% 54%, 48% 54%, 34% 100%, 86% 39%, 55% 39%);
+      background:linear-gradient(180deg,#eff6ff,#22d3ee,#facc15);
+      box-shadow:0 0 55px rgba(34,211,238,.9);
+      animation: electricBolt 1.25s steps(2,end) infinite;
+    }
+    .electric-scene .neon-line {
+      position:absolute;
+      width:18vw;
+      height:.18vw;
+      background:#67e8f9;
+      box-shadow:0 0 22px rgba(103,232,249,.9);
+      animation: neonSweep 1.6s ease-in-out infinite;
+    }
+    .electric-scene .neon-line:nth-child(2){ transform:rotate(38deg); animation-delay:.25s; }
+    .electric-scene .neon-line:nth-child(3){ transform:rotate(-38deg); animation-delay:.5s; }
+
+    .wood-scene .plank {
+      position:absolute;
+      width:13vw;
+      height:1.65vw;
+      border-radius:.3vw;
+      background:linear-gradient(90deg,#8b4a16,#f1b464,#8b4a16);
+      box-shadow:0 0 20px rgba(245,178,26,.35);
+      animation: woodStack 3.1s ease-in-out infinite;
+    }
+    .wood-scene .plank:nth-child(1){ bottom:4vw; animation-delay:.0s; }
+    .wood-scene .plank:nth-child(2){ bottom:5.9vw; animation-delay:.15s; }
+    .wood-scene .plank:nth-child(3){ bottom:7.8vw; animation-delay:.30s; }
+    .wood-scene .plank:nth-child(4){ bottom:9.7vw; animation-delay:.45s; }
+
+    .default-scene .default-box {
+      width:11vw;
+      height:11vw;
+      border-radius:1.6vw;
+      display:grid;
+      place-items:center;
+      color:#07111f;
+      background:linear-gradient(135deg,#ffd65c,#f0a300);
+      box-shadow:0 0 48px rgba(245,178,26,.55), inset 0 0 18px rgba(255,255,255,.42);
+      animation: smoothFloat 2.6s ease-in-out infinite;
+    }
+    .default-scene .default-box svg { width:5.5vw; height:5.5vw; }
+
+    @keyframes aiScanSweep { to{ transform:rotate(360deg);} }
+    @keyframes steelFromGround { 0%{ transform:scaleY(.02) translateY(5vw); opacity:.15;} 35%,72%{ transform:scaleY(1) translateY(0); opacity:1;} 100%{ transform:scaleY(.78) translateY(-1vw); opacity:.45;} }
+    @keyframes crackFlash { 0%,100%{ opacity:.2; transform:scaleX(.7);} 35%,70%{ opacity:1; transform:scaleX(1.15);} }
+    @keyframes cement3DSpin { 0%{ transform:perspective(700px) rotateY(-24deg) rotateZ(-1deg);} 50%{ transform:perspective(700px) rotateY(25deg) translateY(-.8vw) rotateZ(1deg);} 100%{ transform:perspective(700px) rotateY(-24deg) rotateZ(-1deg);} }
+    @keyframes dustWave { 0%,100%{ opacity:.2; transform:scale(.75);} 50%{ opacity:.9; transform:scale(1.15);} }
+    @keyframes canPop { 0%,100%{ transform:translateY(.3vw) rotate(-1deg);} 50%{ transform:translateY(-.7vw) rotate(1deg);} }
+    @keyframes paintWaterfall { 0%,12%{ transform:translateX(-50%) translateY(-10vw); opacity:0;} 35%,70%{ transform:translateX(-50%) translateY(2vw); opacity:1;} 100%{ transform:translateX(-50%) translateY(10vw); opacity:0;} }
+    @keyframes splashPulse { 0%,100%{ opacity:.15; transform:scale(.55);} 45%,70%{ opacity:1; transform:scale(1.25);} }
+    @keyframes electricBolt { 0%,100%{ opacity:.55; transform:scale(.92) rotate(-3deg); filter:brightness(1);} 50%{ opacity:1; transform:scale(1.08) rotate(3deg); filter:brightness(2.2);} }
+    @keyframes neonSweep { 0%{ opacity:0; transform:translateX(-9vw);} 45%{ opacity:1;} 100%{ opacity:0; transform:translateX(9vw);} }
+    @keyframes woodStack { 0%{ transform:translateX(9vw); opacity:0;} 42%,82%{ transform:translateX(0); opacity:1;} 100%{ transform:translateX(-1vw); opacity:.75;} }
+
     @media (max-aspect-ratio: 14/9) {
       .topbar { grid-template-columns: 1.6fr 2.2fr 1.5fr; }
       .main-grid { grid-template-columns: 24.5vw 1fr 24vw; }
@@ -957,7 +1135,7 @@ function CinematicProduct({ product, data }) {
   const name = itemT(data, product, "nameHe", "nameAr");
   const unit = itemT(data, product, "unitHe", "unitAr");
   return (
-    <div className="ai-cinema-layer">
+    <div className="ai-cinema-layer" key={`${type}-${name}-${product?.price}`}>
       <div className="ai-speaker">
         <div className="ai-speaker-head">
           <div className="ai-orb"><Bot size={22} /></div>
@@ -972,18 +1150,48 @@ function CinematicProduct({ product, data }) {
         </div>
       </div>
 
-      <div className="cinematic-stage">
+      <div className={`cinematic-stage stage-${type}`}>
         <div className="cinematic-alert">{data.language === "ar" ? "فتح المنتج تلقائياً بواسطة الذكاء الاصطناعي" : "פתיחה אוטומטית על ידי AI"}</div>
         <div className="scan-ring" />
         <div className="scan-ring two" />
         <div className="stage-base" />
-        {type === "paint" && <div className="paint-flow" />}
-        {type === "electric" && <div className="electric-spark" />}
-        {type === "steel" && <div className="steel-bars">{Array.from({ length: 16 }).map((_, i) => <i key={i} />)}</div>}
-
-        <div className={`product-holo ${type}`}>
-          <ProductIcon type={product?.icon || product?.nameHe || product?.nameAr} />
-        </div>
+        {type === "steel" && (
+          <div className="stage-scene steel-scene">
+            <div className="steel-floor-crack" />
+            {Array.from({ length: 6 }).map((_, i) => <i className="steel-bar-big" key={i} />)}
+          </div>
+        )}
+        {type === "cement" && (
+          <div className="stage-scene cement-scene">
+            <div className="dust" />
+            <div className="cement-bag">إسمنت<br />CEMENT</div>
+          </div>
+        )}
+        {type === "paint" && (
+          <div className="stage-scene paint-scene">
+            <div className="paint-stream" />
+            <div className="paint-splash" />
+            <div className="paint-can"><div className="paint-lid" /></div>
+          </div>
+        )}
+        {type === "electric" && (
+          <div className="stage-scene electric-scene">
+            <div className="neon-line" />
+            <div className="neon-line" />
+            <div className="neon-line" />
+            <div className="bolt" />
+          </div>
+        )}
+        {type === "wood" && (
+          <div className="stage-scene wood-scene">
+            {Array.from({ length: 4 }).map((_, i) => <i className="plank" key={i} />)}
+          </div>
+        )}
+        {!['steel','cement','paint','electric','wood'].includes(type) && (
+          <div className="stage-scene default-scene">
+            <div className="default-box"><ProductIcon type={product?.icon || product?.nameHe || product?.nameAr} /></div>
+          </div>
+        )}
 
         <div className="product-caption">
           <b>{name}</b>
@@ -1051,7 +1259,7 @@ export default function HamoudaPremiumDisplay() {
     const count = Math.max(1, data.prices?.length || 1);
     const timer = setInterval(() => {
       setActiveCinematicIndex((v) => (v + 1) % count);
-    }, 7000);
+    }, 4500);
     return () => clearInterval(timer);
   }, [data.prices?.length]);
 
