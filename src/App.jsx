@@ -22,11 +22,7 @@ import {
   BadgePercent,
   Drill,
   ScrollText,
-  Building2,
-  Bot,
-  Sparkles,
-  ScanSearch,
-  Zap
+  Building2
 } from "lucide-react";
 import { db } from "./firebase";
 import { collection, doc, onSnapshot, setDoc } from "firebase/firestore";
@@ -115,101 +111,7 @@ const DEFAULT_DATA = {
   offerPercent: "5%",
   tickerHe: ["🔥 מבצעים יומיים על חומרי בניין", "🚚 אספקה מהירה להזמנות גדולות", "🏗️ ציוד מלא לקבלנים ופרויקטים", "📞 להזמנות ושירות: 054-7285036"],
   tickerAr: ["🔥 عروض يومية على مواد البناء", "🚚 توصيل سريع للطلبات الكبيرة", "🏗️ تجهيز كامل للمقاولين والمشاريع", "📞 للطلب والاستفسار: 054-7285036"]
-
 };
-
-const AI_PRODUCTS = [
-  {
-    id: "cement",
-    icon: "cement",
-    nameHe: "מלט 50 ק״ג",
-    nameAr: "إسمنت 50 كغم",
-    price: "₪29",
-    unitHe: "שק",
-    unitAr: "كيس",
-    titleHe: "HAMOODI AI מזהה ביקוש גבוה למלט",
-    titleAr: "HAMOODI AI اكتشف طلب عالي على الإسمنت",
-    noteHe: "מומלץ ליציקות ועבודות בנייה.",
-    noteAr: "مناسب للصب وأعمال البناء.",
-    color: "#f5b21a",
-    img: "https://images.unsplash.com/photo-1604076913837-52ab5629fba9?auto=format&fit=crop&w=900&q=80"
-  },
-  {
-    id: "steel",
-    icon: "steel",
-    nameHe: "ברזל 12 מ״מ",
-    nameAr: "حديد 12 ملم",
-    price: "₪43",
-    unitHe: "מ׳",
-    unitAr: "متر",
-    titleHe: "HAMOODI AI פותח מצב ברזל",
-    titleAr: "HAMOODI AI يفتح مشهد الحديد",
-    noteHe: "מתאים לשלד, עמודים ותקרות.",
-    noteAr: "مناسب للهيكل والأعمدة والأسقف.",
-    color: "#38bdf8",
-    img: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=900&q=80"
-  },
-  {
-    id: "paint",
-    icon: "paint",
-    nameHe: "צבע פנים",
-    nameAr: "دهان داخلي",
-    price: "₪120",
-    unitHe: "גלון",
-    unitAr: "غالون",
-    titleHe: "מבצע צבעים פעיל עכשיו",
-    titleAr: "عرض الدهانات فعال الآن",
-    noteHe: "צבעים איכותיים לגימור נקי.",
-    noteAr: "دهانات عالية الجودة لتشطيب أنيق.",
-    color: "#f472b6",
-    img: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=900&q=80"
-  },
-  {
-    id: "sand",
-    icon: "sand",
-    nameHe: "חול דק",
-    nameAr: "رمل ناعم",
-    price: "₪180",
-    unitHe: "קוב",
-    unitAr: "كوب",
-    titleHe: "HAMOODI AI מציג חומרי בסיס",
-    titleAr: "HAMOODI AI يعرض مواد الأساس",
-    noteHe: "חול לעבודות טיח ובנייה.",
-    noteAr: "رمل لأعمال الطوب واللياسة.",
-    color: "#f59e0b",
-    img: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80"
-  },
-  {
-    id: "wood",
-    icon: "wood",
-    nameHe: "עץ לבנייה",
-    nameAr: "خشب للبناء",
-    price: "₪28",
-    unitHe: "מ׳",
-    unitAr: "متر",
-    titleHe: "עץ לפרויקטים ועבודות תבנית",
-    titleAr: "خشب للمشاريع وأعمال الصب",
-    noteHe: "לוחות ועצים זמינים לפי כמות.",
-    noteAr: "ألواح وأخشاب متوفرة حسب الكمية.",
-    color: "#fbbf24",
-    img: "https://images.unsplash.com/photo-1520038410233-7141be7e6f97?auto=format&fit=crop&w=900&q=80"
-  },
-  {
-    id: "electric",
-    icon: "electric",
-    nameHe: "חומרי חשמל",
-    nameAr: "مواد كهرباء",
-    price: "₪25",
-    unitHe: "יח׳",
-    unitAr: "قطعة",
-    titleHe: "מצב חשמל וניאון פעיל",
-    titleAr: "وضع الكهرباء والنيون فعال",
-    noteHe: "כבלים, מפסקים ותאורה.",
-    noteAr: "أسلاك ومفاتيح وإنارة.",
-    color: "#22d3ee",
-    img: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=900&q=80"
-  }
-];
 
 function injectTvTheme() {
   if (typeof document === "undefined" || document.getElementById("hamouda-tv-pixel-theme-v2")) return;
@@ -536,121 +438,6 @@ function injectTvTheme() {
       opacity:1;
     }
 
-
-    /* HAMOODI AI LIVE CINEMATIC SHOWCASE */
-    .ai-live-stage {
-      position:absolute;
-      inset:0;
-      overflow:hidden;
-      background:
-        radial-gradient(circle at 50% 50%, rgba(34,211,238,.16), transparent 34%),
-        radial-gradient(circle at 50% 92%, rgba(245,178,26,.18), transparent 32%),
-        linear-gradient(180deg, rgba(2,6,12,.96), rgba(3,7,12,.98));
-    }
-    .ai-live-bg {
-      position:absolute; inset:-8%; opacity:.34; transform:scale(1.08);
-      background-size:cover; background-position:center;
-      filter:blur(8px) saturate(1.3) brightness(.62);
-      animation: aiBgMove 8s ease-in-out infinite;
-    }
-    .ai-live-fog {
-      position:absolute; inset:-20%; pointer-events:none; opacity:.48;
-      background:
-        radial-gradient(circle at 12% 84%, rgba(255,255,255,.18), transparent 16%),
-        radial-gradient(circle at 85% 72%, rgba(255,255,255,.12), transparent 20%),
-        radial-gradient(circle at 50% 82%, rgba(245,178,26,.16), transparent 28%);
-      filter:blur(20px);
-      animation: fogDrift 9s ease-in-out infinite alternate;
-    }
-    .ai-grid-overlay {
-      position:absolute; inset:0; opacity:.22;
-      background-image:linear-gradient(rgba(34,211,238,.25) 1px, transparent 1px),linear-gradient(90deg, rgba(34,211,238,.25) 1px, transparent 1px);
-      background-size:2.1vw 2.1vw;
-      mask-image:radial-gradient(circle at center, black 45%, transparent 86%);
-    }
-    .ai-scan-line {
-      position:absolute; left:0; right:0; height:.18vw; top:-10%; z-index:6;
-      background:linear-gradient(90deg, transparent, rgba(34,211,238,.2), #7dd3fc, rgba(245,178,26,.75), transparent);
-      box-shadow:0 0 24px rgba(34,211,238,.95), 0 0 42px rgba(245,178,26,.45);
-      animation: aiScan 4.6s ease-in-out infinite;
-    }
-    .ai-light-sweep {
-      position:absolute; inset:-30% -10%; z-index:4; pointer-events:none;
-      background:linear-gradient(105deg, transparent 36%, rgba(255,255,255,.16) 48%, rgba(245,178,26,.20) 52%, transparent 65%);
-      animation: lightSweep 6.2s ease-in-out infinite;
-    }
-    .ai-hud-panel {
-      position:absolute; top:1.15vw; left:2vw; right:2vw; z-index:8;
-      border:1px solid rgba(34,211,238,.55); border-radius:1vw;
-      background:linear-gradient(180deg, rgba(3,12,22,.72), rgba(5,8,14,.60));
-      box-shadow:0 0 28px rgba(34,211,238,.24), inset 0 0 28px rgba(34,211,238,.06);
-      padding:.72vw 1vw; display:grid; grid-template-columns:4.2vw 1fr 8vw; gap:.9vw; align-items:center;
-      backdrop-filter:blur(8px);
-    }
-    .ai-orb {
-      width:3.55vw; height:3.55vw; border-radius:50%; display:grid; place-items:center;
-      color:#06111c; background:radial-gradient(circle at 35% 30%, #fff, #67e8f9 35%, #0891b2 72%);
-      box-shadow:0 0 24px rgba(34,211,238,.9), inset 0 0 18px rgba(255,255,255,.5);
-      animation: orbPulse 2.2s ease-in-out infinite;
-    }
-    .ai-hud-title { color:#67e8f9; font-size:.95vw; font-weight:1000; letter-spacing:.02em; }
-    .ai-hud-text { font-size:1.45vw; line-height:1.25; font-weight:1000; text-shadow:0 0 12px rgba(0,0,0,.85); }
-    .voice-bars { height:1.2vw; display:flex; justify-content:center; align-items:end; gap:.12vw; direction:ltr; }
-    .voice-bars span { width:.12vw; border-radius:1vw; background:linear-gradient(180deg,#67e8f9,#f5b21a); animation: voiceBeat .8s ease-in-out infinite; box-shadow:0 0 8px rgba(34,211,238,.7); }
-    .voice-bars span:nth-child(odd){ animation-delay:.16s; }
-    .voice-bars span:nth-child(3n){ animation-delay:.32s; }
-    .ai-product-world { position:absolute; inset:5.8vw 1.2vw 6.3vw; z-index:5; display:grid; grid-template-columns:1fr 13vw; gap:.9vw; align-items:end; }
-    .cinema-product-zone { position:relative; height:100%; overflow:hidden; border-radius:1vw; border:1px solid rgba(245,178,26,.38); background:rgba(0,0,0,.18); }
-    .holo-rings { position:absolute; left:50%; bottom:8%; width:28vw; height:8vw; transform:translateX(-50%); border-radius:50%; border:.12vw solid rgba(245,178,26,.65); box-shadow:0 0 32px rgba(245,178,26,.45), inset 0 0 30px rgba(245,178,26,.15); animation:ringPulse 2.4s ease-in-out infinite; }
-    .holo-rings:before,.holo-rings:after{ content:""; position:absolute; inset:18% 9%; border-radius:50%; border:1px solid rgba(34,211,238,.45); animation:ringSpin 5s linear infinite; }
-    .holo-rings:after{ inset:33% 18%; border-color:rgba(245,178,26,.45); animation-duration:3.5s; animation-direction:reverse; }
-    .real-product-img {
-      position:absolute; left:50%; bottom:12%; z-index:3; width:min(30vw, 58vh); height:min(24vw, 46vh); transform:translateX(-50%);
-      object-fit:contain; filter:drop-shadow(0 1vw 1.2vw rgba(0,0,0,.75)) drop-shadow(0 0 1.2vw rgba(245,178,26,.35));
-      animation: productEnter 5.6s cubic-bezier(.2,.9,.2,1) infinite;
-    }
-    .product-cement .real-product-img { animation-name: cementRise; }
-    .product-steel .real-product-img { animation-name: steelRise; }
-    .product-paint .real-product-img { animation-name: paintPop; }
-    .product-sand .real-product-img { animation-name: sandFloat; }
-    .product-wood .real-product-img { animation-name: woodSlide; }
-    .product-electric .real-product-img { animation-name: electricPulse; }
-    .dust-cloud { position:absolute; left:50%; bottom:9%; width:30vw; height:8vw; transform:translateX(-50%); z-index:2; opacity:.65; filter:blur(10px); background:radial-gradient(ellipse at center, rgba(255,238,190,.36), transparent 68%); animation:dustBreath 3.8s ease-in-out infinite; }
-    .spark-field { position:absolute; inset:0; z-index:4; pointer-events:none; overflow:hidden; }
-    .spark-field span { position:absolute; width:.22vw; height:.22vw; border-radius:50%; background:#ffd166; box-shadow:0 0 12px #ffd166; animation:sparkFly 1.9s linear infinite; }
-    .paint-pour { position:absolute; top:-12%; left:45%; width:5vw; height:18vw; z-index:4; border-radius:0 0 2vw 2vw; background:linear-gradient(180deg,#f0f,#ff2b72,#f5b21a); opacity:0; filter:drop-shadow(0 0 18px rgba(244,114,182,.9)); animation:paintPour 5.6s ease-in-out infinite; }
-    .electric-bolt { position:absolute; top:18%; left:58%; width:.45vw; height:14vw; background:#67e8f9; opacity:0; z-index:4; box-shadow:0 0 22px #67e8f9; clip-path:polygon(45% 0,100% 38%,62% 38%,100% 100%,10% 46%,48% 46%); animation:electricBolt 5.6s ease-in-out infinite; }
-    .steel-rods { position:absolute; left:52%; bottom:8%; z-index:2; display:flex; gap:.55vw; transform:translateX(-50%); }
-    .steel-rods span { display:block; width:.42vw; height:18vw; border-radius:.3vw; background:linear-gradient(90deg,#555,#f3f4f6,#333); box-shadow:0 0 16px rgba(125,211,252,.28); animation:rodRise 5.6s ease-in-out infinite; }
-    .product-details-card { align-self:stretch; border:1px solid rgba(34,211,238,.42); border-radius:1vw; background:linear-gradient(180deg,rgba(2,10,18,.82),rgba(2,6,12,.88)); padding:1vw; display:flex; flex-direction:column; justify-content:center; box-shadow:0 0 26px rgba(34,211,238,.18); }
-    .scan-label { color:#67e8f9; font-size:.9vw; font-weight:1000; margin-bottom:.55vw; }
-    .scan-name { font-size:1.35vw; font-weight:1000; line-height:1.05; margin-bottom:.75vw; }
-    .scan-price { border-radius:.75vw; padding:.7vw .6vw; color:#07111f; background:linear-gradient(135deg,#fff1a8,#f5b21a); font-size:2vw; font-weight:1000; text-align:center; box-shadow:0 0 20px rgba(245,178,26,.55); }
-    .scan-note { margin-top:.8vw; color:rgba(255,255,255,.78); font-size:.78vw; font-weight:800; line-height:1.4; }
-    .ai-product-strip { position:absolute; left:1.2vw; right:1.2vw; bottom:1vw; height:4.5vw; z-index:7; display:grid; grid-template-columns:repeat(6,1fr); gap:.45vw; }
-    .ai-product-tab { border:1px solid rgba(255,255,255,.12); border-radius:.75vw; background:rgba(0,0,0,.52); display:flex; align-items:center; justify-content:center; gap:.35vw; font-size:.82vw; font-weight:1000; color:#fff; box-shadow:inset 0 0 16px rgba(255,255,255,.025); }
-    .ai-product-tab.active { border-color:rgba(245,178,26,.9); color:#ffdc63; background:rgba(245,178,26,.10); box-shadow:0 0 22px rgba(245,178,26,.42), inset 0 0 18px rgba(245,178,26,.08); }
-    .ai-live-stage:after { content:""; position:absolute; inset:0; pointer-events:none; z-index:9; background:linear-gradient(180deg, rgba(255,255,255,.03), transparent 10%, transparent 90%, rgba(0,0,0,.28)); }
-    @keyframes aiBgMove { 0%,100%{ transform:scale(1.08) translateX(0); } 50%{ transform:scale(1.16) translateX(1.5vw); } }
-    @keyframes fogDrift { from{ transform:translateX(-3vw) translateY(1vw); } to{ transform:translateX(3vw) translateY(-1vw); } }
-    @keyframes aiScan { 0%{ top:-8%; opacity:0; } 12%{ opacity:1; } 58%{ top:92%; opacity:1; } 72%,100%{ top:110%; opacity:0; } }
-    @keyframes lightSweep { 0%,35%{ transform:translateX(70%) skewX(-10deg); opacity:0; } 52%{ opacity:1; } 85%,100%{ transform:translateX(-70%) skewX(-10deg); opacity:0; } }
-    @keyframes orbPulse { 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.08); } }
-    @keyframes voiceBeat { 0%,100%{ height:.25vw; } 50%{ height:1.1vw; } }
-    @keyframes ringPulse { 0%,100%{ transform:translateX(-50%) scale(.96); opacity:.8; } 50%{ transform:translateX(-50%) scale(1.05); opacity:1; } }
-    @keyframes ringSpin { from{ transform:rotate(0); } to{ transform:rotate(360deg); } }
-    @keyframes cementRise { 0%{ transform:translateX(-50%) translateY(9vw) scale(.78) rotateY(-14deg); opacity:0; } 18%{ opacity:1; } 45%{ transform:translateX(-50%) translateY(0) scale(1) rotateY(8deg); } 75%{ transform:translateX(-50%) translateY(-.6vw) scale(1.04) rotateY(-8deg); } 100%{ transform:translateX(-50%) translateY(9vw) scale(.88) rotateY(14deg); opacity:0; } }
-    @keyframes steelRise { 0%{ transform:translateX(-50%) translateY(12vw) scale(.85); opacity:0; } 22%{ opacity:1; transform:translateX(-50%) translateY(0) scale(1); } 76%{ transform:translateX(-50%) translateY(-.8vw) scale(1.05); opacity:1; } 100%{ transform:translateX(-50%) translateY(12vw) scale(.9); opacity:0; } }
-    @keyframes paintPop { 0%{ transform:translateX(-50%) translateY(10vw) scale(.76) rotate(-4deg); opacity:0; } 20%{ transform:translateX(-50%) translateY(0) scale(1) rotate(2deg); opacity:1; } 72%{ transform:translateX(-50%) translateY(-.5vw) scale(1.04) rotate(-2deg); opacity:1; } 100%{ transform:translateX(-50%) translateY(10vw) scale(.84) rotate(4deg); opacity:0; } }
-    @keyframes sandFloat { 0%{ transform:translateX(-50%) translateY(9vw) scale(.8); opacity:0; } 22%{ opacity:1; transform:translateX(-50%) translateY(0) scale(1); } 72%{ transform:translateX(-50%) translateY(-.4vw) scale(1.03); } 100%{ transform:translateX(-50%) translateY(9vw) scale(.84); opacity:0; } }
-    @keyframes woodSlide { 0%{ transform:translateX(55%) translateY(2vw) scale(.85); opacity:0; } 22%{ transform:translateX(-50%) translateY(0) scale(1); opacity:1; } 72%{ transform:translateX(-52%) translateY(-.5vw) scale(1.03); opacity:1; } 100%{ transform:translateX(-150%) translateY(2vw) scale(.9); opacity:0; } }
-    @keyframes electricPulse { 0%{ transform:translateX(-50%) translateY(9vw) scale(.76); opacity:0; filter:drop-shadow(0 0 0 #67e8f9); } 20%{ opacity:1; transform:translateX(-50%) translateY(0) scale(1); } 50%{ filter:drop-shadow(0 0 2vw #67e8f9) drop-shadow(0 0 1vw #f5b21a); } 78%{ opacity:1; transform:translateX(-50%) translateY(-.4vw) scale(1.05); } 100%{ opacity:0; transform:translateX(-50%) translateY(9vw) scale(.82); } }
-    @keyframes dustBreath { 0%,100%{ opacity:.25; transform:translateX(-50%) scale(.75); } 45%{ opacity:.78; transform:translateX(-50%) scale(1.1); } }
-    @keyframes sparkFly { 0%{ transform:translateY(0) scale(.4); opacity:0; } 22%{ opacity:1; } 100%{ transform:translateY(-12vw) translateX(3vw) scale(0); opacity:0; } }
-    @keyframes paintPour { 0%,15%{ opacity:0; transform:translateY(-7vw) scaleY(.2); } 28%,62%{ opacity:1; transform:translateY(0) scaleY(1); } 82%,100%{ opacity:0; transform:translateY(6vw) scaleY(.3); } }
-    @keyframes electricBolt { 0%,28%,100%{ opacity:0; transform:scaleY(.6); } 34%,38%,46%{ opacity:1; transform:scaleY(1); } 42%,52%{ opacity:.25; } }
-    @keyframes rodRise { 0%{ transform:translateY(10vw); opacity:0; } 20%,78%{ transform:translateY(0); opacity:.9; } 100%{ transform:translateY(10vw); opacity:0; } }
-
     @media (max-aspect-ratio: 14/9) {
       .topbar { grid-template-columns: 1.6fr 2.2fr 1.5fr; }
       .main-grid { grid-template-columns: 24.5vw 1fr 24vw; }
@@ -903,100 +690,6 @@ function CurrencyPill({ icon, label, value, change }) {
   );
 }
 
-function VoiceBars() {
-  return (
-    <div className="voice-bars" aria-hidden="true">
-      {Array.from({ length: 34 }).map((_, i) => (
-        <span key={i} style={{ animationDelay: `${(i % 9) * 0.07}s` }} />
-      ))}
-    </div>
-  );
-}
-
-function SparkField({ show }) {
-  if (!show) return null;
-  return (
-    <div className="spark-field" aria-hidden="true">
-      {Array.from({ length: 22 }).map((_, i) => (
-        <span
-          key={i}
-          style={{
-            left: `${12 + ((i * 37) % 72)}%`,
-            bottom: `${12 + ((i * 19) % 34)}%`,
-            animationDelay: `${(i % 8) * 0.16}s`,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
-function CinematicAIShowcase({ data, isAr, product, index }) {
-  const name = isAr ? product.nameAr : product.nameHe;
-  const unit = isAr ? product.unitAr : product.unitHe;
-  const title = isAr ? product.titleAr : product.titleHe;
-  const note = isAr ? product.noteAr : product.noteHe;
-
-  return (
-    <main className="hero-card glass-panel">
-      <div className={`ai-live-stage product-${product.id}`}>
-        <div className="ai-live-bg" style={{ backgroundImage: `url(${product.img})` }} />
-        <div className="ai-live-fog" />
-        <div className="ai-grid-overlay" />
-        <div className="ai-scan-line" />
-        <div className="ai-light-sweep" />
-
-        <div className="ai-hud-panel">
-          <div className="ai-orb"><Bot size={30} /></div>
-          <div>
-            <div className="ai-hud-title">HAMOODI AI  <Sparkles size={15} style={{verticalAlign:'middle'}} /></div>
-            <div className="ai-hud-text">{title}</div>
-            <VoiceBars />
-          </div>
-          <div style={{textAlign:'center', color:'#ffdc63', fontWeight:1000, fontSize:'.78vw'}}>
-            LIVE SCAN<br />{String(index + 1).padStart(2, '0')}/06
-          </div>
-        </div>
-
-        <div className="ai-product-world">
-          <div className="cinema-product-zone">
-            <div className="holo-rings" />
-            {product.id === 'paint' && <div className="paint-pour" />}
-            {product.id === 'electric' && <div className="electric-bolt" />}
-            {product.id === 'steel' && (
-              <div className="steel-rods" aria-hidden="true">
-                <span /><span /><span /><span /><span /><span />
-              </div>
-            )}
-            <div className="dust-cloud" />
-            <SparkField show={product.id === 'steel' || product.id === 'wood' || product.id === 'cement'} />
-            <img key={product.id} className="real-product-img" src={product.img} alt={name} />
-          </div>
-
-          <div className="product-details-card">
-            <div className="scan-label">AI PRODUCT SCAN</div>
-            <div className="scan-name">{name}</div>
-            <div className="scan-price">{product.price} / {unit}</div>
-            <div className="scan-note">{note}</div>
-            <div className="scan-note" style={{color:'#67e8f9'}}>✓ {isAr ? 'متوفر الآن' : 'זמין עכשיו'} &nbsp; ✓ {isAr ? 'موصى به' : 'מומלץ'}</div>
-          </div>
-        </div>
-
-        <div className="ai-product-strip">
-          {AI_PRODUCTS.map((item, i) => {
-            const Icon = item.icon === 'paint' ? PaintBucket : item.icon === 'steel' ? Layers : item.icon === 'wood' ? Hammer : item.icon === 'electric' ? Zap : item.icon === 'sand' ? Building2 : Package;
-            return (
-              <div key={item.id} className={`ai-product-tab ${i === index ? 'active' : ''}`}>
-                <Icon size={20} /> {isAr ? item.nameAr : item.nameHe}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </main>
-  );
-}
-
 export default function HamoudaPremiumDisplay() {
   injectTvTheme();
 
@@ -1012,7 +705,6 @@ export default function HamoudaPremiumDisplay() {
   const [gold, setGold] = useState({ loading: true, price: "--" });
   const [constructionNews, setConstructionNews] = useState([]);
   const [firebaseSettingsId, setFirebaseSettingsId] = useState(null);
-  const [aiIndex, setAiIndex] = useState(0);
 
   const isAr = data.language === "ar";
   const locale = isAr ? "ar" : "he";
@@ -1027,14 +719,6 @@ export default function HamoudaPremiumDisplay() {
     (isAr ? "مشروع من أعمالنا" : "פרויקט מהעבודות שלנו");
   const backgroundImages = data.backgroundImages?.length ? data.backgroundImages : (DEFAULT_DATA.backgroundImages || []);
   const currentBackground = backgroundImages[bgIndex % Math.max(1, backgroundImages.length)] || FALLBACK_IMAGE;
-  const aiProduct = AI_PRODUCTS[aiIndex % AI_PRODUCTS.length];
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setAiIndex((v) => (v + 1) % AI_PRODUCTS.length);
-    }, 5600);
-    return () => clearInterval(timer);
-  }, []);
 
   useEffect(() => {
     const unsub = onSnapshot(
@@ -1313,12 +997,15 @@ export default function HamoudaPremiumDisplay() {
             <div className="small-note">* {isAr ? "الأسعار تتحدث حسب البيانات" : "המחירים מתעדכנים בזמן אמת"}</div>
           </aside>
 
-          <CinematicAIShowcase
-            data={data}
-            isAr={isAr}
-            product={aiProduct}
-            index={aiIndex % AI_PRODUCTS.length}
-          />
+          <main className="hero-card glass-panel">
+            <div className="hero-media">
+              {currentMedia.type === "video" ? (
+                <video src={currentMedia.src} autoPlay muted loop playsInline />
+              ) : (
+                <img src={currentMedia.src || FALLBACK_IMAGE} alt="slide" onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }} />
+              )}
+            </div>
+          </main>
 
           <aside className="projects-card glass-panel">
             <div className="projects-title">
