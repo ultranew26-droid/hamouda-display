@@ -438,184 +438,6 @@ function injectTvTheme() {
       opacity:1;
     }
 
-
-
-    /* Products panel replacing old prices list */
-    .products-panel {
-      padding:.85vw;
-      display:flex;
-      flex-direction:column;
-      min-height:0;
-      overflow:hidden;
-      background:
-        radial-gradient(circle at 50% 0%, rgba(245,178,26,.12), transparent 34%),
-        linear-gradient(180deg, rgba(10,17,28,.92), rgba(3,7,12,.96));
-    }
-    .products-header {
-      height:2.7vw;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:.7vw;
-      margin-bottom:.55vw;
-    }
-    .products-title {
-      display:flex;
-      align-items:center;
-      gap:.55vw;
-      color:var(--gold2);
-      font-size:1.15vw;
-      font-weight:1000;
-      text-shadow:0 0 12px rgba(245,178,26,.45);
-      white-space:nowrap;
-    }
-    .products-back {
-      color:rgba(255,255,255,.55);
-      font-size:.72vw;
-      font-weight:900;
-      display:flex;
-      align-items:center;
-      gap:.3vw;
-    }
-    .products-tabs {
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:.38vw;
-      margin-bottom:.55vw;
-    }
-    .product-tab {
-      height:2.15vw;
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:.55vw;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:.35vw;
-      font-size:.66vw;
-      font-weight:1000;
-      color:rgba(255,255,255,.78);
-      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.25));
-    }
-    .product-tab.active {
-      color:#07111f;
-      border-color:rgba(245,178,26,.9);
-      background:linear-gradient(135deg, #ffdc63, #f0a300);
-      box-shadow:0 0 18px rgba(245,178,26,.32);
-    }
-    .products-list-modern {
-      flex:1;
-      min-height:0;
-      display:flex;
-      flex-direction:column;
-      gap:.46vw;
-      overflow:hidden;
-    }
-    .modern-product-row {
-      position:relative;
-      height:4.15vw;
-      flex:0 0 4.15vw;
-      display:grid;
-      grid-template-columns:3.95vw 1fr 4.8vw 2.2vw;
-      align-items:center;
-      gap:.55vw;
-      padding:.38vw .48vw;
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:.75vw;
-      background:
-        linear-gradient(90deg, rgba(255,255,255,.06), rgba(255,255,255,.018)),
-        radial-gradient(circle at 20% 50%, rgba(245,178,26,.08), transparent 40%);
-      box-shadow:inset 0 0 18px rgba(255,255,255,.025);
-      overflow:hidden;
-    }
-    .modern-product-row:nth-child(1),
-    .modern-product-row:hover {
-      border-color:rgba(245,178,26,.72);
-      box-shadow:0 0 20px rgba(245,178,26,.17), inset 0 0 20px rgba(245,178,26,.05);
-    }
-    .modern-product-row:before {
-      content:"";
-      position:absolute;
-      inset:0;
-      background:linear-gradient(120deg, transparent 0%, rgba(255,255,255,.08) 38%, transparent 62%);
-      transform:translateX(120%);
-      animation: productRowSweep 7s ease-in-out infinite;
-      pointer-events:none;
-    }
-    .modern-thumb {
-      width:3.55vw;
-      height:3.18vw;
-      border-radius:.58vw;
-      overflow:hidden;
-      border:1px solid rgba(245,178,26,.35);
-      background:#0b1018;
-      box-shadow:0 0 14px rgba(0,0,0,.35);
-    }
-    .modern-thumb img {
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-      transform:scale(1.04);
-      filter:saturate(1.08) contrast(1.05);
-    }
-    .modern-product-name {
-      font-size:.86vw;
-      font-weight:1000;
-      color:#fff;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .modern-product-unit {
-      margin-top:.05vw;
-      font-size:.58vw;
-      font-weight:800;
-      color:rgba(255,255,255,.55);
-    }
-    .modern-price {
-      color:#fff;
-      font-size:1.22vw;
-      font-weight:1000;
-      text-align:end;
-      text-shadow:0 0 12px rgba(255,255,255,.7);
-      direction:ltr;
-      white-space:nowrap;
-    }
-    .modern-change {
-      min-width:2.05vw;
-      border-radius:999px;
-      padding:.24vw .25vw;
-      font-size:.62vw;
-      font-weight:1000;
-      text-align:center;
-      border:1px solid rgba(255,255,255,.08);
-      background:rgba(255,255,255,.06);
-      direction:ltr;
-      white-space:nowrap;
-    }
-    .modern-change.up { background:rgba(36,255,101,.12); }
-    .modern-change.down { background:rgba(255,64,82,.12); }
-    .products-footer-btn {
-      height:2.25vw;
-      margin-top:.55vw;
-      border-radius:.7vw;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:.45vw;
-      color:var(--gold2);
-      font-size:.72vw;
-      font-weight:1000;
-      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.35));
-      border:1px solid rgba(245,178,26,.28);
-      box-shadow:inset 0 0 18px rgba(245,178,26,.05);
-    }
-    @keyframes productRowSweep {
-      0%, 72% { transform:translateX(120%); opacity:0; }
-      78% { opacity:1; }
-      100% { transform:translateX(-120%); opacity:0; }
-    }
-
     @media (max-aspect-ratio: 14/9) {
       .topbar { grid-template-columns: 1.6fr 2.2fr 1.5fr; }
       .main-grid { grid-template-columns: 24.5vw 1fr 24vw; }
@@ -684,28 +506,6 @@ const t = (data, heKey, arKey) => (data.language === "ar" ? data[arKey] : data[h
 const itemT = (data, item, heKey, arKey) => (data.language === "ar" ? item?.[arKey] : item?.[heKey]);
 
 const isVideoUrl = (url) => /\.(mp4|webm|ogg)(\?.*)?$/i.test(String(url || ""));
-
-
-const PRODUCT_IMAGE_BY_ICON = {
-  cement: "https://images.unsplash.com/photo-1581092919535-7146ff1a590b?auto=format&fit=crop&w=500&q=80",
-  steel: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=500&q=80",
-  paint: "https://images.unsplash.com/photo-1562259949-e8e7689d7828?auto=format&fit=crop&w=500&q=80",
-  gypsum: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=500&q=80",
-  sand: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=500&q=80",
-  seal: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=500&q=80",
-  package: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=500&q=80"
-};
-
-function getProductImage(product) {
-  const key = String(product?.icon || product?.nameHe || product?.nameAr || "").toLowerCase();
-  if (key.includes("cement") || key.includes("מלט") || key.includes("إسمنت")) return PRODUCT_IMAGE_BY_ICON.cement;
-  if (key.includes("steel") || key.includes("ברזל") || key.includes("حديد")) return PRODUCT_IMAGE_BY_ICON.steel;
-  if (key.includes("paint") || key.includes("צבע") || key.includes("دهان")) return PRODUCT_IMAGE_BY_ICON.paint;
-  if (key.includes("gypsum") || key.includes("גבס") || key.includes("جبص")) return PRODUCT_IMAGE_BY_ICON.gypsum;
-  if (key.includes("sand") || key.includes("חול") || key.includes("رمل")) return PRODUCT_IMAGE_BY_ICON.sand;
-  if (key.includes("seal") || key.includes("איטום") || key.includes("عزل")) return PRODUCT_IMAGE_BY_ICON.seal;
-  return PRODUCT_IMAGE_BY_ICON.package;
-}
 
 function applyFirebaseSettings(base, remote) {
   if (!remote) return base;
@@ -887,63 +687,6 @@ function CurrencyPill({ icon, label, value, change }) {
         <div className="pill-value">{value} {change && <span className="pill-change">{change}</span>}</div>
       </div>
     </div>
-  );
-}
-
-
-function ModernProductsPanel({ data, isAr }) {
-  const products = (data.prices || []).slice(0, 8);
-  const tabs = isAr
-    ? ["الكل", "حديد", "إسمنت", "دهانات"]
-    : ["הכל", "ברזל", "מלט", "צבעים"];
-
-  return (
-    <aside className="products-panel glass-panel">
-      <div className="products-header">
-        <div className="products-back">‹ {isAr ? "كل المنتجات" : "כל המוצרים"}</div>
-        <div className="products-title">
-          <Package size={20} />
-          {isAr ? "منتجاتنا" : "המוצרים שלנו"}
-        </div>
-      </div>
-
-      <div className="products-tabs">
-        {tabs.map((tab, index) => (
-          <div key={tab} className={`product-tab ${index === 0 ? "active" : ""}`}>
-            {index === 0 ? <Home size={15} /> : <ProductIcon type={tab} />}
-            {tab}
-          </div>
-        ))}
-      </div>
-
-      <div className="products-list-modern">
-        {products.map((p, i) => {
-          const dirClass = p.direction === "up" ? "up" : p.direction === "down" ? "down" : "flat";
-          const arrow = p.direction === "up" ? "↑" : p.direction === "down" ? "↓" : "–";
-          const name = itemT(data, p, "nameHe", "nameAr");
-          const unit = itemT(data, p, "unitHe", "unitAr");
-
-          return (
-            <div className="modern-product-row" key={`${p.nameHe}-${i}`}>
-              <div className="modern-thumb">
-                <img src={getProductImage(p)} alt={name} />
-              </div>
-              <div>
-                <div className="modern-product-name">{name}</div>
-                <div className="modern-product-unit">{unit}</div>
-              </div>
-              <div className="modern-price">₪ {p.price}</div>
-              <div className={`modern-change ${dirClass}`}>{p.change} {arrow}</div>
-            </div>
-          );
-        })}
-      </div>
-
-      <div className="products-footer-btn">
-        <Package size={16} />
-        {isAr ? "عرض كل المنتجات" : "לכל המוצרים"}
-      </div>
-    </aside>
   );
 }
 
@@ -1242,7 +985,17 @@ export default function HamoudaPremiumDisplay() {
         </header>
 
         <section className="main-grid">
-          <ModernProductsPanel data={data} isAr={isAr} />
+          <aside className="prices-card glass-panel">
+            <div className="section-title">{isAr ? "أسعار اليوم" : "מחירי היום"} <BadgePercent size={20} /></div>
+            <div className="price-list">
+              <div className="price-track">
+                {[...(data.prices || []), ...(data.prices || [])].map((p, i) => (
+                  <PriceRow key={`${p.nameHe}-${i}`} p={p} data={data} />
+                ))}
+              </div>
+            </div>
+            <div className="small-note">* {isAr ? "الأسعار تتحدث حسب البيانات" : "המחירים מתעדכנים בזמן אמת"}</div>
+          </aside>
 
           <main className="hero-card glass-panel">
             <div className="hero-media">
