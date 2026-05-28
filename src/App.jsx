@@ -25,6 +25,7 @@ import {
   Building2,
   Bot,
   Sparkles,
+  ScanSearch,
   Zap
 } from "lucide-react";
 import { db } from "./firebase";
@@ -114,173 +115,101 @@ const DEFAULT_DATA = {
   offerPercent: "5%",
   tickerHe: ["🔥 מבצעים יומיים על חומרי בניין", "🚚 אספקה מהירה להזמנות גדולות", "🏗️ ציוד מלא לקבלנים ופרויקטים", "📞 להזמנות ושירות: 054-7285036"],
   tickerAr: ["🔥 عروض يومية على مواد البناء", "🚚 توصيل سريع للطلبات الكبيرة", "🏗️ تجهيز كامل للمقاولين والمشاريع", "📞 للطلب والاستفسار: 054-7285036"]
+
 };
 
-;
-
-const CINEMATIC_PRODUCTS = [
+const AI_PRODUCTS = [
   {
-    key: "cement",
+    id: "cement",
+    icon: "cement",
     nameHe: "מלט 50 ק״ג",
     nameAr: "إسمنت 50 كغم",
-    price: "29",
+    price: "₪29",
     unitHe: "שק",
     unitAr: "كيس",
-    icon: "cement",
-    tone: "gold",
-    image: "https://images.unsplash.com/photo-1581093458791-9d42cc47d0c5?auto=format&fit=crop&w=900&q=80",
-    aiHe: "HAMOODI AI סורק שק מלט. מתאים ליציקות ועבודות בנייה.",
-    aiAr: "HAMOODI AI يفحص كيس الإسمنت. مناسب للصب وأعمال البناء."
+    titleHe: "HAMOODI AI מזהה ביקוש גבוה למלט",
+    titleAr: "HAMOODI AI اكتشف طلب عالي على الإسمنت",
+    noteHe: "מומלץ ליציקות ועבודות בנייה.",
+    noteAr: "مناسب للصب وأعمال البناء.",
+    color: "#f5b21a",
+    img: "https://images.unsplash.com/photo-1604076913837-52ab5629fba9?auto=format&fit=crop&w=900&q=80"
   },
   {
-    key: "steel",
+    id: "steel",
+    icon: "steel",
     nameHe: "ברזל 12 מ״מ",
     nameAr: "حديد 12 ملم",
-    price: "43",
+    price: "₪43",
     unitHe: "מ׳",
     unitAr: "متر",
-    icon: "steel",
-    tone: "blue",
-    image: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=900&q=80",
-    aiHe: "זוהה ברזל בניין. המערכת מציגה מחיר ועדכון מלאי.",
-    aiAr: "تم رصد حديد بناء. النظام يعرض السعر وتحديث المخزون."
+    titleHe: "HAMOODI AI פותח מצב ברזל",
+    titleAr: "HAMOODI AI يفتح مشهد الحديد",
+    noteHe: "מתאים לשלד, עמודים ותקרות.",
+    noteAr: "مناسب للهيكل والأعمدة والأسقف.",
+    color: "#38bdf8",
+    img: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=900&q=80"
   },
   {
-    key: "paint",
+    id: "paint",
+    icon: "paint",
     nameHe: "צבע פנים",
     nameAr: "دهان داخلي",
-    price: "120",
+    price: "₪120",
     unitHe: "גלון",
     unitAr: "غالون",
-    icon: "paint",
-    tone: "paint",
-    image: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=900&q=80",
-    aiHe: "מבצע צבעים פעיל עכשיו. HAMOODI AI פותח את המחלקה.",
-    aiAr: "عرض الدهانات نشط الآن. HAMOODI AI يفتح القسم تلقائياً."
+    titleHe: "מבצע צבעים פעיל עכשיו",
+    titleAr: "عرض الدهانات فعال الآن",
+    noteHe: "צבעים איכותיים לגימור נקי.",
+    noteAr: "دهانات عالية الجودة لتشطيب أنيق.",
+    color: "#f472b6",
+    img: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=900&q=80"
   },
   {
-    key: "sand",
+    id: "sand",
+    icon: "sand",
     nameHe: "חול דק",
     nameAr: "رمل ناعم",
-    price: "180",
+    price: "₪180",
     unitHe: "קוב",
     unitAr: "كوب",
-    icon: "sand",
-    tone: "sand",
-    image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80",
-    aiHe: "חול דק זמין להזמנות גדולות ופרויקטים.",
-    aiAr: "الرمل الناعم متوفر للطلبات الكبيرة والمشاريع."
+    titleHe: "HAMOODI AI מציג חומרי בסיס",
+    titleAr: "HAMOODI AI يعرض مواد الأساس",
+    noteHe: "חול לעבודות טיח ובנייה.",
+    noteAr: "رمل لأعمال الطوب واللياسة.",
+    color: "#f59e0b",
+    img: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80"
   },
   {
-    key: "wood",
+    id: "wood",
+    icon: "wood",
     nameHe: "עץ לבנייה",
     nameAr: "خشب للبناء",
-    price: "28",
+    price: "₪28",
     unitHe: "מ׳",
     unitAr: "متر",
-    icon: "wood",
-    tone: "wood",
-    image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&w=900&q=80",
-    aiHe: "מחלקת העץ נפתחה. מתאים לטפסנות ולעבודות שטח.",
-    aiAr: "تم فتح قسم الأخشاب. مناسب لأعمال الصب والمشاريع."
+    titleHe: "עץ לפרויקטים ועבודות תבנית",
+    titleAr: "خشب للمشاريع وأعمال الصب",
+    noteHe: "לוחות ועצים זמינים לפי כמות.",
+    noteAr: "ألواح وأخشاب متوفرة حسب الكمية.",
+    color: "#fbbf24",
+    img: "https://images.unsplash.com/photo-1520038410233-7141be7e6f97?auto=format&fit=crop&w=900&q=80"
+  },
+  {
+    id: "electric",
+    icon: "electric",
+    nameHe: "חומרי חשמל",
+    nameAr: "مواد كهرباء",
+    price: "₪25",
+    unitHe: "יח׳",
+    unitAr: "قطعة",
+    titleHe: "מצב חשמל וניאון פעיל",
+    titleAr: "وضع الكهرباء والنيون فعال",
+    noteHe: "כבלים, מפסקים ותאורה.",
+    noteAr: "أسلاك ومفاتيح وإنارة.",
+    color: "#22d3ee",
+    img: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=900&q=80"
   }
 ];
-
-function getCinematicProduct(data, product) {
-  const prices = Array.isArray(data?.prices) ? data.prices : [];
-  const found = prices.find((p) => {
-    const hay = `${p.icon || ""} ${p.nameHe || ""} ${p.nameAr || ""}`.toLowerCase();
-    if (product.key === "cement") return hay.includes("cement") || hay.includes("מלט") || hay.includes("إسمنت");
-    if (product.key === "steel") return hay.includes("steel") || hay.includes("ברזל") || hay.includes("حديد");
-    if (product.key === "paint") return hay.includes("paint") || hay.includes("צבע") || hay.includes("دهان");
-    if (product.key === "sand") return hay.includes("sand") || hay.includes("חול") || hay.includes("رمل");
-    if (product.key === "wood") return hay.includes("wood") || hay.includes("עץ") || hay.includes("خشب");
-    return false;
-  });
-
-  if (!found) return product;
-  return {
-    ...product,
-    nameHe: found.nameHe || product.nameHe,
-    nameAr: found.nameAr || product.nameAr,
-    price: String(found.price ?? product.price),
-    unitHe: found.unitHe || product.unitHe,
-    unitAr: found.unitAr || product.unitAr,
-    change: found.change || "0",
-    direction: found.direction || "flat"
-  };
-}
-
-function AIShowcase({ data, isAr, product, stage }) {
-  const display = getCinematicProduct(data, product);
-  const name = isAr ? display.nameAr : display.nameHe;
-  const unit = isAr ? display.unitAr : display.unitHe;
-  const aiText = isAr ? display.aiAr : display.aiHe;
-  const directionClass = display.direction === "up" ? "up" : display.direction === "down" ? "down" : "flat";
-  const arrow = display.direction === "up" ? "↑" : display.direction === "down" ? "↓" : "–";
-
-  return (
-    <div className={`ai-showcase ai-${display.tone}`} key={`${display.key}-${stage}`}>
-      <div className="ai-bg-grid" />
-      <div className="ai-scan-line" />
-      <div className="ai-orb">
-        <Bot size={30} />
-      </div>
-
-      <div className="ai-speech">
-        <div className="ai-mini-title"><Sparkles size={18} /> HAMOODI AI</div>
-        <div className="ai-speech-text">{aiText}</div>
-        <div className="ai-wave">{Array.from({ length: 26 }).map((_, i) => <span key={i} />)}</div>
-      </div>
-
-      <div className="ai-stage">
-        <div className="ai-light-beam" />
-        <div className="ai-platform" />
-
-        {display.key === "paint" && <div className="paint-pour"><span /><span /><span /></div>}
-        {display.key === "steel" && <div className="spark-field">{Array.from({ length: 14 }).map((_, i) => <i key={i} />)}</div>}
-        {display.key === "cement" && <div className="dust-field">{Array.from({ length: 16 }).map((_, i) => <i key={i} />)}</div>}
-        {display.key === "sand" && <div className="sand-stream">{Array.from({ length: 12 }).map((_, i) => <i key={i} />)}</div>}
-        {display.key === "wood" && <div className="wood-dust">{Array.from({ length: 10 }).map((_, i) => <i key={i} />)}</div>}
-
-        <div className={`product-visual visual-${display.key}`}>
-          <img src={display.image} alt={name} onError={(e) => { e.currentTarget.style.display = "none"; }} />
-          <div className="product-illustration">
-            {display.key === "cement" && <div className="cement-bag"><b>CEMENT</b><span>50 KG</span></div>}
-            {display.key === "steel" && <div className="steel-bars">{Array.from({ length: 6 }).map((_, i) => <span key={i} />)}</div>}
-            {display.key === "paint" && <div className="paint-bucket"><b /> <span /></div>}
-            {display.key === "sand" && <div className="sand-pile" />}
-            {display.key === "wood" && <div className="wood-stack">{Array.from({ length: 5 }).map((_, i) => <span key={i} />)}</div>}
-          </div>
-        </div>
-
-        <div className="ai-hud-ring ring-one" />
-        <div className="ai-hud-ring ring-two" />
-      </div>
-
-      <div className="ai-info-card">
-        <div className="info-label">AI PRODUCT SCAN</div>
-        <div className="info-name">{name}</div>
-        <div className="info-price">₪{display.price} <small>/ {unit}</small></div>
-        <div className={`info-change ${directionClass}`}>{arrow} {display.change || "0"}</div>
-        <div className="info-tags">
-          <span>{isAr ? "متوفر الآن" : "זמין עכשיו"}</span>
-          <span>{isAr ? "موصى به" : "מומלץ"}</span>
-          <span>{isAr ? "سعر مباشر" : "מחיר חי"}</span>
-        </div>
-      </div>
-
-      <div className="ai-bottom-products">
-        {CINEMATIC_PRODUCTS.map((item) => (
-          <div key={item.key} className={item.key === display.key ? "active" : ""}>
-            <ProductIcon type={item.icon} />
-            <span>{isAr ? item.nameAr : item.nameHe}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 function injectTvTheme() {
   if (typeof document === "undefined" || document.getElementById("hamouda-tv-pixel-theme-v2")) return;
@@ -608,438 +537,119 @@ function injectTvTheme() {
     }
 
 
-    /* HAMOODI AI cinematic live showcase */
-    .ai-showcase {
+    /* HAMOODI AI LIVE CINEMATIC SHOWCASE */
+    .ai-live-stage {
       position:absolute;
       inset:0;
       overflow:hidden;
-      border-radius:1.15vw;
       background:
-        radial-gradient(circle at 50% 42%, rgba(245,178,26,.18), transparent 26%),
-        radial-gradient(circle at 15% 15%, rgba(34,211,238,.14), transparent 26%),
-        linear-gradient(180deg, rgba(3,7,12,.96), rgba(2,6,12,.98));
-      isolation:isolate;
+        radial-gradient(circle at 50% 50%, rgba(34,211,238,.16), transparent 34%),
+        radial-gradient(circle at 50% 92%, rgba(245,178,26,.18), transparent 32%),
+        linear-gradient(180deg, rgba(2,6,12,.96), rgba(3,7,12,.98));
     }
-    .ai-bg-grid {
-      position:absolute;
-      inset:0;
-      opacity:.35;
-      background-image:
-        linear-gradient(rgba(34,211,238,.15) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(34,211,238,.15) 1px, transparent 1px);
-      background-size:2.2vw 2.2vw;
-      animation: aiGridMove 10s linear infinite;
-      z-index:0;
+    .ai-live-bg {
+      position:absolute; inset:-8%; opacity:.34; transform:scale(1.08);
+      background-size:cover; background-position:center;
+      filter:blur(8px) saturate(1.3) brightness(.62);
+      animation: aiBgMove 8s ease-in-out infinite;
     }
-    .ai-showcase:before {
-      content:"";
-      position:absolute;
-      inset:-25%;
-      background:conic-gradient(from 0deg, transparent, rgba(245,178,26,.20), transparent, rgba(34,211,238,.18), transparent);
-      animation: aiWorldSpin 13s linear infinite;
-      opacity:.65;
-      z-index:0;
+    .ai-live-fog {
+      position:absolute; inset:-20%; pointer-events:none; opacity:.48;
+      background:
+        radial-gradient(circle at 12% 84%, rgba(255,255,255,.18), transparent 16%),
+        radial-gradient(circle at 85% 72%, rgba(255,255,255,.12), transparent 20%),
+        radial-gradient(circle at 50% 82%, rgba(245,178,26,.16), transparent 28%);
+      filter:blur(20px);
+      animation: fogDrift 9s ease-in-out infinite alternate;
+    }
+    .ai-grid-overlay {
+      position:absolute; inset:0; opacity:.22;
+      background-image:linear-gradient(rgba(34,211,238,.25) 1px, transparent 1px),linear-gradient(90deg, rgba(34,211,238,.25) 1px, transparent 1px);
+      background-size:2.1vw 2.1vw;
+      mask-image:radial-gradient(circle at center, black 45%, transparent 86%);
     }
     .ai-scan-line {
-      position:absolute;
-      top:-20%;
-      left:0;
-      right:0;
-      height:18%;
-      background:linear-gradient(180deg, transparent, rgba(34,211,238,.55), transparent);
-      filter:blur(.15vw);
-      animation: aiScanDown 4.8s ease-in-out infinite;
-      z-index:7;
-      mix-blend-mode:screen;
+      position:absolute; left:0; right:0; height:.18vw; top:-10%; z-index:6;
+      background:linear-gradient(90deg, transparent, rgba(34,211,238,.2), #7dd3fc, rgba(245,178,26,.75), transparent);
+      box-shadow:0 0 24px rgba(34,211,238,.95), 0 0 42px rgba(245,178,26,.45);
+      animation: aiScan 4.6s ease-in-out infinite;
+    }
+    .ai-light-sweep {
+      position:absolute; inset:-30% -10%; z-index:4; pointer-events:none;
+      background:linear-gradient(105deg, transparent 36%, rgba(255,255,255,.16) 48%, rgba(245,178,26,.20) 52%, transparent 65%);
+      animation: lightSweep 6.2s ease-in-out infinite;
+    }
+    .ai-hud-panel {
+      position:absolute; top:1.15vw; left:2vw; right:2vw; z-index:8;
+      border:1px solid rgba(34,211,238,.55); border-radius:1vw;
+      background:linear-gradient(180deg, rgba(3,12,22,.72), rgba(5,8,14,.60));
+      box-shadow:0 0 28px rgba(34,211,238,.24), inset 0 0 28px rgba(34,211,238,.06);
+      padding:.72vw 1vw; display:grid; grid-template-columns:4.2vw 1fr 8vw; gap:.9vw; align-items:center;
+      backdrop-filter:blur(8px);
     }
     .ai-orb {
-      position:absolute;
-      top:1.1vw;
-      right:1.15vw;
-      width:4.2vw;
-      height:4.2vw;
-      border-radius:50%;
-      display:grid;
-      place-items:center;
-      color:#07111f;
-      background:radial-gradient(circle at 35% 30%, #f5fdff, #3de5ff 38%, #0a5268 72%);
-      box-shadow:0 0 1.8vw rgba(34,211,238,.85), inset 0 0 1vw rgba(255,255,255,.55);
-      z-index:10;
-      animation: aiOrbFloat 3.2s ease-in-out infinite;
+      width:3.55vw; height:3.55vw; border-radius:50%; display:grid; place-items:center;
+      color:#06111c; background:radial-gradient(circle at 35% 30%, #fff, #67e8f9 35%, #0891b2 72%);
+      box-shadow:0 0 24px rgba(34,211,238,.9), inset 0 0 18px rgba(255,255,255,.5);
+      animation: orbPulse 2.2s ease-in-out infinite;
     }
-    .ai-speech {
-      position:absolute;
-      top:1.1vw;
-      right:6.1vw;
-      left:2vw;
-      min-height:5.2vw;
-      border:1px solid rgba(34,211,238,.55);
-      border-radius:1vw;
-      padding:.75vw 1.1vw .65vw;
-      background:linear-gradient(180deg, rgba(3,13,24,.82), rgba(2,8,16,.64));
-      box-shadow:0 0 1.4vw rgba(34,211,238,.24), inset 0 0 2vw rgba(34,211,238,.05);
-      z-index:9;
-      backdrop-filter:blur(10px);
+    .ai-hud-title { color:#67e8f9; font-size:.95vw; font-weight:1000; letter-spacing:.02em; }
+    .ai-hud-text { font-size:1.45vw; line-height:1.25; font-weight:1000; text-shadow:0 0 12px rgba(0,0,0,.85); }
+    .voice-bars { height:1.2vw; display:flex; justify-content:center; align-items:end; gap:.12vw; direction:ltr; }
+    .voice-bars span { width:.12vw; border-radius:1vw; background:linear-gradient(180deg,#67e8f9,#f5b21a); animation: voiceBeat .8s ease-in-out infinite; box-shadow:0 0 8px rgba(34,211,238,.7); }
+    .voice-bars span:nth-child(odd){ animation-delay:.16s; }
+    .voice-bars span:nth-child(3n){ animation-delay:.32s; }
+    .ai-product-world { position:absolute; inset:5.8vw 1.2vw 6.3vw; z-index:5; display:grid; grid-template-columns:1fr 13vw; gap:.9vw; align-items:end; }
+    .cinema-product-zone { position:relative; height:100%; overflow:hidden; border-radius:1vw; border:1px solid rgba(245,178,26,.38); background:rgba(0,0,0,.18); }
+    .holo-rings { position:absolute; left:50%; bottom:8%; width:28vw; height:8vw; transform:translateX(-50%); border-radius:50%; border:.12vw solid rgba(245,178,26,.65); box-shadow:0 0 32px rgba(245,178,26,.45), inset 0 0 30px rgba(245,178,26,.15); animation:ringPulse 2.4s ease-in-out infinite; }
+    .holo-rings:before,.holo-rings:after{ content:""; position:absolute; inset:18% 9%; border-radius:50%; border:1px solid rgba(34,211,238,.45); animation:ringSpin 5s linear infinite; }
+    .holo-rings:after{ inset:33% 18%; border-color:rgba(245,178,26,.45); animation-duration:3.5s; animation-direction:reverse; }
+    .real-product-img {
+      position:absolute; left:50%; bottom:12%; z-index:3; width:min(30vw, 58vh); height:min(24vw, 46vh); transform:translateX(-50%);
+      object-fit:contain; filter:drop-shadow(0 1vw 1.2vw rgba(0,0,0,.75)) drop-shadow(0 0 1.2vw rgba(245,178,26,.35));
+      animation: productEnter 5.6s cubic-bezier(.2,.9,.2,1) infinite;
     }
-    .ai-mini-title {
-      display:flex;
-      align-items:center;
-      gap:.45vw;
-      color:#6ff3ff;
-      font-size:.9vw;
-      font-weight:1000;
-      letter-spacing:.03em;
-      margin-bottom:.25vw;
-    }
-    .ai-speech-text {
-      font-size:1.18vw;
-      line-height:1.35;
-      font-weight:1000;
-      color:#fff;
-      text-shadow:0 0 .8vw rgba(255,255,255,.2);
-      animation:typeGlow 2.2s ease-in-out infinite;
-    }
-    .ai-wave {
-      height:.9vw;
-      display:flex;
-      align-items:end;
-      justify-content:center;
-      gap:.12vw;
-      margin-top:.25vw;
-      overflow:hidden;
-    }
-    .ai-wave span {
-      display:block;
-      width:.12vw;
-      height:.25vw;
-      border-radius:.2vw;
-      background:linear-gradient(180deg, #fff, #37e8ff, #f5b21a);
-      animation:voiceWave .75s ease-in-out infinite;
-      animation-delay:calc(var(--i, 1) * .03s);
-    }
-    .ai-wave span:nth-child(2n) { animation-delay:.12s; }
-    .ai-wave span:nth-child(3n) { animation-delay:.21s; }
-    .ai-wave span:nth-child(4n) { animation-delay:.33s; }
-    .ai-stage {
-      position:absolute;
-      inset:6.6vw 1vw 6vw 1vw;
-      display:grid;
-      place-items:center;
-      z-index:3;
-      overflow:hidden;
-      border-radius:1vw;
-      border:1px solid rgba(245,178,26,.30);
-      background:
-        radial-gradient(circle at 50% 70%, rgba(245,178,26,.20), transparent 22%),
-        linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.25));
-      box-shadow:inset 0 0 4vw rgba(0,0,0,.38);
-    }
-    .ai-light-beam {
-      position:absolute;
-      top:-7vw;
-      width:20vw;
-      height:29vw;
-      background:linear-gradient(180deg, rgba(255,230,160,.22), rgba(255,230,160,.07), transparent);
-      clip-path:polygon(40% 0, 60% 0, 100% 100%, 0 100%);
-      filter:blur(.25vw);
-      animation:beamPulse 3.4s ease-in-out infinite;
-      z-index:1;
-    }
-    .ai-platform {
-      position:absolute;
-      bottom:2.1vw;
-      width:21vw;
-      height:3.2vw;
-      border-radius:50%;
-      background:radial-gradient(ellipse, rgba(245,178,26,.55), rgba(245,178,26,.12) 48%, transparent 70%);
-      border:1px solid rgba(245,178,26,.55);
-      box-shadow:0 0 2vw rgba(245,178,26,.35);
-      animation:platformPulse 2.6s ease-in-out infinite;
-      z-index:2;
-    }
-    .product-visual {
-      position:relative;
-      z-index:4;
-      width:22vw;
-      height:20vw;
-      display:grid;
-      place-items:center;
-      animation:productEntry 5.5s ease-in-out infinite;
-      transform-style:preserve-3d;
-    }
-    .product-visual img {
-      position:absolute;
-      inset:0;
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      border-radius:1vw;
-      opacity:.20;
-      filter:saturate(1.3) contrast(1.05);
-      mask-image:radial-gradient(circle, black 45%, transparent 74%);
-      -webkit-mask-image:radial-gradient(circle, black 45%, transparent 74%);
-      z-index:0;
-    }
-    .product-illustration {
-      position:relative;
-      z-index:2;
-      display:grid;
-      place-items:center;
-      width:100%;
-      height:100%;
-      filter:drop-shadow(0 1.4vw 1.7vw rgba(0,0,0,.7));
-    }
-    .cement-bag {
-      width:9vw;
-      height:13vw;
-      border-radius:.9vw .9vw .55vw .55vw;
-      background:
-        linear-gradient(115deg, rgba(255,255,255,.18), transparent 28%),
-        linear-gradient(180deg, #d7ba7a, #b88941);
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap:1.2vw;
-      color:#06111d;
-      font-weight:1000;
-      font-size:1.25vw;
-      box-shadow:inset 0 0 1.2vw rgba(255,255,255,.18), 0 0 2vw rgba(245,178,26,.45);
-      animation:cementRotate 5.5s ease-in-out infinite;
-    }
-    .cement-bag span { font-size:1.45vw; }
-    .steel-bars {
-      position:relative;
-      width:16vw;
-      height:16vw;
-    }
-    .steel-bars span {
-      position:absolute;
-      bottom:0;
-      width:1.15vw;
-      height:15vw;
-      border-radius:.55vw;
-      background:repeating-linear-gradient(45deg, #7d8795 0 .25vw, #e3edf7 .25vw .42vw);
-      box-shadow:0 0 1.1vw rgba(34,211,238,.55), inset 0 0 .8vw rgba(0,0,0,.3);
-      animation:steelRise 5.5s ease-in-out infinite;
-    }
-    .steel-bars span:nth-child(1){ right:2vw; height:12vw; animation-delay:.05s; }
-    .steel-bars span:nth-child(2){ right:4.2vw; height:15vw; animation-delay:.15s; }
-    .steel-bars span:nth-child(3){ right:6.4vw; height:13vw; animation-delay:.25s; }
-    .steel-bars span:nth-child(4){ right:8.6vw; height:15.6vw; animation-delay:.35s; }
-    .steel-bars span:nth-child(5){ right:10.8vw; height:11.8vw; animation-delay:.45s; }
-    .steel-bars span:nth-child(6){ right:13vw; height:14vw; animation-delay:.55s; }
-    .paint-bucket {
-      position:relative;
-      width:11vw;
-      height:10vw;
-      border-radius:1vw 1vw 2vw 2vw;
-      background:linear-gradient(180deg, #f3f3f3, #bfc8d2 52%, #ffcf42 53%, #c98205);
-      border:.25vw solid rgba(255,255,255,.65);
-      box-shadow:0 0 2.1vw rgba(245,178,26,.55);
-      animation:paintBounce 5.5s ease-in-out infinite;
-      overflow:visible;
-    }
-    .paint-bucket:before {
-      content:"";
-      position:absolute;
-      left:1.4vw;
-      right:1.4vw;
-      top:-1.2vw;
-      height:2vw;
-      border:.28vw solid #d9e4ef;
-      border-bottom:0;
-      border-radius:2vw 2vw 0 0;
-    }
-    .paint-bucket b {
-      position:absolute;
-      top:-3.3vw;
-      right:2vw;
-      width:5vw;
-      height:4.5vw;
-      background:linear-gradient(180deg, #ff2b68, #8a2bff);
-      border-radius:60% 40% 55% 45%;
-      filter:drop-shadow(0 0 1vw rgba(255,0,174,.7));
-      animation:paintSplash 5.5s ease-in-out infinite;
-    }
-    .paint-bucket span {
-      position:absolute;
-      top:-5.5vw;
-      right:4.1vw;
-      width:2.4vw;
-      height:7vw;
-      background:linear-gradient(180deg, #00c6ff, #ff2bd6, #ffc107);
-      border-radius:1.4vw;
-      animation:paintPour 5.5s ease-in-out infinite;
-      transform-origin:top center;
-    }
-    .sand-pile {
-      width:15vw;
-      height:9vw;
-      background:radial-gradient(ellipse at 50% 100%, #d0a35d, #a8752d 60%, transparent 62%);
-      filter:drop-shadow(0 0 2vw rgba(245,178,26,.42));
-      animation:sandBuild 5.5s ease-in-out infinite;
-    }
-    .wood-stack {
-      position:relative;
-      width:17vw;
-      height:11vw;
-      display:flex;
-      flex-direction:column;
-      justify-content:end;
-      gap:.35vw;
-      animation:woodEnter 5.5s ease-in-out infinite;
-    }
-    .wood-stack span {
-      display:block;
-      height:1.6vw;
-      border-radius:.28vw;
-      background:linear-gradient(90deg, #6b3f17, #c2833d, #7a481a);
-      border:1px solid rgba(255,221,150,.22);
-      box-shadow:0 0 1vw rgba(245,178,26,.20);
-      animation:woodSlide 5.5s ease-in-out infinite;
-    }
-    .wood-stack span:nth-child(2n){ width:15vw; margin-inline-start:1vw; }
-    .ai-hud-ring {
-      position:absolute;
-      border-radius:50%;
-      border:1px solid rgba(34,211,238,.32);
-      z-index:2;
-    }
-    .ring-one { width:28vw; height:28vw; animation:aiWorldSpin 16s linear infinite; }
-    .ring-two { width:20vw; height:20vw; border-color:rgba(245,178,26,.34); animation:aiWorldSpin 10s linear infinite reverse; }
-    .ai-info-card {
-      position:absolute;
-      right:1.1vw;
-      bottom:1vw;
-      z-index:11;
-      width:20vw;
-      border:1px solid rgba(245,178,26,.48);
-      border-radius:1vw;
-      padding:.85vw;
-      background:linear-gradient(180deg, rgba(3,8,14,.90), rgba(0,0,0,.70));
-      box-shadow:0 0 1.4vw rgba(245,178,26,.18);
-      backdrop-filter:blur(12px);
-    }
-    .info-label { color:#66f4ff; font-size:.78vw; font-weight:1000; letter-spacing:.04em; }
-    .info-name { font-size:1.35vw; font-weight:1000; margin-top:.25vw; }
-    .info-price {
-      margin-top:.45vw;
-      display:inline-block;
-      padding:.35vw .8vw;
-      border-radius:.6vw;
-      background:linear-gradient(135deg, #ffd84d, #f5a400);
-      color:#06111d;
-      font-size:1.8vw;
-      font-weight:1000;
-      box-shadow:0 0 1.4vw rgba(245,178,26,.55);
-    }
-    .info-price small { font-size:.78vw; }
-    .info-change { display:inline-block; margin-inline-start:.5vw; font-size:1vw; font-weight:1000; }
-    .info-tags { display:flex; gap:.35vw; margin-top:.6vw; flex-wrap:wrap; }
-    .info-tags span { border:1px solid rgba(34,211,238,.24); color:#dffcff; background:rgba(34,211,238,.08); border-radius:2vw; padding:.22vw .5vw; font-size:.65vw; font-weight:900; }
-    .ai-bottom-products {
-      position:absolute;
-      left:1vw;
-      right:22vw;
-      bottom:1vw;
-      z-index:11;
-      display:grid;
-      grid-template-columns:repeat(5,1fr);
-      gap:.45vw;
-    }
-    .ai-bottom-products div {
-      min-width:0;
-      height:3.8vw;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(0,0,0,.45);
-      border-radius:.7vw;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:.35vw;
-      color:#fff;
-      font-size:.78vw;
-      font-weight:1000;
-      overflow:hidden;
-      padding:.3vw;
-    }
-    .ai-bottom-products div.active {
-      border-color:rgba(245,178,26,.95);
-      box-shadow:0 0 1.2vw rgba(245,178,26,.45), inset 0 0 1vw rgba(245,178,26,.08);
-      color:var(--gold2);
-      transform:translateY(-.25vw);
-    }
-    .ai-bottom-products span { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .paint-pour span {
-      position:absolute;
-      top:-3vw;
-      width:2vw;
-      height:12vw;
-      border-radius:2vw;
-      background:linear-gradient(180deg, #00c6ff, #ff2bd6, #ffc107);
-      z-index:3;
-      animation:paintFall 5.5s ease-in-out infinite;
-      filter:blur(.03vw) drop-shadow(0 0 1vw rgba(255,0,200,.55));
-    }
-    .paint-pour span:nth-child(1){ right:45%; }
-    .paint-pour span:nth-child(2){ right:51%; animation-delay:.2s; opacity:.8; }
-    .paint-pour span:nth-child(3){ right:57%; animation-delay:.35s; opacity:.65; }
-    .spark-field i, .dust-field i, .sand-stream i, .wood-dust i {
-      position:absolute;
-      display:block;
-      border-radius:50%;
-      z-index:5;
-      pointer-events:none;
-    }
-    .spark-field i {
-      bottom:5vw;
-      right:calc(35% + (var(--n, 1) * 1vw));
-      width:.22vw;
-      height:.22vw;
-      background:#ffe28a;
-      box-shadow:0 0 .8vw #ffb300;
-      animation:sparkFly 1.2s ease-out infinite;
-    }
-    .spark-field i:nth-child(odd){ right:auto; left:38%; animation-delay:.25s; }
-    .dust-field i, .wood-dust i {
-      bottom:4vw;
-      width:.35vw;
-      height:.35vw;
-      background:rgba(220,190,140,.55);
-      animation:dustFloat 2.8s ease-in-out infinite;
-    }
-    .dust-field i:nth-child(n), .wood-dust i:nth-child(n) { right:calc(25% + 3vw); }
-    .sand-stream i {
-      top:5vw;
-      right:calc(44% + 1vw);
-      width:.25vw;
-      height:.25vw;
-      background:#d6a34d;
-      box-shadow:0 0 .6vw rgba(245,178,26,.7);
-      animation:sandDrop 1.1s linear infinite;
-    }
-    @keyframes aiGridMove { from { background-position:0 0; } to { background-position:2.2vw 2.2vw; } }
-    @keyframes aiWorldSpin { to { transform:rotate(360deg); } }
-    @keyframes aiScanDown { 0% { transform:translateY(-25%); opacity:0; } 20%,70% { opacity:1; } 100% { transform:translateY(760%); opacity:0; } }
-    @keyframes aiOrbFloat { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-.35vw); } }
-    @keyframes voiceWave { 0%,100% { height:.15vw; opacity:.55; } 50% { height:.85vw; opacity:1; } }
-    @keyframes typeGlow { 0%,100% { opacity:.9; } 50% { opacity:1; text-shadow:0 0 1.2vw rgba(34,211,238,.32); } }
-    @keyframes beamPulse { 0%,100% { opacity:.35; } 50% { opacity:.72; } }
-    @keyframes platformPulse { 0%,100% { transform:scaleX(1); opacity:.65; } 50% { transform:scaleX(1.08); opacity:1; } }
-    @keyframes productEntry { 0% { transform:translateY(9vw) scale(.82); opacity:0; filter:blur(.4vw); } 17%,78% { transform:translateY(0) scale(1); opacity:1; filter:blur(0); } 100% { transform:translateY(-3vw) scale(.96); opacity:.25; filter:blur(.18vw); } }
-    @keyframes cementRotate { 0%,100% { transform:rotateY(-18deg) rotateZ(-1deg); } 50% { transform:rotateY(18deg) rotateZ(1deg); } }
-    @keyframes steelRise { 0% { transform:translateY(12vw); opacity:0; } 22%,80% { transform:translateY(0); opacity:1; } 100% { transform:translateY(-2vw); opacity:.25; } }
-    @keyframes paintBounce { 0% { transform:translateY(4vw) scale(.9); opacity:.2; } 20%,80% { transform:translateY(0) scale(1); opacity:1; } 100% { transform:translateY(-2vw) scale(.95); opacity:.35; } }
-    @keyframes paintSplash { 0%,12% { transform:scale(.3); opacity:0; } 28%,80% { transform:scale(1); opacity:1; } 100% { transform:scale(1.25); opacity:0; } }
-    @keyframes paintPour { 0%,10% { transform:scaleY(0); opacity:0; } 24%,82% { transform:scaleY(1); opacity:1; } 100% { transform:scaleY(.2); opacity:0; } }
-    @keyframes paintFall { 0% { transform:translateY(-10vw) scaleY(.3); opacity:0; } 25%,75% { transform:translateY(7vw) scaleY(1); opacity:.9; } 100% { transform:translateY(15vw) scaleY(.4); opacity:0; } }
-    @keyframes sandBuild { 0% { transform:scale(.35) translateY(5vw); opacity:0; } 24%,80% { transform:scale(1) translateY(0); opacity:1; } 100% { transform:scale(1.05) translateY(-1vw); opacity:.3; } }
-    @keyframes woodEnter { 0% { transform:translateX(-12vw); opacity:0; } 20%,80% { transform:translateX(0); opacity:1; } 100% { transform:translateX(6vw); opacity:.2; } }
-    @keyframes woodSlide { 0% { transform:translateX(-8vw); } 25%,100% { transform:translateX(0); } }
-    @keyframes sparkFly { 0% { transform:translate(0,0) scale(.8); opacity:1; } 100% { transform:translate(4vw,-8vw) scale(.1); opacity:0; } }
-    @keyframes dustFloat { 0% { transform:translate(0,0) scale(.6); opacity:0; } 40% { opacity:.8; } 100% { transform:translate(6vw,-7vw) scale(1.5); opacity:0; } }
-    @keyframes sandDrop { from { transform:translateY(-4vw); opacity:0; } 30% { opacity:1; } to { transform:translateY(10vw); opacity:0; } }
+    .product-cement .real-product-img { animation-name: cementRise; }
+    .product-steel .real-product-img { animation-name: steelRise; }
+    .product-paint .real-product-img { animation-name: paintPop; }
+    .product-sand .real-product-img { animation-name: sandFloat; }
+    .product-wood .real-product-img { animation-name: woodSlide; }
+    .product-electric .real-product-img { animation-name: electricPulse; }
+    .dust-cloud { position:absolute; left:50%; bottom:9%; width:30vw; height:8vw; transform:translateX(-50%); z-index:2; opacity:.65; filter:blur(10px); background:radial-gradient(ellipse at center, rgba(255,238,190,.36), transparent 68%); animation:dustBreath 3.8s ease-in-out infinite; }
+    .spark-field { position:absolute; inset:0; z-index:4; pointer-events:none; overflow:hidden; }
+    .spark-field span { position:absolute; width:.22vw; height:.22vw; border-radius:50%; background:#ffd166; box-shadow:0 0 12px #ffd166; animation:sparkFly 1.9s linear infinite; }
+    .paint-pour { position:absolute; top:-12%; left:45%; width:5vw; height:18vw; z-index:4; border-radius:0 0 2vw 2vw; background:linear-gradient(180deg,#f0f,#ff2b72,#f5b21a); opacity:0; filter:drop-shadow(0 0 18px rgba(244,114,182,.9)); animation:paintPour 5.6s ease-in-out infinite; }
+    .electric-bolt { position:absolute; top:18%; left:58%; width:.45vw; height:14vw; background:#67e8f9; opacity:0; z-index:4; box-shadow:0 0 22px #67e8f9; clip-path:polygon(45% 0,100% 38%,62% 38%,100% 100%,10% 46%,48% 46%); animation:electricBolt 5.6s ease-in-out infinite; }
+    .steel-rods { position:absolute; left:52%; bottom:8%; z-index:2; display:flex; gap:.55vw; transform:translateX(-50%); }
+    .steel-rods span { display:block; width:.42vw; height:18vw; border-radius:.3vw; background:linear-gradient(90deg,#555,#f3f4f6,#333); box-shadow:0 0 16px rgba(125,211,252,.28); animation:rodRise 5.6s ease-in-out infinite; }
+    .product-details-card { align-self:stretch; border:1px solid rgba(34,211,238,.42); border-radius:1vw; background:linear-gradient(180deg,rgba(2,10,18,.82),rgba(2,6,12,.88)); padding:1vw; display:flex; flex-direction:column; justify-content:center; box-shadow:0 0 26px rgba(34,211,238,.18); }
+    .scan-label { color:#67e8f9; font-size:.9vw; font-weight:1000; margin-bottom:.55vw; }
+    .scan-name { font-size:1.35vw; font-weight:1000; line-height:1.05; margin-bottom:.75vw; }
+    .scan-price { border-radius:.75vw; padding:.7vw .6vw; color:#07111f; background:linear-gradient(135deg,#fff1a8,#f5b21a); font-size:2vw; font-weight:1000; text-align:center; box-shadow:0 0 20px rgba(245,178,26,.55); }
+    .scan-note { margin-top:.8vw; color:rgba(255,255,255,.78); font-size:.78vw; font-weight:800; line-height:1.4; }
+    .ai-product-strip { position:absolute; left:1.2vw; right:1.2vw; bottom:1vw; height:4.5vw; z-index:7; display:grid; grid-template-columns:repeat(6,1fr); gap:.45vw; }
+    .ai-product-tab { border:1px solid rgba(255,255,255,.12); border-radius:.75vw; background:rgba(0,0,0,.52); display:flex; align-items:center; justify-content:center; gap:.35vw; font-size:.82vw; font-weight:1000; color:#fff; box-shadow:inset 0 0 16px rgba(255,255,255,.025); }
+    .ai-product-tab.active { border-color:rgba(245,178,26,.9); color:#ffdc63; background:rgba(245,178,26,.10); box-shadow:0 0 22px rgba(245,178,26,.42), inset 0 0 18px rgba(245,178,26,.08); }
+    .ai-live-stage:after { content:""; position:absolute; inset:0; pointer-events:none; z-index:9; background:linear-gradient(180deg, rgba(255,255,255,.03), transparent 10%, transparent 90%, rgba(0,0,0,.28)); }
+    @keyframes aiBgMove { 0%,100%{ transform:scale(1.08) translateX(0); } 50%{ transform:scale(1.16) translateX(1.5vw); } }
+    @keyframes fogDrift { from{ transform:translateX(-3vw) translateY(1vw); } to{ transform:translateX(3vw) translateY(-1vw); } }
+    @keyframes aiScan { 0%{ top:-8%; opacity:0; } 12%{ opacity:1; } 58%{ top:92%; opacity:1; } 72%,100%{ top:110%; opacity:0; } }
+    @keyframes lightSweep { 0%,35%{ transform:translateX(70%) skewX(-10deg); opacity:0; } 52%{ opacity:1; } 85%,100%{ transform:translateX(-70%) skewX(-10deg); opacity:0; } }
+    @keyframes orbPulse { 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.08); } }
+    @keyframes voiceBeat { 0%,100%{ height:.25vw; } 50%{ height:1.1vw; } }
+    @keyframes ringPulse { 0%,100%{ transform:translateX(-50%) scale(.96); opacity:.8; } 50%{ transform:translateX(-50%) scale(1.05); opacity:1; } }
+    @keyframes ringSpin { from{ transform:rotate(0); } to{ transform:rotate(360deg); } }
+    @keyframes cementRise { 0%{ transform:translateX(-50%) translateY(9vw) scale(.78) rotateY(-14deg); opacity:0; } 18%{ opacity:1; } 45%{ transform:translateX(-50%) translateY(0) scale(1) rotateY(8deg); } 75%{ transform:translateX(-50%) translateY(-.6vw) scale(1.04) rotateY(-8deg); } 100%{ transform:translateX(-50%) translateY(9vw) scale(.88) rotateY(14deg); opacity:0; } }
+    @keyframes steelRise { 0%{ transform:translateX(-50%) translateY(12vw) scale(.85); opacity:0; } 22%{ opacity:1; transform:translateX(-50%) translateY(0) scale(1); } 76%{ transform:translateX(-50%) translateY(-.8vw) scale(1.05); opacity:1; } 100%{ transform:translateX(-50%) translateY(12vw) scale(.9); opacity:0; } }
+    @keyframes paintPop { 0%{ transform:translateX(-50%) translateY(10vw) scale(.76) rotate(-4deg); opacity:0; } 20%{ transform:translateX(-50%) translateY(0) scale(1) rotate(2deg); opacity:1; } 72%{ transform:translateX(-50%) translateY(-.5vw) scale(1.04) rotate(-2deg); opacity:1; } 100%{ transform:translateX(-50%) translateY(10vw) scale(.84) rotate(4deg); opacity:0; } }
+    @keyframes sandFloat { 0%{ transform:translateX(-50%) translateY(9vw) scale(.8); opacity:0; } 22%{ opacity:1; transform:translateX(-50%) translateY(0) scale(1); } 72%{ transform:translateX(-50%) translateY(-.4vw) scale(1.03); } 100%{ transform:translateX(-50%) translateY(9vw) scale(.84); opacity:0; } }
+    @keyframes woodSlide { 0%{ transform:translateX(55%) translateY(2vw) scale(.85); opacity:0; } 22%{ transform:translateX(-50%) translateY(0) scale(1); opacity:1; } 72%{ transform:translateX(-52%) translateY(-.5vw) scale(1.03); opacity:1; } 100%{ transform:translateX(-150%) translateY(2vw) scale(.9); opacity:0; } }
+    @keyframes electricPulse { 0%{ transform:translateX(-50%) translateY(9vw) scale(.76); opacity:0; filter:drop-shadow(0 0 0 #67e8f9); } 20%{ opacity:1; transform:translateX(-50%) translateY(0) scale(1); } 50%{ filter:drop-shadow(0 0 2vw #67e8f9) drop-shadow(0 0 1vw #f5b21a); } 78%{ opacity:1; transform:translateX(-50%) translateY(-.4vw) scale(1.05); } 100%{ opacity:0; transform:translateX(-50%) translateY(9vw) scale(.82); } }
+    @keyframes dustBreath { 0%,100%{ opacity:.25; transform:translateX(-50%) scale(.75); } 45%{ opacity:.78; transform:translateX(-50%) scale(1.1); } }
+    @keyframes sparkFly { 0%{ transform:translateY(0) scale(.4); opacity:0; } 22%{ opacity:1; } 100%{ transform:translateY(-12vw) translateX(3vw) scale(0); opacity:0; } }
+    @keyframes paintPour { 0%,15%{ opacity:0; transform:translateY(-7vw) scaleY(.2); } 28%,62%{ opacity:1; transform:translateY(0) scaleY(1); } 82%,100%{ opacity:0; transform:translateY(6vw) scaleY(.3); } }
+    @keyframes electricBolt { 0%,28%,100%{ opacity:0; transform:scaleY(.6); } 34%,38%,46%{ opacity:1; transform:scaleY(1); } 42%,52%{ opacity:.25; } }
+    @keyframes rodRise { 0%{ transform:translateY(10vw); opacity:0; } 20%,78%{ transform:translateY(0); opacity:.9; } 100%{ transform:translateY(10vw); opacity:0; } }
 
     @media (max-aspect-ratio: 14/9) {
       .topbar { grid-template-columns: 1.6fr 2.2fr 1.5fr; }
@@ -1293,6 +903,100 @@ function CurrencyPill({ icon, label, value, change }) {
   );
 }
 
+function VoiceBars() {
+  return (
+    <div className="voice-bars" aria-hidden="true">
+      {Array.from({ length: 34 }).map((_, i) => (
+        <span key={i} style={{ animationDelay: `${(i % 9) * 0.07}s` }} />
+      ))}
+    </div>
+  );
+}
+
+function SparkField({ show }) {
+  if (!show) return null;
+  return (
+    <div className="spark-field" aria-hidden="true">
+      {Array.from({ length: 22 }).map((_, i) => (
+        <span
+          key={i}
+          style={{
+            left: `${12 + ((i * 37) % 72)}%`,
+            bottom: `${12 + ((i * 19) % 34)}%`,
+            animationDelay: `${(i % 8) * 0.16}s`,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+function CinematicAIShowcase({ data, isAr, product, index }) {
+  const name = isAr ? product.nameAr : product.nameHe;
+  const unit = isAr ? product.unitAr : product.unitHe;
+  const title = isAr ? product.titleAr : product.titleHe;
+  const note = isAr ? product.noteAr : product.noteHe;
+
+  return (
+    <main className="hero-card glass-panel">
+      <div className={`ai-live-stage product-${product.id}`}>
+        <div className="ai-live-bg" style={{ backgroundImage: `url(${product.img})` }} />
+        <div className="ai-live-fog" />
+        <div className="ai-grid-overlay" />
+        <div className="ai-scan-line" />
+        <div className="ai-light-sweep" />
+
+        <div className="ai-hud-panel">
+          <div className="ai-orb"><Bot size={30} /></div>
+          <div>
+            <div className="ai-hud-title">HAMOODI AI  <Sparkles size={15} style={{verticalAlign:'middle'}} /></div>
+            <div className="ai-hud-text">{title}</div>
+            <VoiceBars />
+          </div>
+          <div style={{textAlign:'center', color:'#ffdc63', fontWeight:1000, fontSize:'.78vw'}}>
+            LIVE SCAN<br />{String(index + 1).padStart(2, '0')}/06
+          </div>
+        </div>
+
+        <div className="ai-product-world">
+          <div className="cinema-product-zone">
+            <div className="holo-rings" />
+            {product.id === 'paint' && <div className="paint-pour" />}
+            {product.id === 'electric' && <div className="electric-bolt" />}
+            {product.id === 'steel' && (
+              <div className="steel-rods" aria-hidden="true">
+                <span /><span /><span /><span /><span /><span />
+              </div>
+            )}
+            <div className="dust-cloud" />
+            <SparkField show={product.id === 'steel' || product.id === 'wood' || product.id === 'cement'} />
+            <img key={product.id} className="real-product-img" src={product.img} alt={name} />
+          </div>
+
+          <div className="product-details-card">
+            <div className="scan-label">AI PRODUCT SCAN</div>
+            <div className="scan-name">{name}</div>
+            <div className="scan-price">{product.price} / {unit}</div>
+            <div className="scan-note">{note}</div>
+            <div className="scan-note" style={{color:'#67e8f9'}}>✓ {isAr ? 'متوفر الآن' : 'זמין עכשיו'} &nbsp; ✓ {isAr ? 'موصى به' : 'מומלץ'}</div>
+          </div>
+        </div>
+
+        <div className="ai-product-strip">
+          {AI_PRODUCTS.map((item, i) => {
+            const Icon = item.icon === 'paint' ? PaintBucket : item.icon === 'steel' ? Layers : item.icon === 'wood' ? Hammer : item.icon === 'electric' ? Zap : item.icon === 'sand' ? Building2 : Package;
+            return (
+              <div key={item.id} className={`ai-product-tab ${i === index ? 'active' : ''}`}>
+                <Icon size={20} /> {isAr ? item.nameAr : item.nameHe}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </main>
+  );
+}
+
 export default function HamoudaPremiumDisplay() {
   injectTvTheme();
 
@@ -1308,7 +1012,7 @@ export default function HamoudaPremiumDisplay() {
   const [gold, setGold] = useState({ loading: true, price: "--" });
   const [constructionNews, setConstructionNews] = useState([]);
   const [firebaseSettingsId, setFirebaseSettingsId] = useState(null);
-  const [activeCinematic, setActiveCinematic] = useState(0);
+  const [aiIndex, setAiIndex] = useState(0);
 
   const isAr = data.language === "ar";
   const locale = isAr ? "ar" : "he";
@@ -1323,6 +1027,14 @@ export default function HamoudaPremiumDisplay() {
     (isAr ? "مشروع من أعمالنا" : "פרויקט מהעבודות שלנו");
   const backgroundImages = data.backgroundImages?.length ? data.backgroundImages : (DEFAULT_DATA.backgroundImages || []);
   const currentBackground = backgroundImages[bgIndex % Math.max(1, backgroundImages.length)] || FALLBACK_IMAGE;
+  const aiProduct = AI_PRODUCTS[aiIndex % AI_PRODUCTS.length];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setAiIndex((v) => (v + 1) % AI_PRODUCTS.length);
+    }, 5600);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     const unsub = onSnapshot(
@@ -1343,13 +1055,6 @@ export default function HamoudaPremiumDisplay() {
   useEffect(() => {
     const clock = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(clock);
-  }, []);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveCinematic((v) => (v + 1) % CINEMATIC_PRODUCTS.length);
-    }, 5500);
-    return () => clearInterval(timer);
   }, []);
 
   useEffect(() => {
@@ -1608,14 +1313,12 @@ export default function HamoudaPremiumDisplay() {
             <div className="small-note">* {isAr ? "الأسعار تتحدث حسب البيانات" : "המחירים מתעדכנים בזמן אמת"}</div>
           </aside>
 
-          <main className="hero-card glass-panel">
-            <AIShowcase
-              data={data}
-              isAr={isAr}
-              product={CINEMATIC_PRODUCTS[activeCinematic % CINEMATIC_PRODUCTS.length]}
-              stage={activeCinematic}
-            />
-          </main>
+          <CinematicAIShowcase
+            data={data}
+            isAr={isAr}
+            product={aiProduct}
+            index={aiIndex % AI_PRODUCTS.length}
+          />
 
           <aside className="projects-card glass-panel">
             <div className="projects-title">
