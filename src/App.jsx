@@ -111,7 +111,89 @@ const DEFAULT_DATA = {
   offerPercent: "5%",
   tickerHe: ["🔥 מבצעים יומיים על חומרי בניין", "🚚 אספקה מהירה להזמנות גדולות", "🏗️ ציוד מלא לקבלנים ופרויקטים", "📞 להזמנות ושירות: 054-7285036"],
   tickerAr: ["🔥 عروض يومية على مواد البناء", "🚚 توصيل سريع للطلبات الكبيرة", "🏗️ تجهيز كامل للمقاولين والمشاريع", "📞 للطلب والاستفسار: 054-7285036"]
+
 };
+
+const AI_PRODUCT_SCENES = [
+  {
+    id: "cement",
+    icon: "cement",
+    labelHe: "מלט",
+    labelAr: "إسمنت",
+    titleHe: "HAMOODI AI סורק שק מלט",
+    titleAr: "HAMOODI AI يفحص كيس الإسمنت",
+    textHe: "המוצר זוהה: מלט 50 ק״ג. מתאים ליציקות ועבודות בנייה.",
+    textAr: "تم التعرف على المنتج: إسمنت 50 كغم. مناسب للصب وأعمال البناء.",
+    visual: "cement",
+    noteHe: "מומלץ לקבלנים",
+    noteAr: "مناسب للمقاولين"
+  },
+  {
+    id: "steel",
+    icon: "steel",
+    labelHe: "ברזל",
+    labelAr: "حديد",
+    titleHe: "HAMOODI AI פותח מחלקת ברזל",
+    titleAr: "HAMOODI AI يفتح قسم الحديد",
+    textHe: "ברזל הבניין עולה מהקרקע עם עדכון מחיר חי.",
+    textAr: "قضبان الحديد تظهر من الأسفل مع تحديث السعر بشكل حي.",
+    visual: "steel",
+    noteHe: "עדכון מחיר חי",
+    noteAr: "تحديث سعر مباشر"
+  },
+  {
+    id: "paint",
+    icon: "paint",
+    labelHe: "צבעים",
+    labelAr: "دهانات",
+    titleHe: "HAMOODI AI מציג מבצע צבעים",
+    titleAr: "HAMOODI AI يعرض قسم الدهانات",
+    textHe: "צבע נשפך בצורה חכמה ומציג את המבצע הנוכחי.",
+    textAr: "الدهان ينسكب بشكل سينمائي ويعرض العرض الحالي.",
+    visual: "paint",
+    noteHe: "מבצע היום",
+    noteAr: "عرض اليوم"
+  },
+  {
+    id: "sand",
+    icon: "sand",
+    labelHe: "חול",
+    labelAr: "رمل",
+    titleHe: "HAMOODI AI מנתח חומרי מילוי",
+    titleAr: "HAMOODI AI يحلل مواد الردم والرمل",
+    textHe: "חול וחצץ מוצגים עם אפקט אבק ותנועה רכה.",
+    textAr: "الرمل والحصمة تظهر مع تأثير غبار وحركة ناعمة.",
+    visual: "sand",
+    noteHe: "זמין בכמויות",
+    noteAr: "متوفر بالكميات"
+  },
+  {
+    id: "wood",
+    icon: "wood",
+    labelHe: "עץ",
+    labelAr: "أخشاب",
+    titleHe: "HAMOODI AI בוחר חומרי עץ",
+    titleAr: "HAMOODI AI يختار قسم الأخشاب",
+    textHe: "לוחות העץ נכנסים למסך ונערמים בצורה קולנועית.",
+    textAr: "ألواح الخشب تدخل وتتراص بشكل سينمائي.",
+    visual: "wood",
+    noteHe: "לעבודות בנייה",
+    noteAr: "لأعمال البناء"
+  },
+  {
+    id: "electric",
+    icon: "electric",
+    labelHe: "חשמל",
+    labelAr: "كهرباء",
+    titleHe: "HAMOODI AI מפעיל מצב חשמל",
+    titleAr: "HAMOODI AI يشغّل وضع الكهرباء",
+    textHe: "ניצוצות ניאון מדגישים מוצרים חשמליים ומחיר מומלץ.",
+    textAr: "شرارات نيون تبرز منتجات الكهرباء والسعر المقترح.",
+    visual: "electric",
+    noteHe: "תאורה וכבלים",
+    noteAr: "إنارة وأسلاك"
+  }
+];
 
 function injectTvTheme() {
   if (typeof document === "undefined" || document.getElementById("hamouda-tv-pixel-theme-v2")) return;
@@ -413,6 +495,198 @@ function injectTvTheme() {
     @keyframes pulseGold { 0%,100% { transform:scale(1); } 50% { transform:scale(1.035); } }
     @keyframes valueGlow { 0%,100% { text-shadow:0 0 8px rgba(255,245,214,.48); } 50% { text-shadow:0 0 18px rgba(255,245,214,.9); } }
 
+
+
+    /* HAMOODI AI cinematic product mode */
+    .ai-hero-stage {
+      position:absolute;
+      inset:0;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 52% 44%, rgba(34,211,238,.16), transparent 32%),
+        radial-gradient(circle at 50% 82%, rgba(245,178,26,.22), transparent 28%),
+        linear-gradient(180deg, rgba(2,6,12,.25), rgba(0,0,0,.90));
+    }
+    .ai-hero-bg {
+      position:absolute;
+      inset:0;
+      opacity:.45;
+      background-image:
+        linear-gradient(rgba(34,211,238,.11) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34,211,238,.11) 1px, transparent 1px);
+      background-size:2.1vw 2.1vw;
+      mask-image:radial-gradient(circle at center, black 0%, transparent 78%);
+      animation: aiGridMove 12s linear infinite;
+    }
+    .ai-scan-line {
+      position:absolute;
+      left:4%; right:4%;
+      height:.22vw;
+      top:0;
+      border-radius:100vw;
+      background:linear-gradient(90deg, transparent, #67e8f9, #fff3a3, #67e8f9, transparent);
+      box-shadow:0 0 24px rgba(103,232,249,.95), 0 0 42px rgba(245,178,26,.35);
+      animation: aiScanDown 5.5s ease-in-out infinite;
+      z-index:4;
+    }
+    .ai-orb {
+      position:absolute;
+      top:1.1vw;
+      right:1.25vw;
+      width:10.5vw;
+      height:4.8vw;
+      border:1px solid rgba(103,232,249,.48);
+      border-radius:1.2vw;
+      background:linear-gradient(180deg, rgba(8,18,31,.88), rgba(3,8,14,.94));
+      box-shadow:0 0 28px rgba(34,211,238,.25), inset 0 0 22px rgba(34,211,238,.08);
+      display:flex;
+      align-items:center;
+      gap:.75vw;
+      padding:.65vw;
+      z-index:5;
+    }
+    .ai-face {
+      width:3.2vw;
+      height:3.2vw;
+      border-radius:50%;
+      background:radial-gradient(circle at 40% 35%, #e0faff, #22d3ee 38%, #0f172a 78%);
+      display:grid;
+      place-items:center;
+      box-shadow:0 0 26px rgba(34,211,238,.75);
+      color:#06121f;
+      animation: aiOrbPulse 2.1s ease-in-out infinite;
+    }
+    .ai-name { color:#67e8f9; font-size:.92vw; font-weight:1000; letter-spacing:.03em; }
+    .ai-status { color:rgba(255,255,255,.78); font-size:.62vw; font-weight:800; margin-top:.15vw; }
+    .ai-speech {
+      position:absolute;
+      top:1.05vw;
+      left:1.1vw;
+      right:12.3vw;
+      min-height:5.25vw;
+      border:1px solid rgba(103,232,249,.42);
+      border-radius:1.05vw;
+      background:linear-gradient(180deg, rgba(2,12,22,.82), rgba(2,6,12,.92));
+      box-shadow:0 0 30px rgba(34,211,238,.18), inset 0 0 18px rgba(34,211,238,.06);
+      padding:.75vw 1vw .65vw;
+      z-index:5;
+    }
+    .ai-speech-title { color:#67e8f9; font-size:.95vw; font-weight:1000; margin-bottom:.25vw; }
+    .ai-speech-text { color:#fff; font-size:1.16vw; line-height:1.35; font-weight:1000; text-shadow:0 0 12px rgba(0,0,0,.8); }
+    .ai-wave { height:.75vw; display:flex; align-items:end; gap:.16vw; margin-top:.42vw; direction:ltr; }
+    .ai-wave span { width:.13vw; border-radius:2px; background:linear-gradient(180deg,#fff3a3,#22d3ee); animation: waveBars 1s ease-in-out infinite; }
+    .ai-wave span:nth-child(1){height:30%;animation-delay:.05s}.ai-wave span:nth-child(2){height:55%;animation-delay:.12s}.ai-wave span:nth-child(3){height:28%;animation-delay:.18s}.ai-wave span:nth-child(4){height:80%;animation-delay:.24s}.ai-wave span:nth-child(5){height:42%;animation-delay:.3s}.ai-wave span:nth-child(6){height:70%;animation-delay:.36s}.ai-wave span:nth-child(7){height:35%;animation-delay:.42s}.ai-wave span:nth-child(8){height:95%;animation-delay:.48s}.ai-wave span:nth-child(9){height:44%;animation-delay:.54s}.ai-wave span:nth-child(10){height:70%;animation-delay:.6s}.ai-wave span:nth-child(11){height:32%;animation-delay:.66s}.ai-wave span:nth-child(12){height:58%;animation-delay:.72s}
+    .cinematic-product-area {
+      position:absolute;
+      left:4%; right:4%;
+      top:7.3vw;
+      bottom:1.05vw;
+      display:grid;
+      grid-template-columns:1fr 13.5vw;
+      gap:1vw;
+      align-items:stretch;
+      z-index:3;
+    }
+    .product-theater {
+      position:relative;
+      border-radius:1.15vw;
+      border:1px solid rgba(245,178,26,.35);
+      background:radial-gradient(circle at 50% 78%, rgba(245,178,26,.20), transparent 32%), rgba(0,0,0,.30);
+      overflow:hidden;
+      box-shadow:inset 0 0 45px rgba(255,255,255,.035), 0 0 26px rgba(245,178,26,.15);
+    }
+    .product-platform {
+      position:absolute;
+      left:50%; bottom:1.55vw;
+      width:20vw; height:3vw;
+      transform:translateX(-50%);
+      border-radius:50%;
+      background:radial-gradient(ellipse at center, rgba(255,220,99,.55), rgba(245,178,26,.25) 45%, transparent 72%);
+      border:1px solid rgba(245,178,26,.35);
+      box-shadow:0 0 38px rgba(245,178,26,.48);
+      animation: platformPulse 2.4s ease-in-out infinite;
+    }
+    .product-info-card {
+      border-radius:1.05vw;
+      border:1px solid rgba(103,232,249,.28);
+      background:linear-gradient(180deg, rgba(2,12,22,.82), rgba(2,6,12,.92));
+      padding:.75vw;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      text-align:center;
+      box-shadow:0 0 26px rgba(34,211,238,.13);
+    }
+    .product-ai-label { color:#67e8f9; font-size:.8vw; font-weight:1000; }
+    .product-ai-name { color:#fff; font-size:1.55vw; line-height:1.1; font-weight:1000; margin:.45vw 0; }
+    .product-ai-price { color:#07111f; background:linear-gradient(135deg,#ffdc63,#f5b21a); border-radius:.72vw; font-size:1.85vw; font-weight:1000; padding:.4vw .3vw; box-shadow:0 0 20px rgba(245,178,26,.45); }
+    .product-ai-note { margin-top:.55vw; color:rgba(255,255,255,.8); font-size:.72vw; font-weight:900; }
+    .hud-ring {
+      position:absolute;
+      left:50%; top:48%;
+      width:23vw; height:23vw;
+      transform:translate(-50%,-50%);
+      border-radius:50%;
+      border:1px solid rgba(103,232,249,.30);
+      box-shadow:0 0 36px rgba(34,211,238,.14), inset 0 0 30px rgba(34,211,238,.07);
+      animation:hudRotate 10s linear infinite;
+    }
+    .hud-ring:after {
+      content:"";
+      position:absolute; inset:2.4vw;
+      border-radius:50%;
+      border:1px solid rgba(245,178,26,.28);
+    }
+    .visual { position:absolute; left:50%; bottom:3vw; transform:translateX(-50%); width:18vw; height:18vw; }
+    .visual-cement { animation: cement3D 5.5s ease-in-out infinite; }
+    .cement-bag {
+      position:absolute; left:50%; bottom:1.1vw; width:8vw; height:12vw; transform:translateX(-50%);
+      border-radius:.8vw .8vw .55vw .55vw;
+      background:linear-gradient(100deg,#cda56b,#f3d39a 35%,#9b794c 72%,#705432);
+      box-shadow:inset -.8vw 0 1.4vw rgba(0,0,0,.28), 0 1.1vw 2.4vw rgba(0,0,0,.55);
+    }
+    .cement-bag:before { content:"50 KG"; position:absolute; top:4.5vw; left:0; right:0; color:#1b2433; font-size:1.2vw; font-weight:1000; text-align:center; }
+    .cement-bag:after { content:"CEMENT"; position:absolute; top:2.3vw; left:0; right:0; color:#122033; font-size:1vw; font-weight:1000; text-align:center; }
+    .cement-dust { position:absolute; left:20%; right:20%; bottom:.2vw; height:3vw; background:radial-gradient(circle, rgba(236,202,137,.38), transparent 70%); filter:blur(.35vw); animation:dustRise 2.4s ease-in-out infinite; }
+    .visual-steel { animation: steelScene 5.5s ease-in-out infinite; }
+    .steel-rod { position:absolute; bottom:1.1vw; width:.85vw; border-radius:.4vw; background:linear-gradient(90deg,#8da2b5,#f4f7fb,#6b7785); box-shadow:0 0 12px rgba(103,232,249,.5); animation: rodsRise 5.5s ease-in-out infinite; }
+    .steel-rod:nth-child(1){height:11vw;left:5.4vw;animation-delay:.05s}.steel-rod:nth-child(2){height:13vw;left:7vw;animation-delay:.18s}.steel-rod:nth-child(3){height:10vw;left:8.6vw;animation-delay:.28s}.steel-rod:nth-child(4){height:14vw;left:10.2vw;animation-delay:.38s}.steel-rod:nth-child(5){height:11.5vw;left:11.8vw;animation-delay:.48s}
+    .steel-spark { position:absolute; bottom:2vw; left:50%; width:9vw; height:9vw; transform:translateX(-50%); background:radial-gradient(circle, rgba(255,220,99,.7), transparent 45%); opacity:.65; filter:blur(.28vw); animation:sparkFlash 1.8s ease-in-out infinite; }
+    .visual-paint { animation: paintScene 5.5s ease-in-out infinite; }
+    .paint-bucket { position:absolute; left:50%; bottom:1.3vw; width:9.2vw; height:7.2vw; transform:translateX(-50%); border-radius:.4vw .4vw 1vw 1vw; background:linear-gradient(90deg,#e6e7ea,#ffffff 45%,#b9bec8); box-shadow:0 1vw 2.2vw rgba(0,0,0,.55); overflow:hidden; }
+    .paint-bucket:after { content:""; position:absolute; left:0; right:0; top:0; height:2.1vw; background:linear-gradient(90deg,#7c2dff,#ec4899,#f97316); }
+    .paint-stream { position:absolute; left:50%; top:-1vw; width:3.6vw; height:10vw; transform:translateX(-50%); border-radius:0 0 1.4vw 1.4vw; background:linear-gradient(180deg,#c084fc,#ec4899,#f97316); box-shadow:0 0 26px rgba(236,72,153,.7); animation: pourPaint 5.5s ease-in-out infinite; }
+    .paint-splash { position:absolute; left:50%; bottom:1.2vw; width:12vw; height:3vw; transform:translateX(-50%); background:radial-gradient(circle at 20% 50%, #ec4899 0 12%, transparent 13%), radial-gradient(circle at 45% 45%, #c084fc 0 16%, transparent 17%), radial-gradient(circle at 72% 45%, #f97316 0 13%, transparent 14%); filter:drop-shadow(0 0 16px rgba(236,72,153,.45)); animation:splashPulse 1.5s ease-in-out infinite; }
+    .visual-sand { animation: sandScene 5.5s ease-in-out infinite; }
+    .sand-pile { position:absolute; left:50%; bottom:1.1vw; width:14vw; height:8vw; transform:translateX(-50%); background:linear-gradient(160deg,#d8a44d,#9f6d2e); clip-path:polygon(50% 0%, 100% 100%, 0 100%); filter:drop-shadow(0 1vw 1.5vw rgba(0,0,0,.55)); }
+    .sand-dust { position:absolute; left:16%; right:16%; bottom:4vw; height:8vw; background:radial-gradient(circle, rgba(238,190,98,.32), transparent 68%); filter:blur(.5vw); animation:dustRise 2s ease-in-out infinite; }
+    .visual-wood { animation: woodScene 5.5s ease-in-out infinite; }
+    .wood-plank { position:absolute; left:50%; width:13vw; height:2vw; border-radius:.28vw; background:linear-gradient(90deg,#7a461e,#d89b4b,#9a5a27); box-shadow:inset 0 .15vw .35vw rgba(255,255,255,.2), 0 .5vw 1vw rgba(0,0,0,.38); animation: plankSlide 5.5s ease-in-out infinite; }
+    .wood-plank:nth-child(1){bottom:2vw;transform:translateX(-50%) rotate(-1deg);animation-delay:.05s}.wood-plank:nth-child(2){bottom:4vw;transform:translateX(-50%) rotate(2deg);animation-delay:.18s}.wood-plank:nth-child(3){bottom:6vw;transform:translateX(-50%) rotate(-2deg);animation-delay:.31s}.wood-plank:nth-child(4){bottom:8vw;transform:translateX(-50%) rotate(1deg);animation-delay:.44s}
+    .visual-electric { animation:electricScene 5.5s ease-in-out infinite; }
+    .cable-coil { position:absolute; left:50%; bottom:1.4vw; width:11vw; height:6vw; transform:translateX(-50%); border:.8vw solid #0f172a; border-top-color:#38bdf8; border-right-color:#f5b21a; border-radius:50%; box-shadow:0 0 22px rgba(56,189,248,.5); }
+    .bolt { position:absolute; left:50%; top:2vw; width:6vw; height:10vw; transform:translateX(-50%); background:linear-gradient(180deg,#e0faff,#22d3ee); clip-path:polygon(48% 0, 82% 0, 60% 42%, 84% 42%, 32% 100%, 45% 56%, 20% 56%); box-shadow:0 0 30px rgba(34,211,238,.8); animation: boltFlash 1.2s ease-in-out infinite; }
+
+    @keyframes aiGridMove { from { background-position:0 0; } to { background-position:4vw 4vw; } }
+    @keyframes aiScanDown { 0% { top:0; opacity:0; } 12% { opacity:1; } 70% { top:92%; opacity:1; } 100% { top:92%; opacity:0; } }
+    @keyframes aiOrbPulse { 0%,100% { transform:scale(1); } 50% { transform:scale(1.08); } }
+    @keyframes waveBars { 0%,100% { transform:scaleY(.45); } 50% { transform:scaleY(1.25); } }
+    @keyframes platformPulse { 0%,100% { transform:translateX(-50%) scaleX(1); opacity:.75; } 50% { transform:translateX(-50%) scaleX(1.15); opacity:1; } }
+    @keyframes hudRotate { from { transform:translate(-50%,-50%) rotate(0deg); } to { transform:translate(-50%,-50%) rotate(360deg); } }
+    @keyframes cement3D { 0% { transform:translateX(-50%) rotateY(-18deg) scale(.92); opacity:.35; } 20%,80% { transform:translateX(-50%) rotateY(12deg) scale(1); opacity:1; } 100% { transform:translateX(-50%) rotateY(26deg) scale(.96); opacity:.55; } }
+    @keyframes dustRise { 0%,100% { opacity:.25; transform:translateY(.6vw) scale(.9); } 50% { opacity:.8; transform:translateY(-.6vw) scale(1.18); } }
+    @keyframes steelScene { 0% { opacity:.25; } 20%,88% { opacity:1; } 100% { opacity:.35; } }
+    @keyframes rodsRise { 0% { transform:translateY(9vw); opacity:.2; } 22%,80% { transform:translateY(0); opacity:1; } 100% { transform:translateY(-.6vw); opacity:.7; } }
+    @keyframes sparkFlash { 0%,100% { opacity:.18; transform:translateX(-50%) scale(.8); } 50% { opacity:.85; transform:translateX(-50%) scale(1.15); } }
+    @keyframes paintScene { 0% { opacity:.3; } 20%,90% { opacity:1; } 100% { opacity:.45; } }
+    @keyframes pourPaint { 0% { height:0; opacity:0; top:-1vw; } 18% { height:10vw; opacity:1; } 82% { height:10vw; opacity:1; } 100% { height:0; opacity:0; top:8vw; } }
+    @keyframes splashPulse { 0%,100% { transform:translateX(-50%) scale(.86); opacity:.55; } 50% { transform:translateX(-50%) scale(1.08); opacity:1; } }
+    @keyframes sandScene { 0% { transform:translateX(-50%) translateY(3vw); opacity:.25; } 22%,86% { transform:translateX(-50%) translateY(0); opacity:1; } 100% { transform:translateX(-50%) translateY(.7vw); opacity:.7; } }
+    @keyframes woodScene { 0% { opacity:.3; } 20%,90% { opacity:1; } 100% { opacity:.55; } }
+    @keyframes plankSlide { 0% { margin-left:12vw; opacity:0; } 22%,85% { margin-left:0; opacity:1; } 100% { margin-left:-3vw; opacity:.55; } }
+    @keyframes electricScene { 0%,100% { opacity:.65; filter:brightness(1); } 50% { opacity:1; filter:brightness(1.35); } }
+    @keyframes boltFlash { 0%,100% { opacity:.35; filter:brightness(1); } 45% { opacity:1; filter:brightness(1.8); } 55% { opacity:.5; } 70% { opacity:1; } }
+
     /* Clean hero: hide all overlay text, icons, arrows and dots over image */
     .hero-content, .hero-title, .hero-subtitle, .hero-arrow, .dots, .hero-service-bar, .service-box, .hero-dark {
       display:none !important;
@@ -690,6 +964,112 @@ function CurrencyPill({ icon, label, value, change }) {
   );
 }
 
+function findPriceForScene(data, scene) {
+  const prices = Array.isArray(data.prices) ? data.prices : [];
+  const direct = prices.find((p) => String(p.icon || "").toLowerCase().includes(scene.icon));
+  if (direct) return direct;
+  const label = String(scene.labelHe || scene.labelAr || "").toLowerCase();
+  return prices.find((p) => String(p.nameHe || p.nameAr || "").toLowerCase().includes(label)) || prices[0] || { price: "--", unitHe: "", unitAr: "" };
+}
+
+function AiWave() {
+  return <div className="ai-wave">{Array.from({ length: 12 }).map((_, i) => <span key={i} />)}</div>;
+}
+
+function CinematicVisual({ type }) {
+  if (type === "steel") {
+    return (
+      <div className="visual visual-steel">
+        <div className="steel-spark" />
+        <div className="steel-rod" /><div className="steel-rod" /><div className="steel-rod" /><div className="steel-rod" /><div className="steel-rod" />
+      </div>
+    );
+  }
+  if (type === "paint") {
+    return (
+      <div className="visual visual-paint">
+        <div className="paint-stream" />
+        <div className="paint-bucket" />
+        <div className="paint-splash" />
+      </div>
+    );
+  }
+  if (type === "sand") {
+    return (
+      <div className="visual visual-sand">
+        <div className="sand-dust" />
+        <div className="sand-pile" />
+      </div>
+    );
+  }
+  if (type === "wood") {
+    return (
+      <div className="visual visual-wood">
+        <div className="wood-plank" /><div className="wood-plank" /><div className="wood-plank" /><div className="wood-plank" />
+      </div>
+    );
+  }
+  if (type === "electric") {
+    return (
+      <div className="visual visual-electric">
+        <div className="bolt" />
+        <div className="cable-coil" />
+      </div>
+    );
+  }
+  return (
+    <div className="visual visual-cement">
+      <div className="cement-dust" />
+      <div className="cement-bag" />
+    </div>
+  );
+}
+
+function AiCinematicHero({ data, isAr, scene, priceItem }) {
+  const productName = isAr ? scene.labelAr : scene.labelHe;
+  const title = isAr ? scene.titleAr : scene.titleHe;
+  const text = isAr ? scene.textAr : scene.textHe;
+  const note = isAr ? scene.noteAr : scene.noteHe;
+  const unit = itemT(data, priceItem, "unitHe", "unitAr") || "";
+  const price = priceItem?.price ? `₪${priceItem.price}` : "₪--";
+
+  return (
+    <div className="ai-hero-stage" key={scene.id}>
+      <div className="ai-hero-bg" />
+      <div className="ai-scan-line" />
+
+      <div className="ai-orb">
+        <div className="ai-face"><Bot size={28} /></div>
+        <div>
+          <div className="ai-name">HAMOODI AI</div>
+          <div className="ai-status">{isAr ? "يعمل تلقائياً" : "פועל אוטומטית"}</div>
+        </div>
+      </div>
+
+      <div className="ai-speech">
+        <div className="ai-speech-title">{title}</div>
+        <div className="ai-speech-text">{text}</div>
+        <AiWave />
+      </div>
+
+      <div className="cinematic-product-area">
+        <div className="product-theater">
+          <div className="hud-ring" />
+          <div className="product-platform" />
+          <CinematicVisual type={scene.visual} />
+        </div>
+        <div className="product-info-card">
+          <div className="product-ai-label">AI PRODUCT SCAN</div>
+          <div className="product-ai-name">{productName}</div>
+          <div className="product-ai-price">{price}{unit ? ` / ${unit}` : ""}</div>
+          <div className="product-ai-note">{note}</div>
+          <div className="product-ai-note">{isAr ? "السعر يظهر من جدول الأسعار الحالي" : "המחיר נלקח מטבלת המחירים"}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function HamoudaPremiumDisplay() {
   injectTvTheme();
 
@@ -705,6 +1085,7 @@ export default function HamoudaPremiumDisplay() {
   const [gold, setGold] = useState({ loading: true, price: "--" });
   const [constructionNews, setConstructionNews] = useState([]);
   const [firebaseSettingsId, setFirebaseSettingsId] = useState(null);
+  const [activeAiScene, setActiveAiScene] = useState(0);
 
   const isAr = data.language === "ar";
   const locale = isAr ? "ar" : "he";
@@ -719,6 +1100,8 @@ export default function HamoudaPremiumDisplay() {
     (isAr ? "مشروع من أعمالنا" : "פרויקט מהעבודות שלנו");
   const backgroundImages = data.backgroundImages?.length ? data.backgroundImages : (DEFAULT_DATA.backgroundImages || []);
   const currentBackground = backgroundImages[bgIndex % Math.max(1, backgroundImages.length)] || FALLBACK_IMAGE;
+  const aiScene = AI_PRODUCT_SCENES[activeAiScene % AI_PRODUCT_SCENES.length];
+  const aiPriceItem = findPriceForScene(data, aiScene);
 
   useEffect(() => {
     const unsub = onSnapshot(
@@ -739,6 +1122,13 @@ export default function HamoudaPremiumDisplay() {
   useEffect(() => {
     const clock = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(clock);
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveAiScene((v) => (v + 1) % AI_PRODUCT_SCENES.length);
+    }, 5500);
+    return () => clearInterval(timer);
   }, []);
 
   useEffect(() => {
@@ -998,13 +1388,7 @@ export default function HamoudaPremiumDisplay() {
           </aside>
 
           <main className="hero-card glass-panel">
-            <div className="hero-media">
-              {currentMedia.type === "video" ? (
-                <video src={currentMedia.src} autoPlay muted loop playsInline />
-              ) : (
-                <img src={currentMedia.src || FALLBACK_IMAGE} alt="slide" onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }} />
-              )}
-            </div>
+            <AiCinematicHero data={data} isAr={isAr} scene={aiScene} priceItem={aiPriceItem} />
           </main>
 
           <aside className="projects-card glass-panel">
