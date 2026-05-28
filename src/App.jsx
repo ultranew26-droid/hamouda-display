@@ -22,9 +22,7 @@ import {
   BadgePercent,
   Drill,
   ScrollText,
-  Building2,
-  Bot,
-  Zap
+  Building2
 } from "lucide-react";
 import { db } from "./firebase";
 import { collection, doc, onSnapshot, setDoc } from "firebase/firestore";
@@ -440,183 +438,6 @@ function injectTvTheme() {
       opacity:1;
     }
 
-
-    /* HAMOODI AI cinematic product showcase - safe add-on */
-    .ai-cinema-shell {
-      position:absolute;
-      inset:0;
-      z-index:4;
-      display:grid;
-      grid-template-rows: 5.2vw 1fr 8.3vw;
-      gap:.55vw;
-      padding:.9vw 1vw;
-      background:
-        radial-gradient(circle at 50% 42%, rgba(0,194,255,.13), transparent 33%),
-        linear-gradient(90deg, rgba(0,0,0,.66), rgba(0,0,0,.18), rgba(0,0,0,.64));
-    }
-    .ai-headline {
-      display:grid;
-      grid-template-columns:4.6vw 1fr;
-      align-items:center;
-      gap:.8vw;
-      width:77%;
-      justify-self:center;
-      border:1px solid rgba(56,211,255,.55);
-      background:linear-gradient(180deg, rgba(2,15,28,.86), rgba(0,5,11,.72));
-      border-radius:1vw;
-      padding:.55vw .8vw;
-      box-shadow:0 0 28px rgba(0,195,255,.18), inset 0 0 26px rgba(0,195,255,.08);
-    }
-    .ai-avatar {
-      width:3.8vw;
-      height:3.8vw;
-      border-radius:50%;
-      display:grid;
-      place-items:center;
-      color:#06111c;
-      background:radial-gradient(circle, #8df3ff, #0097ff 55%, #062141 100%);
-      box-shadow:0 0 24px rgba(0,210,255,.85);
-      animation: aiFloat 2.6s ease-in-out infinite;
-    }
-    .ai-text-main { font-size:1.15vw; font-weight:1000; color:#fff; line-height:1.2; }
-    .ai-text-main strong { color:#65eaff; text-shadow:0 0 14px rgba(101,234,255,.7); }
-    .voice-bars { display:flex; align-items:flex-end; gap:.16vw; height:.9vw; margin-top:.28vw; direction:ltr; }
-    .voice-bars span { width:.12vw; border-radius:1vw; background:linear-gradient(180deg,#7ff5ff,#f5b21a); animation: voiceWave .8s ease-in-out infinite; opacity:.95; }
-    .voice-bars span:nth-child(2n){ animation-delay:.1s; }
-    .voice-bars span:nth-child(3n){ animation-delay:.2s; }
-    .voice-bars span:nth-child(4n){ animation-delay:.3s; }
-
-    .cinema-center {
-      position:relative;
-      display:grid;
-      grid-template-columns: 1fr 9vw;
-      gap:.8vw;
-      min-height:0;
-    }
-    .cinema-product-stage {
-      position:relative;
-      overflow:hidden;
-      border:1px solid rgba(245,178,26,.42);
-      border-radius:1.15vw;
-      background:
-        radial-gradient(circle at 50% 55%, rgba(245,178,26,.18), transparent 24%),
-        linear-gradient(180deg, rgba(6,13,24,.72), rgba(1,4,9,.84));
-      box-shadow:0 0 34px rgba(245,178,26,.15), inset 0 0 60px rgba(255,255,255,.035);
-    }
-    .scan-line {
-      position:absolute;
-      top:0; bottom:0;
-      width:.22vw;
-      background:linear-gradient(180deg, transparent, rgba(104,239,255,.95), transparent);
-      box-shadow:0 0 24px rgba(104,239,255,.9);
-      animation: scanMove 4.2s ease-in-out infinite;
-      z-index:5;
-    }
-    .stage-floor {
-      position:absolute;
-      left:12%; right:12%; bottom:10%; height:2.3vw;
-      border-radius:50%;
-      background:radial-gradient(ellipse, rgba(245,178,26,.55), rgba(245,178,26,.12) 45%, transparent 70%);
-      filter:blur(.1vw);
-      animation: floorPulse 2s ease-in-out infinite;
-    }
-    .cinema-product-title {
-      position:absolute;
-      top:.9vw;
-      right:1vw;
-      z-index:6;
-      color:var(--gold2);
-      font-size:1.65vw;
-      font-weight:1000;
-      text-shadow:0 0 18px rgba(245,178,26,.65);
-    }
-    .cinema-product-price {
-      position:absolute;
-      left:1vw;
-      bottom:1vw;
-      z-index:6;
-      min-width:7.5vw;
-      border-radius:.9vw;
-      border:1px solid rgba(245,178,26,.65);
-      background:rgba(0,0,0,.76);
-      padding:.55vw .8vw;
-      text-align:center;
-      box-shadow:0 0 25px rgba(245,178,26,.25);
-    }
-    .cinema-product-price b { display:block; color:#fff; font-size:2vw; line-height:1; text-shadow:0 0 16px rgba(255,255,255,.65); }
-    .cinema-product-price small { color:var(--gold2); font-weight:900; font-size:.75vw; }
-
-    .product-visual {
-      position:absolute;
-      left:50%; top:52%;
-      transform:translate(-50%,-50%);
-      width:15vw; height:15vw;
-      z-index:4;
-    }
-    .cement-bag {
-      width:9.2vw; height:12.4vw;
-      margin:1vw auto 0;
-      border-radius:.9vw .9vw .55vw .55vw;
-      background:linear-gradient(135deg,#d8ad6c,#f7dfad 35%,#9a6b37 100%);
-      border:.12vw solid rgba(255,255,255,.35);
-      box-shadow:0 1vw 3vw rgba(0,0,0,.55), inset 0 0 1vw rgba(255,255,255,.25);
-      animation: cementSpin 4.5s ease-in-out infinite;
-      transform-style:preserve-3d;
-      position:relative;
-    }
-    .cement-bag:before { content:'אסמנט'; position:absolute; top:2.4vw; left:.8vw; right:.8vw; text-align:center; font-size:1.25vw; font-weight:1000; color:#102033; }
-    .cement-bag:after { content:'50 KG'; position:absolute; bottom:2.4vw; left:0; right:0; text-align:center; font-size:1.05vw; font-weight:1000; color:#102033; }
-    .cement-dust { position:absolute; inset:auto 0 1.1vw 0; height:3vw; background:radial-gradient(circle,rgba(255,220,150,.35),transparent 65%); filter:blur(.5vw); animation:dustBurst 2.2s ease-in-out infinite; }
-
-    .steel-bars { position:absolute; left:50%; bottom:2.6vw; width:12vw; height:12vw; transform:translateX(-50%); }
-    .steel-bars span { position:absolute; bottom:0; width:.72vw; border-radius:.4vw; background:repeating-linear-gradient(0deg,#a7b4c8 0 .22vw,#485569 .22vw .42vw); box-shadow:0 0 18px rgba(118,214,255,.55); animation:steelRise 3.2s cubic-bezier(.2,.8,.2,1) infinite; }
-    .steel-bars span:nth-child(1){ left:1vw; height:8vw; animation-delay:0s; }
-    .steel-bars span:nth-child(2){ left:3vw; height:10.2vw; animation-delay:.15s; }
-    .steel-bars span:nth-child(3){ left:5vw; height:11.4vw; animation-delay:.3s; }
-    .steel-bars span:nth-child(4){ left:7vw; height:9.4vw; animation-delay:.45s; }
-    .steel-bars span:nth-child(5){ left:9vw; height:7.8vw; animation-delay:.6s; }
-    .rock-burst { position:absolute; left:50%; bottom:1.9vw; width:12vw; height:3vw; transform:translateX(-50%); background:radial-gradient(ellipse, rgba(255,190,75,.45), transparent 62%); filter:blur(.18vw); animation:rockShake 1.25s ease-in-out infinite; }
-
-    .paint-scene { position:absolute; inset:0; overflow:hidden; }
-    .paint-can { position:absolute; left:50%; bottom:2.6vw; width:8vw; height:6.1vw; transform:translateX(-50%); border-radius:.65vw .65vw 1.3vw 1.3vw; background:linear-gradient(90deg,#f5b21a,#fff,#f5b21a); border:.15vw solid rgba(255,255,255,.5); box-shadow:0 .8vw 2vw rgba(0,0,0,.55); z-index:3; }
-    .paint-can:after { content:''; position:absolute; left:-.2vw; right:-.2vw; top:-.7vw; height:1.4vw; border-radius:50%; background:linear-gradient(90deg,#c8c8c8,#fff,#b1b1b1); border:.12vw solid rgba(255,255,255,.55); }
-    .paint-pour { position:absolute; top:-2vw; left:50%; width:5vw; height:11vw; transform:translateX(-50%); background:linear-gradient(180deg,#ff2bd6,#7b2cff 42%,#19d5ff); border-radius:0 0 2.8vw 2.8vw; filter:drop-shadow(0 0 18px rgba(255,43,214,.8)); animation:paintPour 2.9s ease-in-out infinite; z-index:4; }
-    .paint-splash { position:absolute; left:50%; bottom:7.4vw; width:10vw; height:3vw; transform:translateX(-50%); background:radial-gradient(ellipse,#ff2bd6,rgba(123,44,255,.8) 42%,transparent 70%); filter:blur(.08vw); animation:splashPulse 2.9s ease-in-out infinite; z-index:5; }
-
-    .electric-scene { position:absolute; inset:0; }
-    .electric-coil { position:absolute; left:50%; bottom:3vw; width:10vw; height:5vw; transform:translateX(-50%); border:.55vw solid #111827; border-top-color:#2dd4ff; border-right-color:#101827; border-radius:50%; box-shadow:0 0 24px rgba(45,212,255,.8); animation:electricPulse 1.6s ease-in-out infinite; }
-    .spark { position:absolute; background:#7df9ff; box-shadow:0 0 15px #7df9ff; transform-origin:center; clip-path:polygon(45% 0,62% 40%,100% 42%,65% 60%,78% 100%,48% 67%,12% 100%,30% 58%,0 42%,38% 38%); animation:sparkFlash 1.15s ease-in-out infinite; }
-    .spark.s1 { left:42%; top:25%; width:2vw; height:3vw; }
-    .spark.s2 { left:58%; top:35%; width:1.4vw; height:2.2vw; animation-delay:.3s; }
-    .spark.s3 { left:49%; top:15%; width:1.1vw; height:1.8vw; animation-delay:.55s; }
-
-    .wood-stack { position:absolute; left:50%; top:52%; width:12vw; height:10vw; transform:translate(-50%,-50%); }
-    .wood-plank { position:absolute; left:50%; width:10vw; height:1.4vw; transform:translateX(-50%); border-radius:.25vw; background:linear-gradient(90deg,#8b4e16,#e2aa5c 45%,#70410f); box-shadow:0 .3vw .8vw rgba(0,0,0,.45); animation:woodSlide 3.2s ease-in-out infinite; }
-    .wood-plank:nth-child(1){ bottom:1vw; animation-delay:0s; }
-    .wood-plank:nth-child(2){ bottom:2.5vw; animation-delay:.16s; }
-    .wood-plank:nth-child(3){ bottom:4vw; animation-delay:.32s; }
-    .wood-plank:nth-child(4){ bottom:5.5vw; animation-delay:.48s; }
-
-    .cinema-thumbs { display:grid; gap:.48vw; }
-    .cinema-thumb { position:relative; overflow:hidden; border:1px solid rgba(255,255,255,.12); border-radius:.75vw; background:rgba(0,0,0,.44); display:grid; place-items:center; color:#fff; opacity:.7; transition:.35s ease; }
-    .cinema-thumb.active { opacity:1; border-color:rgba(245,178,26,.85); box-shadow:0 0 20px rgba(245,178,26,.32); color:var(--gold2); transform:scale(1.04); }
-    .cinema-thumb svg { width:1.7vw; height:1.7vw; }
-    .cinema-thumb span { font-size:.55vw; font-weight:1000; margin-top:.15vw; }
-
-    @keyframes aiFloat { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-.25vw); } }
-    @keyframes voiceWave { 0%,100% { height:.18vw; } 50% { height:.9vw; } }
-    @keyframes scanMove { 0% { left:-3%; opacity:0; } 15%,85% { opacity:1; } 100% { left:103%; opacity:0; } }
-    @keyframes floorPulse { 0%,100% { opacity:.55; transform:scaleX(.9); } 50% { opacity:1; transform:scaleX(1.12); } }
-    @keyframes cementSpin { 0% { transform:rotateY(-28deg) rotateZ(-1deg); } 45% { transform:rotateY(28deg) rotateZ(1deg); } 100% { transform:rotateY(-28deg) rotateZ(-1deg); } }
-    @keyframes dustBurst { 0%,100% { opacity:.2; transform:scale(.75); } 50% { opacity:.7; transform:scale(1.2); } }
-    @keyframes steelRise { 0% { transform:translateY(8vw); opacity:.15; } 28%,70% { transform:translateY(0); opacity:1; } 100% { transform:translateY(8vw); opacity:.15; } }
-    @keyframes rockShake { 0%,100% { transform:translateX(-50%) scale(.8); opacity:.3; } 50% { transform:translateX(-50%) scale(1.15); opacity:.85; } }
-    @keyframes paintPour { 0% { transform:translateX(-50%) translateY(-10vw) scaleY(.15); opacity:0; } 22%,72% { transform:translateX(-50%) translateY(0) scaleY(1); opacity:1; } 100% { transform:translateX(-50%) translateY(4vw) scaleY(.2); opacity:0; } }
-    @keyframes splashPulse { 0%,100% { transform:translateX(-50%) scale(.45); opacity:.2; } 45%,70% { transform:translateX(-50%) scale(1.15); opacity:.95; } }
-    @keyframes electricPulse { 0%,100% { filter:brightness(1); transform:translateX(-50%) scale(1); } 50% { filter:brightness(1.8); transform:translateX(-50%) scale(1.08); } }
-    @keyframes sparkFlash { 0%,100% { opacity:.1; transform:scale(.35) rotate(0deg); } 50% { opacity:1; transform:scale(1.15) rotate(14deg); } }
-    @keyframes woodSlide { 0% { transform:translateX(9vw); opacity:0; } 30%,75% { transform:translateX(-50%); opacity:1; } 100% { transform:translateX(-12vw); opacity:0; } }
-
     @media (max-aspect-ratio: 14/9) {
       .topbar { grid-template-columns: 1.6fr 2.2fr 1.5fr; }
       .main-grid { grid-template-columns: 24.5vw 1fr 24vw; }
@@ -857,87 +678,6 @@ function PriceRow({ p, data }) {
   );
 }
 
-
-const CINEMATIC_ITEMS = [
-  { key: "cement", labelHe: "מלט", labelAr: "إسمنت", icon: Package },
-  { key: "steel", labelHe: "ברזל", labelAr: "حديد", icon: Layers },
-  { key: "paint", labelHe: "צבעים", labelAr: "دهانات", icon: PaintBucket },
-  { key: "electric", labelHe: "חשמל", labelAr: "كهرباء", icon: Zap },
-  { key: "wood", labelHe: "עץ", labelAr: "أخشاب", icon: Hammer }
-];
-
-function getCinematicKind(item) {
-  const text = `${item?.icon || ""} ${item?.nameHe || ""} ${item?.nameAr || ""}`.toLowerCase();
-  if (text.includes("steel") || text.includes("ברזל") || text.includes("حديد")) return "steel";
-  if (text.includes("paint") || text.includes("צבע") || text.includes("دهان")) return "paint";
-  if (text.includes("electric") || text.includes("חשמל") || text.includes("كهرب")) return "electric";
-  if (text.includes("wood") || text.includes("עץ") || text.includes("خشب")) return "wood";
-  return "cement";
-}
-
-function CinematicProductDisplay({ activePrice, data, activeKind }) {
-  const isAr = data.language === "ar";
-  const name = itemT(data, activePrice, "nameHe", "nameAr") || (isAr ? "منتج مميز" : "מוצר מוביל");
-  const unit = itemT(data, activePrice, "unitHe", "unitAr") || "";
-  const price = activePrice?.price ?? "--";
-  const label = isAr ? "HAMOODI AI يعرض الآن" : "HAMOODI AI מציג עכשיו";
-
-  return (
-    <div className="ai-cinema-shell">
-      <div className="ai-headline">
-        <div className="ai-avatar"><Bot size={34} /></div>
-        <div>
-          <div className="ai-text-main"><strong>HAMOODI AI</strong> — {label}: {name}</div>
-          <div className="voice-bars">{Array.from({ length: 34 }).map((_, i) => <span key={i} />)}</div>
-        </div>
-      </div>
-
-      <div className="cinema-center">
-        <div className="cinema-product-stage">
-          <div className="scan-line" />
-          <div className="stage-floor" />
-          <div className="cinema-product-title">{name}</div>
-          <div className="cinema-product-price"><b>₪{price}</b><small>{unit}</small></div>
-          <ProductAnimation kind={activeKind} />
-        </div>
-        <div className="cinema-thumbs">
-          {CINEMATIC_ITEMS.map((item) => {
-            const Icon = item.icon;
-            const active = item.key === activeKind;
-            return (
-              <div key={item.key} className={`cinema-thumb ${active ? "active" : ""}`}>
-                <div style={{ textAlign: "center" }}><Icon /><span>{isAr ? item.labelAr : item.labelHe}</span></div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      <div className="hero-service-bar" style={{ display: "grid" }}>
-        <div className="service-box"><div className="service-icon"><Truck size={26} /></div><div><div className="service-title">{isAr ? "توصيل سريع" : "אספקה מהירה"}</div><div className="service-sub">{isAr ? "للمشاريع والطلبات" : "להזמנות ופרויקטים"}</div></div></div>
-        <div className="service-box"><div className="service-icon"><Award size={26} /></div><div><div className="service-title">{isAr ? "جودة مضمونة" : "איכות מובטחת"}</div><div className="service-sub">{isAr ? "مواد مختارة" : "חומרים נבחרים"}</div></div></div>
-        <div className="service-box"><div className="service-icon"><Phone size={26} /></div><div><div className="service-title">{data.phone}</div><div className="service-sub">{isAr ? "للطلب والاستفسار" : "להזמנות ושירות"}</div></div></div>
-      </div>
-    </div>
-  );
-}
-
-function ProductAnimation({ kind }) {
-  if (kind === "steel") {
-    return <div className="product-visual"><div className="rock-burst" /><div className="steel-bars"><span /><span /><span /><span /><span /></div></div>;
-  }
-  if (kind === "paint") {
-    return <div className="product-visual"><div className="paint-scene"><div className="paint-pour" /><div className="paint-splash" /><div className="paint-can" /></div></div>;
-  }
-  if (kind === "electric") {
-    return <div className="product-visual"><div className="electric-scene"><div className="electric-coil" /><div className="spark s1" /><div className="spark s2" /><div className="spark s3" /></div></div>;
-  }
-  if (kind === "wood") {
-    return <div className="product-visual"><div className="wood-stack"><div className="wood-plank" /><div className="wood-plank" /><div className="wood-plank" /><div className="wood-plank" /></div></div>;
-  }
-  return <div className="product-visual"><div className="cement-dust" /><div className="cement-bag" /></div>;
-}
-
 function CurrencyPill({ icon, label, value, change }) {
   return (
     <div className="data-pill">
@@ -965,15 +705,6 @@ export default function HamoudaPremiumDisplay() {
   const [gold, setGold] = useState({ loading: true, price: "--" });
   const [constructionNews, setConstructionNews] = useState([]);
   const [firebaseSettingsId, setFirebaseSettingsId] = useState(null);
-
-  const [cinemaIndex, setCinemaIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCinemaIndex((v) => (v + 1) % Math.max(1, (data.prices || []).length));
-    }, 4200);
-    return () => clearInterval(timer);
-  }, [data.prices]);
 
   const isAr = data.language === "ar";
   const locale = isAr ? "ar" : "he";
@@ -1202,8 +933,6 @@ export default function HamoudaPremiumDisplay() {
   };
 
   const updateDraft = (key, value) => setDraft((d) => ({ ...d, [key]: value }));
-  const activeCinemaPrice = (data.prices || [])[cinemaIndex % Math.max(1, (data.prices || []).length)] || DEFAULT_DATA.prices[0];
-  const activeCinemaKind = getCinematicKind(activeCinemaPrice);
 
   return (
     <div dir="rtl" className="tv-root">
@@ -1276,7 +1005,6 @@ export default function HamoudaPremiumDisplay() {
                 <img src={currentMedia.src || FALLBACK_IMAGE} alt="slide" onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }} />
               )}
             </div>
-            <CinematicProductDisplay activePrice={activeCinemaPrice} data={data} activeKind={activeCinemaKind} />
           </main>
 
           <aside className="projects-card glass-panel">
