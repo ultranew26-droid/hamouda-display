@@ -1454,6 +1454,119 @@ function injectTvTheme() {
       background:rgba(245,178,26,.045);
     }
 
+
+
+    /* PREMIUM PHONE CARD - makes the phone tile stand out from the top market pills */
+    .data-pill.phone-premium {
+      min-width:8.45vw !important;
+      grid-template-columns:2.75vw 1fr !important;
+      border-color:rgba(63,255,143,.62) !important;
+      background:
+        radial-gradient(circle at 15% 50%, rgba(63,255,143,.20), transparent 34%),
+        radial-gradient(circle at 78% 22%, rgba(255,220,99,.18), transparent 28%),
+        linear-gradient(180deg, rgba(8,24,20,.98), rgba(4,8,13,.98)) !important;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.045) inset,
+        0 0 24px rgba(63,255,143,.18),
+        0 0 28px rgba(245,178,26,.16),
+        inset 0 0 26px rgba(63,255,143,.055) !important;
+      transform:translateY(-.10vw);
+    }
+    .data-pill.phone-premium:before {
+      left:8% !important;
+      right:8% !important;
+      background:linear-gradient(90deg, transparent, rgba(63,255,143,.95), rgba(255,230,150,.95), transparent) !important;
+      box-shadow:0 0 16px rgba(63,255,143,.75), 0 0 18px rgba(245,178,26,.38) !important;
+    }
+    .data-pill.phone-premium:after {
+      background:linear-gradient(110deg, transparent 31%, rgba(63,255,143,.12) 43%, rgba(255,255,255,.14) 50%, transparent 61%) !important;
+      animation:phoneCardSweep 4.6s ease-in-out infinite !important;
+    }
+    @keyframes phoneCardSweep {
+      0%,36% { transform:translateX(85%) rotate(8deg); opacity:0; }
+      50% { opacity:1; }
+      82%,100% { transform:translateX(-78%) rotate(8deg); opacity:0; }
+    }
+    .data-pill.phone-premium .pill-icon {
+      width:2.72vw !important;
+      height:2.72vw !important;
+      border-color:rgba(63,255,143,.86) !important;
+      color:#ffef9f !important;
+      background:
+        radial-gradient(circle at 31% 24%, rgba(255,255,255,.62), transparent 16%),
+        radial-gradient(circle, rgba(63,255,143,.26), rgba(245,178,26,.18) 54%, rgba(0,0,0,.24) 72%) !important;
+      box-shadow:
+        0 0 18px rgba(63,255,143,.48),
+        0 0 24px rgba(245,178,26,.38),
+        inset 0 0 14px rgba(255,220,99,.18) !important;
+      animation:phoneIconPremiumPulse 2.35s ease-in-out infinite !important;
+    }
+    .data-pill.phone-premium .pill-icon svg {
+      filter:drop-shadow(0 0 7px rgba(255,220,99,.85));
+      animation:phoneHandsetTilt 4.2s ease-in-out infinite;
+    }
+    @keyframes phoneIconPremiumPulse {
+      0%,100% { transform:scale(1); }
+      50% { transform:scale(1.10); }
+    }
+    @keyframes phoneHandsetTilt {
+      0%,100% { transform:rotate(0deg); }
+      18% { transform:rotate(-10deg); }
+      30% { transform:rotate(8deg); }
+      42% { transform:rotate(0deg); }
+    }
+    .phone-energy-ring {
+      position:absolute;
+      inset:.28vw;
+      border-radius:.78vw;
+      border:1px solid rgba(63,255,143,.24);
+      box-shadow:inset 0 0 16px rgba(63,255,143,.06);
+      pointer-events:none;
+      animation:phoneBorderBreath 2.8s ease-in-out infinite;
+    }
+    @keyframes phoneBorderBreath {
+      0%,100% { opacity:.35; transform:scale(.985); }
+      50% { opacity:.95; transform:scale(1.01); }
+    }
+    .phone-signal-wave {
+      position:absolute;
+      inset:-.45vw;
+      border-radius:50%;
+      border:1px solid rgba(63,255,143,.30);
+      opacity:0;
+      animation:phoneSignalWave 2.4s ease-out infinite;
+      pointer-events:none;
+    }
+    @keyframes phoneSignalWave {
+      0% { transform:scale(.72); opacity:.75; }
+      100% { transform:scale(1.45); opacity:0; }
+    }
+    .data-pill.phone-premium .pill-label {
+      color:rgba(255,255,255,.82) !important;
+      font-size:.72vw !important;
+    }
+    .data-pill.phone-premium .pill-value {
+      margin-top:.18vw !important;
+      font-size:1.03vw !important;
+      color:#fff1a6 !important;
+      text-shadow:0 0 12px rgba(245,178,26,.72), 0 0 18px rgba(63,255,143,.22) !important;
+    }
+    .data-pill.phone-premium .flash-price {
+      min-width:auto !important;
+      padding:.03vw .12vw !important;
+    }
+    .phone-subline {
+      margin-top:.08vw;
+      color:#39ff8a;
+      font-size:.47vw;
+      font-weight:1000;
+      line-height:1;
+      letter-spacing:.02em;
+      text-shadow:0 0 8px rgba(63,255,143,.45);
+      white-space:nowrap;
+      opacity:.92;
+    }
+
     @media (max-aspect-ratio: 14/9) {
       .topbar { grid-template-columns: 1.6fr 2.2fr 1.5fr; }
       .main-grid { grid-template-columns: 24.5vw 1fr 24vw; }
@@ -1861,12 +1974,19 @@ function FlashPrice({ value, className = "", prefix = "", suffix = "" }) {
 }
 
 function CurrencyPill({ icon, label, value, change, kind = "" }) {
+  const isPhone = kind === "phone";
+
   return (
-    <div className={`data-pill ${kind}`}>
-      <div className="pill-icon">{icon}</div>
-      <div>
+    <div className={`data-pill ${kind} ${isPhone ? "phone-premium" : ""}`.trim()}>
+      {isPhone && <span className="phone-energy-ring" />}
+      <div className="pill-icon">
+        {isPhone && <span className="phone-signal-wave" />}
+        {icon}
+      </div>
+      <div className="pill-content">
         <div className="pill-label">{label}</div>
         <div className="pill-value"><FlashPrice value={value} /> {change && <span className="pill-change">{change}</span>}</div>
+        {isPhone && <div className="phone-subline">WhatsApp • اتصال مباشر</div>}
       </div>
     </div>
   );
