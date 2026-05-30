@@ -1426,6 +1426,34 @@ function injectTvTheme() {
       box-shadow:0 0 18px rgba(245,178,26,.32), inset 0 0 12px rgba(245,178,26,.09) !important;
     }
 
+
+    /* UNIQUE PRODUCT LIST - no duplicated rows when category has few items */
+    .smooth-product-track.no-scroll {
+      animation:none !important;
+      transform:translate3d(0,0,0) !important;
+    }
+    .spotlight-title.clean-category-title {
+      margin-bottom:.62vw !important;
+    }
+    .spotlight-title.clean-category-title .category-name-only {
+      color:#ffdc63;
+      font-size:1.16vw;
+      font-weight:1000;
+      text-shadow:0 0 14px rgba(245,178,26,.60);
+    }
+    .empty-category-note {
+      height:3.54vw;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:.72vw;
+      border:1px dashed rgba(245,178,26,.34);
+      color:rgba(255,220,99,.78);
+      font-size:.82vw;
+      font-weight:900;
+      background:rgba(245,178,26,.045);
+    }
+
     @media (max-aspect-ratio: 14/9) {
       .topbar { grid-template-columns: 1.6fr 2.2fr 1.5fr; }
       .main-grid { grid-template-columns: 24.5vw 1fr 24vw; }
@@ -1729,13 +1757,17 @@ function LiveProductSpotlight({ data, isAr, activeCategory }) {
   }, [products.length, activeCategory?.id]);
 
   const active = products[activeIndex % Math.max(1, products.length)] || DEFAULT_DATA.prices[0];
-  const repeatCount = Math.max(3, Math.ceil(16 / Math.max(1, products.length)));
-  const repeatedProducts = Array.from({ length: repeatCount }).flatMap(() => products);
-  const scrollStep = `${-(100 / repeatCount)}%`;
+  const shouldScroll = products.length > 5;
+  const repeatCount = shouldScroll ? Math.max(2, Math.ceil(12 / Math.max(1, products.length))) : 1;
+  const repeatedProducts = shouldScroll ? Array.from({ length: repeatCount }).flatMap(() => products) : products;
+  const scrollStep = shouldScroll ? `${-(100 / repeatCount)}%` : "0%";
+  const categoryTitle = activeCategory?.id === "home"
+    ? (isAr ? "كل المنتجات" : "כל המוצרים")
+    : (isAr ? activeCategory?.ar : activeCategory?.he) || (isAr ? "المنتجات" : "מוצרים");
 
   return (
     <aside className="spotlight-card glass-panel">
-      <div className="spotlight-title"><BadgePercent size={20} /> {isAr ? "منتجات القسم النشط" : "מוצרי הקטגוריה הפעילה"}</div>
+      <div className="spotlight-title clean-category-title"><BadgePercent size={20} /> <span className="category-name-only">{categoryTitle}</span></div>
       <div className="featured-product" key={`${active.nameHe}-${activeIndex}`}>
         <div className="featured-image-wrap">
           <img src={getProductImage(active)} alt="product" onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }} />
@@ -1754,7 +1786,7 @@ function LiveProductSpotlight({ data, isAr, activeCategory }) {
       </div>
 
       <div className="product-list-window">
-        <div className="product-list-track smooth-product-track" style={{ "--product-scroll-step": scrollStep }}>
+        <div className={`product-list-track smooth-product-track ${shouldScroll ? "" : "no-scroll"}`} style={{ "--product-scroll-step": scrollStep }}>
           {repeatedProducts.map((p, i) => {
             const originalIndex = i % products.length;
             const activeRow = originalIndex === activeIndex % products.length;
