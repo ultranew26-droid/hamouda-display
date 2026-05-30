@@ -695,6 +695,80 @@ function injectTvTheme() {
       background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(0,0,0,.25));
     }
 
+
+
+    /* PRODUCTS ONLY PANEL - remove big featured card and keep the moving product list only */
+    .spotlight-card { padding:.7vw; }
+    .featured-product, .spotlight-dots { display:none !important; }
+    .product-list-window {
+      flex:1;
+      min-height:0;
+      margin-top:.15vw;
+      border-radius:1vw;
+      border:1px solid rgba(245,178,26,.24);
+      background:linear-gradient(180deg, rgba(255,255,255,.025), rgba(0,0,0,.22));
+      box-shadow:inset 0 0 20px rgba(0,0,0,.35);
+    }
+    .product-list-track { gap:.48vw; animation: productListMove 38s linear infinite; }
+    .product-line {
+      height:4.18vw;
+      flex:0 0 4.18vw;
+      grid-template-columns:4.55vw 1fr 6.7vw 3.55vw;
+      gap:.65vw;
+      padding:.42vw .55vw;
+      border-radius:.82vw;
+      background:linear-gradient(90deg, rgba(255,255,255,.075), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.12);
+    }
+    .product-line.active {
+      border-color:rgba(245,178,26,.95);
+      background:linear-gradient(90deg, rgba(245,178,26,.16), rgba(255,255,255,.025));
+      box-shadow:0 0 22px rgba(245,178,26,.28), inset 0 0 22px rgba(245,178,26,.08);
+    }
+    .product-thumb { width:4.15vw; height:3.05vw; border-radius:.58vw; }
+    .product-line-name { font-size:1.16vw; line-height:1.05; }
+    .product-line-unit { font-size:.68vw; margin-top:.16vw; }
+    .price-mini-badge {
+      height:2.55vw;
+      border-radius:.62vw;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:.34vw;
+      border:1px solid rgba(245,178,26,.92);
+      background:linear-gradient(135deg, rgba(245,178,26,.17), rgba(0,0,0,.36));
+      box-shadow:0 0 16px rgba(245,178,26,.24), inset 0 0 14px rgba(245,178,26,.08);
+      direction:ltr;
+    }
+    .mini-coin {
+      width:1.58vw;
+      height:1.58vw;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      color:#07111f;
+      font-size:.82vw;
+      font-weight:1000;
+      background:radial-gradient(circle at 32% 25%, #fff1a6, #ffc637 48%, #c98904 100%);
+      box-shadow:0 0 13px rgba(245,178,26,.68), inset 0 0 6px rgba(255,255,255,.65);
+    }
+    .mini-price { font-size:1.35vw; font-weight:1000; color:#fff6d5; text-shadow:0 0 10px rgba(255,245,214,.7); }
+    .change-pill { height:2.35vw; min-width:3.25vw; font-size:.86vw; }
+    .all-products-btn {
+      margin-top:.48vw;
+      height:2.45vw;
+      border-radius:.75vw;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:.45vw;
+      color:var(--gold2);
+      font-weight:1000;
+      font-size:.92vw;
+      border:1px solid rgba(245,178,26,.42);
+      background:rgba(0,0,0,.32);
+    }
+
     @media (max-aspect-ratio: 14/9) {
       .topbar { grid-template-columns: 1.6fr 2.2fr 1.5fr; }
       .main-grid { grid-template-columns: 24.5vw 1fr 24vw; }
