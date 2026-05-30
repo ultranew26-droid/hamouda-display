@@ -317,22 +317,115 @@ function injectTvTheme() {
     }
     .brand-title { font-size:2.05vw; line-height:1; font-weight:1000; letter-spacing:-.03em; text-shadow:0 0 12px rgba(255,255,255,.18); }
     .brand-sub { margin-top:.35vw; color:rgba(255,255,255,.72); font-size:.9vw; font-weight:700; }
-    .top-pills { display:flex; justify-content:center; gap:.48vw; overflow:hidden; }
+    .top-pills {
+      display:flex;
+      justify-content:center;
+      gap:.58vw;
+      overflow:hidden;
+      padding:.12vw .25vw;
+    }
     .data-pill {
-      min-width:6.7vw; height:3.75vw; border-radius:.75vw; padding:.35vw .65vw;
-      display:grid; grid-template-columns:2.05vw 1fr; align-items:center; gap:.42vw;
-      border:1px solid rgba(245,178,26,.32);
-      background:linear-gradient(180deg, rgba(8,13,22,.92), rgba(3,7,12,.96));
-      box-shadow:0 0 16px rgba(245,178,26,.10);
+      position:relative;
+      min-width:7.15vw;
+      height:3.95vw;
+      border-radius:.9vw;
+      padding:.34vw .68vw;
+      display:grid;
+      grid-template-columns:2.35vw 1fr;
+      align-items:center;
+      gap:.48vw;
+      overflow:hidden;
+      border:1px solid rgba(255,210,84,.48);
+      background:
+        radial-gradient(circle at 18% 50%, rgba(255,210,84,.16), transparent 36%),
+        linear-gradient(180deg, rgba(11,17,29,.96), rgba(3,7,12,.98));
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.035) inset,
+        0 0 18px rgba(245,178,26,.14),
+        inset 0 0 22px rgba(245,178,26,.035);
+    }
+    .data-pill:before {
+      content:"";
+      position:absolute;
+      top:-1px;
+      left:12%;
+      right:12%;
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(255,230,150,.92), transparent);
+      box-shadow:0 0 12px rgba(255,220,99,.85);
+    }
+    .data-pill:after {
+      content:"";
+      position:absolute;
+      inset:-45% -30%;
+      background:linear-gradient(110deg, transparent 34%, rgba(255,255,255,.10) 45%, transparent 58%);
+      animation:pillLightSweep 6.5s ease-in-out infinite;
+      pointer-events:none;
+    }
+    @keyframes pillLightSweep {
+      0%,45% { transform:translateX(70%) rotate(8deg); opacity:0; }
+      55% { opacity:.85; }
+      85%,100% { transform:translateX(-75%) rotate(8deg); opacity:0; }
     }
     .pill-icon {
-      width:2.05vw; height:2.05vw; border-radius:.55vw; display:grid; place-items:center;
-      color:var(--gold2); border:1px solid rgba(245,178,26,.45);
-      background:radial-gradient(circle, rgba(245,178,26,.18), rgba(0,0,0,.15));
-      filter: drop-shadow(0 0 8px rgba(245,178,26,.55));
+      position:relative;
+      width:2.34vw;
+      height:2.34vw;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      color:var(--gold2);
+      border:1px solid rgba(255,220,99,.72);
+      background:
+        radial-gradient(circle at 32% 24%, rgba(255,255,255,.50), transparent 18%),
+        radial-gradient(circle, rgba(255,198,55,.30), rgba(0,0,0,.20) 66%);
+      box-shadow:
+        0 0 14px rgba(245,178,26,.58),
+        inset 0 0 12px rgba(255,220,99,.18);
+      filter:drop-shadow(0 0 7px rgba(245,178,26,.50));
     }
-    .pill-label { color:rgba(255,255,255,.63); font-size:.7vw; font-weight:800; }
-    .pill-value { font-size:.86vw; color:var(--gold2); font-weight:1000; text-shadow:0 0 10px rgba(245,178,26,.45); white-space:nowrap; }
+    .pill-icon:before {
+      content:"";
+      position:absolute;
+      inset:-.23vw;
+      border-radius:50%;
+      border:1px solid rgba(245,178,26,.38);
+      border-top-color:rgba(255,230,150,.88);
+      animation:pillIconRing 7s linear infinite;
+    }
+    @keyframes pillIconRing { to { transform:rotate(360deg); } }
+    .premium-symbol {
+      font-size:1.26vw;
+      line-height:1;
+      font-weight:1000;
+      color:#ffdc63;
+      text-shadow:0 0 10px rgba(245,178,26,.75);
+    }
+    .premium-symbol.gold-bars {
+      font-size:1.02vw;
+      letter-spacing:-.14em;
+      transform:skewX(-8deg);
+    }
+    .data-pill.phone .pill-icon { animation:pillCallPulse 3.2s ease-in-out infinite; }
+    .data-pill.weather .pill-icon { animation:pillWeatherFloat 4.5s ease-in-out infinite; }
+    @keyframes pillCallPulse { 0%,100% { transform:scale(1); } 50% { transform:scale(1.08); } }
+    @keyframes pillWeatherFloat { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-.12vw); } }
+    .pill-label {
+      color:rgba(255,255,255,.70);
+      font-size:.69vw;
+      font-weight:900;
+      line-height:1;
+      white-space:nowrap;
+    }
+    .pill-value {
+      margin-top:.25vw;
+      font-size:.92vw;
+      color:var(--gold2);
+      font-weight:1000;
+      text-shadow:0 0 11px rgba(245,178,26,.55);
+      white-space:nowrap;
+      letter-spacing:.01em;
+    }
     .pill-change { color:#27f36b; font-size:.72vw; font-weight:1000; margin-inline-start:.25vw; }
     .time-box { display:flex; align-items:center; justify-content:flex-end; gap:.75vw; }
     .time-main { color:var(--gold2); font-size:1.55vw; font-weight:1000; text-shadow:0 0 12px rgba(245,178,26,.55); }
@@ -1149,36 +1242,53 @@ function injectTvTheme() {
 
 
 
-    /* SMART AUTO CATEGORY NAV - clean animated version without label */
+    /* SMART AUTO CATEGORY NAV */
     .bottom-nav.smart-category-nav {
       position:relative;
       overflow:hidden;
-      height:4.35vw !important;
-      padding:.38vw !important;
-      border-color:rgba(245,178,26,.50);
+      padding-top:1.18vw !important;
+      border-color:rgba(245,178,26,.46);
       background:
-        radial-gradient(circle at 50% 0%, rgba(245,178,26,.12), transparent 56%),
-        linear-gradient(180deg, rgba(12,20,33,.92), rgba(4,9,15,.94));
-      box-shadow:
-        0 0 22px rgba(245,178,26,.12),
-        inset 0 0 20px rgba(255,255,255,.025);
+        radial-gradient(circle at 50% 0%, rgba(245,178,26,.12), transparent 55%),
+        linear-gradient(180deg, rgba(12,20,33,.90), rgba(4,9,15,.92));
+    }
+    .active-category-label {
+      position:absolute;
+      top:.18vw;
+      left:50%;
+      transform:translateX(-50%);
+      z-index:4;
+      height:.92vw;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:.28vw;
+      padding:0 .7vw;
+      border-radius:999px;
+      color:#07111f;
+      background:linear-gradient(135deg, #ffdc63, #f5b21a);
+      font-size:.52vw;
+      font-weight:1000;
+      letter-spacing:.02em;
+      box-shadow:0 0 16px rgba(245,178,26,.55);
+      white-space:nowrap;
     }
     .nav-light-runner {
       position:absolute;
-      top:.2vw;
-      bottom:.2vw;
-      width:4vw;
+      top:.05vw;
+      bottom:.05vw;
+      width:2.8vw;
       z-index:1;
       border-radius:999px;
-      background:linear-gradient(90deg, transparent, rgba(255,220,99,.42), transparent);
-      filter:blur(.38vw);
+      background:linear-gradient(90deg, transparent, rgba(255,220,99,.45), transparent);
+      filter:blur(.3vw);
       animation: navLightRunner 5s linear infinite;
       pointer-events:none;
     }
     @keyframes navLightRunner {
-      0% { transform:translateX(-6vw); opacity:0; }
-      10% { opacity:.72; }
-      90% { opacity:.72; }
+      0% { transform:translateX(-5vw); opacity:0; }
+      10% { opacity:.75; }
+      90% { opacity:.75; }
       100% { transform:translateX(100vw); opacity:0; }
     }
     .smart-nav-item {
@@ -1186,22 +1296,17 @@ function injectTvTheme() {
       z-index:2;
       height:100%;
       border:1px solid rgba(255,255,255,.12);
-      border-radius:.72vw;
-      background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(0,0,0,.34));
+      border-radius:.68vw;
+      background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(0,0,0,.32));
       display:flex;
       align-items:center;
       justify-content:center;
       gap:.62vw;
-      font-size:.96vw;
+      font-size:.98vw;
       font-weight:950;
       color:#fff;
       overflow:hidden;
-      transition:
-        transform .55s ease,
-        background .55s ease,
-        color .55s ease,
-        border-color .55s ease,
-        box-shadow .55s ease;
+      transition:all .55s ease;
     }
     .smart-nav-item svg {
       transition:transform .55s ease, filter .55s ease;
@@ -1209,27 +1314,35 @@ function injectTvTheme() {
     .smart-nav-item.active {
       color:#07111f;
       border-color:rgba(255,220,99,1);
-      background:linear-gradient(135deg, #ffdc63, #f5b21a 50%, #d79505);
-      box-shadow:
-        0 0 22px rgba(245,178,26,.56),
-        inset 0 0 18px rgba(255,255,255,.30);
-      transform:translateY(-.07vw);
+      background:linear-gradient(135deg, #ffdc63, #f5b21a 48%, #d79505);
+      box-shadow:0 0 24px rgba(245,178,26,.52), inset 0 0 18px rgba(255,255,255,.28);
+      transform:translateY(-.08vw);
     }
     .smart-nav-item.active svg {
-      transform:scale(1.15);
+      transform:scale(1.14);
       filter:drop-shadow(0 0 8px rgba(255,255,255,.45));
       animation: smartNavIconPulse 1.45s ease-in-out infinite;
     }
     .smart-nav-item.active:after {
       content:"";
       position:absolute;
-      inset:-45% -22%;
+      inset:-40% -20%;
       background:linear-gradient(115deg, transparent 30%, rgba(255,255,255,.42) 48%, transparent 63%);
       animation: smartNavSweep 2.6s ease-in-out infinite;
       pointer-events:none;
     }
-    @keyframes smartNavIconPulse { 0%,100% { transform:scale(1.10); } 50% { transform:scale(1.25); } }
-    @keyframes smartNavSweep { 0% { transform:translateX(82%); opacity:0; } 45% { opacity:.85; } 100% { transform:translateX(-82%); opacity:0; } }
+    @keyframes smartNavIconPulse { 0%,100% { transform:scale(1.08); } 50% { transform:scale(1.24); } }
+    @keyframes smartNavSweep { 0% { transform:translateX(80%); opacity:0; } 45% { opacity:.8; } 100% { transform:translateX(-80%); opacity:0; } }
+    .filtered-products-hint {
+      position:absolute;
+      top:2.05vw;
+      right:.9vw;
+      z-index:4;
+      color:rgba(255,220,99,.88);
+      font-size:.62vw;
+      font-weight:900;
+      pointer-events:none;
+    }
 
     @media (max-aspect-ratio: 14/9) {
       .topbar { grid-template-columns: 1.6fr 2.2fr 1.5fr; }
@@ -1538,7 +1651,9 @@ function LiveProductSpotlight({ data, isAr, activeCategory }) {
 
   return (
     <aside className="spotlight-card glass-panel">
-      <div className="spotlight-title"><BadgePercent size={20} /> {isAr ? `منتجات ${activeCategory?.ar || "المحل"}` : `מוצרי ${activeCategory?.he || "החנות"}`}</div>
+      <div className="spotlight-title"><BadgePercent size={20} /> {isAr ? "منتجات القسم النشط" : "מוצרי הקטגוריה הפעילה"}</div>
+      <div className="filtered-products-hint">{isAr ? "القسم النشط الآن" : "הקטגוריה הפעילה עכשיו"}: {isAr ? activeCategory?.ar : activeCategory?.he}</div>
+
       <div className="featured-product" key={`${active.nameHe}-${activeIndex}`}>
         <div className="featured-image-wrap">
           <img src={getProductImage(active)} alt="product" onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }} />
@@ -1584,6 +1699,7 @@ function LiveProductSpotlight({ data, isAr, activeCategory }) {
 function SmartCategoryNav({ isAr, activeCategoryIndex }) {
   return (
     <nav className="bottom-nav smart-category-nav glass-panel">
+      <div className="active-category-label">{isAr ? "القسم النشط الآن" : "הקטגוריה הפעילה עכשיו"}</div>
       <div className="nav-light-runner" />
       {SMART_CATEGORIES.map((category, index) => {
         const Icon = category.Icon;
@@ -1599,9 +1715,9 @@ function SmartCategoryNav({ isAr, activeCategoryIndex }) {
   );
 }
 
-function CurrencyPill({ icon, label, value, change }) {
+function CurrencyPill({ icon, label, value, change, kind = "" }) {
   return (
-    <div className="data-pill">
+    <div className={`data-pill ${kind}`}>
       <div className="pill-icon">{icon}</div>
       <div>
         <div className="pill-label">{label}</div>
@@ -1987,12 +2103,12 @@ export default function HamoudaPremiumDisplay() {
           </div>
 
           <div className="top-pills">
-            <CurrencyPill icon={<CloudSun size={26} />} label={isAr ? (weather.labelAr || "الطقس") : (weather.labelHe || "מזג אוויר")} value={weather.temp} />
-            <CurrencyPill icon={<Euro size={26} />} label={isAr ? "يورو" : "אירו"} value={`${data.exchangeEUR ?? fx.eurIls} €`} />
-            <CurrencyPill icon={<DollarSign size={26} />} label={isAr ? "دولار" : "דולר"} value={`${data.exchangeUSD ?? fx.usdIls} $`} />
-            <CurrencyPill icon={<span style={{fontWeight:1000,fontSize:".78vw"}}>JD</span>} label={isAr ? "دينار" : "דינר"} value={`${data.exchangeJOD ?? fx.jodIls} JD`} />
-            <CurrencyPill icon={<Gem size={26} />} label={isAr ? "ذهب" : "זהב"} value={`$${data.goldPrice !== "--" ? data.goldPrice : gold.price}`} />
-            <CurrencyPill icon={<Phone size={26} />} label={isAr ? "هاتف" : "טלפון"} value={data.phone} />
+            <CurrencyPill kind="weather" icon={<CloudSun size={27} strokeWidth={1.9} />} label={isAr ? (weather.labelAr || "الطقس") : (weather.labelHe || "מזג אוויר")} value={weather.temp} />
+            <CurrencyPill kind="euro" icon={<span className="premium-symbol">€</span>} label={isAr ? "يورو" : "אירו"} value={`€ ${data.exchangeEUR ?? fx.eurIls}`} />
+            <CurrencyPill kind="usd" icon={<span className="premium-symbol">$</span>} label={isAr ? "دولار" : "דולר"} value={`$ ${data.exchangeUSD ?? fx.usdIls}`} />
+            <CurrencyPill kind="jod" icon={<span className="premium-symbol">🏛</span>} label={isAr ? "دينار" : "דינר"} value={`JD ${data.exchangeJOD ?? fx.jodIls}`} />
+            <CurrencyPill kind="gold" icon={<span className="premium-symbol gold-bars">▰▰▰</span>} label={isAr ? "ذهب" : "זהב"} value={`$${data.goldPrice !== "--" ? data.goldPrice : gold.price}`} />
+            <CurrencyPill kind="phone" icon={<Phone size={27} strokeWidth={2.3} />} label={isAr ? "هاتف" : "טלפון"} value={data.phone} />
           </div>
 
           <div className="time-box">
