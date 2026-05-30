@@ -769,6 +769,118 @@ function injectTvTheme() {
       background:rgba(0,0,0,.32);
     }
 
+
+
+    /* PRO ALIGN FIX - clean professional moving product list */
+    .spotlight-card { padding:.62vw !important; }
+    .product-list-window {
+      margin-top:.1vw !important;
+      border-radius:.9vw !important;
+      border:1px solid rgba(245,178,26,.34) !important;
+      background:linear-gradient(180deg, rgba(8,13,22,.96), rgba(3,7,12,.96)) !important;
+      box-shadow:inset 0 0 22px rgba(0,0,0,.45), 0 0 18px rgba(245,178,26,.10) !important;
+    }
+    .product-list-track {
+      gap:.34vw !important;
+      animation: productListMove 34s linear infinite !important;
+    }
+    .product-line {
+      height:3.54vw !important;
+      flex:0 0 3.54vw !important;
+      display:grid !important;
+      grid-template-columns:3.55vw minmax(0,1fr) 5.35vw 2.65vw !important;
+      align-items:center !important;
+      column-gap:.46vw !important;
+      padding:.34vw .45vw !important;
+      border-radius:.72vw !important;
+      background:linear-gradient(90deg, rgba(255,255,255,.058), rgba(255,255,255,.014)) !important;
+      border:1px solid rgba(255,255,255,.105) !important;
+      box-shadow:inset 0 0 14px rgba(255,255,255,.018) !important;
+    }
+    .product-line.active {
+      border-color:rgba(245,178,26,.80) !important;
+      background:linear-gradient(90deg, rgba(245,178,26,.105), rgba(255,255,255,.018)) !important;
+      box-shadow:0 0 16px rgba(245,178,26,.18), inset 0 0 16px rgba(245,178,26,.045) !important;
+    }
+    .product-thumb {
+      width:3.18vw !important;
+      height:2.34vw !important;
+      border-radius:.48vw !important;
+      justify-self:center !important;
+      border:1px solid rgba(255,255,255,.14) !important;
+    }
+    .product-line-name {
+      font-size:.98vw !important;
+      line-height:1.08 !important;
+      letter-spacing:-.015em !important;
+      font-weight:950 !important;
+      max-width:100% !important;
+    }
+    .product-line-unit {
+      font-size:.56vw !important;
+      margin-top:.10vw !important;
+      color:rgba(255,255,255,.52) !important;
+    }
+    .price-mini-badge {
+      width:5.35vw !important;
+      min-width:5.35vw !important;
+      max-width:5.35vw !important;
+      height:2.18vw !important;
+      justify-self:center !important;
+      display:grid !important;
+      grid-template-columns:1.3vw 1fr !important;
+      align-items:center !important;
+      justify-content:center !important;
+      gap:.22vw !important;
+      padding:0 .34vw !important;
+      border-radius:.54vw !important;
+      border:1px solid rgba(245,178,26,.82) !important;
+      background:linear-gradient(135deg, rgba(245,178,26,.16), rgba(0,0,0,.40)) !important;
+      box-shadow:0 0 12px rgba(245,178,26,.18), inset 0 0 10px rgba(245,178,26,.06) !important;
+    }
+    .mini-coin {
+      width:1.22vw !important;
+      height:1.22vw !important;
+      font-size:.62vw !important;
+      line-height:1 !important;
+      box-shadow:0 0 10px rgba(245,178,26,.55), inset 0 0 5px rgba(255,255,255,.55) !important;
+    }
+    .mini-price {
+      font-size:1.02vw !important;
+      line-height:1 !important;
+      font-weight:1000 !important;
+      text-align:center !important;
+      font-variant-numeric: tabular-nums !important;
+      letter-spacing:.01em !important;
+      color:#fff6d5 !important;
+      text-shadow:0 0 8px rgba(255,245,214,.48) !important;
+    }
+    .change-pill {
+      width:2.45vw !important;
+      min-width:2.45vw !important;
+      height:2.05vw !important;
+      justify-self:center !important;
+      border-radius:.62vw !important;
+      font-size:.76vw !important;
+      font-weight:1000 !important;
+      padding:0 !important;
+      display:flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+      font-variant-numeric: tabular-nums !important;
+    }
+    .spotlight-title {
+      font-size:1.04vw !important;
+      margin-bottom:.48vw !important;
+      gap:.5vw !important;
+    }
+    .all-products-btn {
+      height:2.05vw !important;
+      margin-top:.34vw !important;
+      font-size:.72vw !important;
+      border-radius:.62vw !important;
+    }
+
     @media (max-aspect-ratio: 14/9) {
       .topbar { grid-template-columns: 1.6fr 2.2fr 1.5fr; }
       .main-grid { grid-template-columns: 24.5vw 1fr 24vw; }
