@@ -1986,7 +1986,7 @@ function CurrencyPill({ icon, label, value, change, kind = "" }) {
       <div className="pill-content">
         <div className="pill-label">{label}</div>
         <div className="pill-value"><FlashPrice value={value} /> {change && <span className="pill-change">{change}</span>}</div>
-        {isPhone && <div className="phone-subline">WhatsApp • اتصال مباشر</div>}
+        {isPhone && <div className="phone-subline">WhatsApp • זמין ב-WhatsApp</div>}
       </div>
     </div>
   );
