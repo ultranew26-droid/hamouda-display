@@ -439,7 +439,8 @@ function injectTvTheme() {
     }
 
 
-    /* Design 2: Live Product Spotlight panel */
+
+    /* Live Product Spotlight - Design 2 */
     .spotlight-card {
       padding:.8vw;
       display:flex;
@@ -451,236 +452,247 @@ function injectTvTheme() {
     .spotlight-card:before {
       content:"";
       position:absolute;
-      inset:-40%;
+      inset:-25%;
       background:
-        radial-gradient(circle at 50% 20%, rgba(245,178,26,.20), transparent 22%),
-        conic-gradient(from 0deg, transparent, rgba(245,178,26,.10), transparent, rgba(39,243,107,.06), transparent);
-      opacity:.72;
-      animation: spotlightAura 12s linear infinite;
+        radial-gradient(circle at 30% 20%, rgba(255,220,99,.16), transparent 24%),
+        radial-gradient(circle at 80% 70%, rgba(245,178,26,.12), transparent 28%);
+      animation: spotlightAura 8s linear infinite;
       pointer-events:none;
     }
     @keyframes spotlightAura { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
-
-    .spotlight-inner {
+    .spotlight-title {
       position:relative;
-      z-index:1;
-      height:100%;
-      min-height:0;
-      display:grid;
-      grid-template-rows: 16.4vw 1fr 2.45vw;
-      gap:.58vw;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:.65vw;
+      color:var(--gold2);
+      font-size:1.12vw;
+      font-weight:1000;
+      margin:.05vw 0 .65vw;
+      text-shadow:0 0 14px rgba(245,178,26,.55);
     }
-    .spotlight-hero {
+    .spotlight-title:before,.spotlight-title:after {
+      content:"";
+      height:1px;
+      flex:1;
+      background:linear-gradient(90deg, transparent, rgba(245,178,26,.75), transparent);
+    }
+    .featured-product {
       position:relative;
-      overflow:hidden;
+      min-height:12.2vw;
       border-radius:1vw;
-      border:1px solid rgba(245,178,26,.72);
+      overflow:hidden;
+      border:1px solid rgba(245,178,26,.78);
       background:
-        radial-gradient(circle at 50% 22%, rgba(245,178,26,.22), transparent 36%),
-        linear-gradient(180deg, rgba(11,18,30,.98), rgba(3,7,12,.98));
-      box-shadow:0 0 24px rgba(245,178,26,.25), inset 0 0 30px rgba(255,255,255,.035);
+        radial-gradient(circle at 20% 35%, rgba(245,178,26,.22), transparent 30%),
+        linear-gradient(135deg, rgba(12,20,33,.92), rgba(4,8,14,.96));
+      box-shadow:0 0 28px rgba(245,178,26,.23), inset 0 0 35px rgba(255,255,255,.035);
+      display:grid;
+      grid-template-columns:40% 1fr;
+      gap:.8vw;
+      padding:.8vw;
+      margin-bottom:.72vw;
     }
-    .spotlight-hero-bg {
+    .featured-product:after {
+      content:"";
       position:absolute;
-      inset:0;
-      background:
-        linear-gradient(115deg, transparent 0%, rgba(255,255,255,.10) 42%, transparent 56%),
-        radial-gradient(circle at 20% 70%, rgba(245,178,26,.18), transparent 28%);
-      transform:translateX(-120%);
+      inset:-40% -20%;
+      background:linear-gradient(115deg, transparent 25%, rgba(255,255,255,.12) 45%, transparent 62%);
       animation: lightSweep 4.8s ease-in-out infinite;
       pointer-events:none;
     }
-    @keyframes lightSweep {
-      0%,55% { transform:translateX(-120%); opacity:0; }
-      70% { opacity:1; }
-      100% { transform:translateX(120%); opacity:0; }
+    @keyframes lightSweep { 0% { transform:translateX(70%) rotate(8deg); opacity:0; } 35% { opacity:.9; } 70%,100% { transform:translateX(-80%) rotate(8deg); opacity:0; } }
+    .featured-image-wrap {
+      position:relative;
+      border-radius:.85vw;
+      overflow:hidden;
+      background:#080d14;
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:inset 0 0 22px rgba(0,0,0,.6);
     }
-    .spotlight-label {
+    .featured-image-wrap img {
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      filter:saturate(1.05) contrast(1.05);
+      animation: productFloat 4.5s ease-in-out infinite;
+    }
+    @keyframes productFloat { 0%,100% { transform:scale(1.03) translateY(0); } 50% { transform:scale(1.08) translateY(-.25vw); } }
+    .featured-info {
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      min-width:0;
+    }
+    .featured-name {
+      font-size:1.72vw;
+      line-height:1.08;
+      font-weight:1000;
+      color:#fff;
+      text-shadow:0 0 16px rgba(255,255,255,.16);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .featured-unit { margin-top:.35vw; font-size:.78vw; font-weight:800; color:rgba(255,255,255,.66); }
+    .price-badge-xl {
+      margin-top:.75vw;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:.55vw;
+      min-height:3.25vw;
+      border-radius:.8vw;
+      padding:.35vw .6vw;
+      border:1px solid rgba(245,178,26,.9);
+      background:linear-gradient(135deg, rgba(245,178,26,.16), rgba(0,0,0,.35));
+      box-shadow:0 0 24px rgba(245,178,26,.28), inset 0 0 18px rgba(245,178,26,.08);
+    }
+    .shekel-coin {
+      flex:0 0 auto;
+      width:2.45vw;
+      height:2.45vw;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      color:#07111f;
+      font-size:1.25vw;
+      font-weight:1000;
+      background:radial-gradient(circle at 32% 25%, #fff1a6, #ffc637 48%, #c98904 100%);
+      box-shadow:0 0 20px rgba(245,178,26,.72), inset 0 0 8px rgba(255,255,255,.65);
+    }
+    .price-number-xl {
+      flex:1;
+      direction:ltr;
+      text-align:center;
+      font-size:2.35vw;
+      line-height:1;
+      font-weight:1000;
+      color:#fff6d5;
+      letter-spacing:.01em;
+      text-shadow:0 0 13px rgba(255,245,214,.78), 0 0 28px rgba(245,178,26,.32);
+    }
+    .change-pill {
+      min-width:3.25vw;
+      height:2.25vw;
+      border-radius:999px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:.22vw;
+      padding:0 .55vw;
+      font-size:.92vw;
+      font-weight:1000;
+      border:1px solid rgba(255,255,255,.12);
+      direction:ltr;
+      white-space:nowrap;
+    }
+    .change-pill.up { background:rgba(34,197,94,.18); color:#39ff78; border-color:rgba(34,197,94,.38); box-shadow:0 0 16px rgba(34,197,94,.20); }
+    .change-pill.down { background:rgba(239,68,68,.16); color:#ff4f62; border-color:rgba(239,68,68,.35); box-shadow:0 0 16px rgba(239,68,68,.18); }
+    .change-pill.flat { background:rgba(255,255,255,.11); color:rgba(255,255,255,.72); }
+    .spotlight-dots {
+      position:relative;
+      display:flex;
+      justify-content:center;
+      gap:.32vw;
+      margin:.1vw 0 .52vw;
+    }
+    .spotlight-dot { width:.58vw; height:.22vw; border-radius:999px; background:rgba(255,255,255,.34); }
+    .spotlight-dot.active { width:1.05vw; background:var(--gold); box-shadow:0 0 10px rgba(245,178,26,.8); }
+    .product-list-window {
+      position:relative;
+      flex:1;
+      min-height:0;
+      overflow:hidden;
+      border-radius:.95vw;
+    }
+    .product-list-window:before,.product-list-window:after {
+      content:"";
       position:absolute;
-      top:.55vw;
-      right:.7vw;
-      left:.7vw;
+      left:0; right:0;
+      height:1vw;
+      z-index:2;
+      pointer-events:none;
+    }
+    .product-list-window:before { top:0; background:linear-gradient(180deg, rgba(6,10,17,.96), transparent); }
+    .product-list-window:after { bottom:0; background:linear-gradient(0deg, rgba(6,10,17,.96), transparent); }
+    .product-list-track {
+      display:flex;
+      flex-direction:column;
+      gap:.42vw;
+      animation: productListMove 42s linear infinite;
+      will-change:transform;
+    }
+    @keyframes productListMove { 0% { transform:translateY(0); } 100% { transform:translateY(-50%); } }
+    .product-line {
+      height:3.15vw;
+      flex:0 0 3.15vw;
+      display:grid;
+      grid-template-columns:3.85vw 1fr 6.1vw 3.25vw;
+      align-items:center;
+      gap:.55vw;
+      padding:.32vw .42vw;
+      border-radius:.75vw;
+      border:1px solid rgba(255,255,255,.10);
+      background:linear-gradient(90deg, rgba(255,255,255,.06), rgba(255,255,255,.018));
+      box-shadow:inset 0 0 18px rgba(255,255,255,.025);
+    }
+    .product-line.active {
+      border-color:rgba(245,178,26,.82);
+      box-shadow:0 0 19px rgba(245,178,26,.24), inset 0 0 18px rgba(245,178,26,.05);
+    }
+    .product-thumb {
+      width:3.45vw;
+      height:2.42vw;
+      border-radius:.45vw;
+      overflow:hidden;
+      background:#0c111a;
+      border:1px solid rgba(255,255,255,.12);
+    }
+    .product-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+    .product-line-name { font-size:.98vw; font-weight:1000; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .product-line-unit { margin-top:.08vw; font-size:.61vw; color:rgba(255,255,255,.55); font-weight:800; }
+    .price-mini-badge {
+      height:2.28vw;
+      border-radius:.55vw;
+      border:1px solid rgba(245,178,26,.75);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:.28vw;
+      background:linear-gradient(135deg, rgba(245,178,26,.13), rgba(0,0,0,.38));
+      box-shadow:0 0 14px rgba(245,178,26,.18);
+      direction:ltr;
+    }
+    .mini-coin {
+      width:1.25vw;
+      height:1.25vw;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,#fff1a6,#f5b21a);
+      color:#07111f;
+      font-size:.66vw;
+      font-weight:1000;
+    }
+    .mini-price { color:#fff6d5; font-size:1.18vw; font-weight:1000; text-shadow:0 0 10px rgba(255,245,214,.55); }
+    .all-products-btn {
+      position:relative;
+      height:2.15vw;
+      margin-top:.52vw;
+      border-radius:.65vw;
       display:flex;
       align-items:center;
       justify-content:center;
       gap:.45vw;
       color:var(--gold2);
-      font-size:.85vw;
+      font-size:.8vw;
       font-weight:1000;
-      text-shadow:0 0 12px rgba(245,178,26,.45);
-      z-index:2;
-    }
-    .spotlight-product-img-wrap {
-      position:absolute;
-      top:2.25vw;
-      right:1vw;
-      width:10.7vw;
-      height:8.1vw;
-      border-radius:.85vw;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.12);
-      background:#03060b;
-      box-shadow:0 0 18px rgba(0,0,0,.45);
-    }
-    .spotlight-product-img {
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-      animation: productFloat 5s ease-in-out infinite;
-    }
-    @keyframes productFloat {
-      0%,100% { transform:scale(1.04) translateY(0); }
-      50% { transform:scale(1.11) translateY(-.25vw); }
-    }
-    .spotlight-product-info {
-      position:absolute;
-      top:2.35vw;
-      left:.85vw;
-      right:12.35vw;
-      bottom:3.4vw;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:flex-end;
-      text-align:right;
-      z-index:2;
-    }
-    .spotlight-product-name {
-      font-size:1.55vw;
-      line-height:1.05;
-      font-weight:1000;
-      color:#fff;
-      text-shadow:0 0 14px rgba(255,255,255,.22);
-      max-width:100%;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-    }
-    .spotlight-product-unit {
-      margin-top:.25vw;
-      font-size:.72vw;
-      color:rgba(255,255,255,.68);
-      font-weight:800;
-    }
-    .spotlight-price-line {
-      margin-top:.8vw;
-      display:flex;
-      flex-direction:row-reverse;
-      align-items:center;
-      gap:.65vw;
-    }
-    .spotlight-price {
-      color:var(--gold2);
-      font-size:2.35vw;
-      line-height:1;
-      font-weight:1000;
-      text-shadow:0 0 18px rgba(245,178,26,.75);
-    }
-    .spotlight-change-pill {
-      border-radius:999px;
-      padding:.3vw .65vw;
-      font-size:.68vw;
-      font-weight:1000;
-      background:rgba(255,255,255,.08);
-    }
-    .spotlight-qualities {
-      position:absolute;
-      right:.8vw;
-      left:.8vw;
-      bottom:.65vw;
-      display:grid;
-      grid-template-columns:repeat(3, 1fr);
-      gap:.35vw;
-      z-index:3;
-    }
-    .spotlight-quality {
-      border-radius:999px;
-      border:1px solid rgba(245,178,26,.22);
-      background:rgba(0,0,0,.42);
-      color:rgba(255,255,255,.82);
-      font-size:.58vw;
-      font-weight:900;
-      text-align:center;
-      padding:.28vw .35vw;
-    }
-
-    .spotlight-list {
-      min-height:0;
-      overflow:hidden;
-      display:flex;
-      flex-direction:column;
-      gap:.42vw;
-    }
-    .spotlight-row {
-      height:3.1vw;
-      flex:0 0 3.1vw;
-      display:grid;
-      grid-template-columns:3.35vw 1fr 4.2vw 2.25vw;
-      align-items:center;
-      gap:.5vw;
-      border-radius:.75vw;
-      padding:.33vw .45vw;
-      border:1px solid rgba(255,255,255,.09);
-      background:linear-gradient(90deg, rgba(255,255,255,.05), rgba(255,255,255,.015));
-      transition:all .45s ease;
-    }
-    .spotlight-row.active {
-      border-color:rgba(245,178,26,.92);
-      box-shadow:0 0 20px rgba(245,178,26,.30), inset 0 0 18px rgba(245,178,26,.08);
-      background:linear-gradient(90deg, rgba(245,178,26,.12), rgba(255,255,255,.025));
-      transform:translateX(-.2vw);
-    }
-    .spotlight-row-img {
-      width:3vw;
-      height:2.35vw;
-      border-radius:.45vw;
-      object-fit:cover;
-      border:1px solid rgba(255,255,255,.12);
-      background:#020617;
-    }
-    .spotlight-row-name {
-      font-size:.82vw;
-      font-weight:1000;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .spotlight-row-unit {
-      font-size:.55vw;
-      font-weight:800;
-      color:rgba(255,255,255,.55);
-      margin-top:.06vw;
-    }
-    .spotlight-row-price {
-      color:white;
-      font-size:1.05vw;
-      font-weight:1000;
-      text-align:end;
-      text-shadow:0 0 12px rgba(255,255,255,.55);
-      white-space:nowrap;
-    }
-    .spotlight-row-change {
-      font-size:.68vw;
-      font-weight:1000;
-      text-align:center;
-      border-radius:999px;
-      padding:.22vw .25vw;
-      background:rgba(255,255,255,.06);
-    }
-    .spotlight-all-btn {
-      position:relative;
-      z-index:1;
-      border-radius:.7vw;
-      border:1px solid rgba(245,178,26,.30);
-      background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(0,0,0,.34));
-      color:var(--gold2);
-      font-size:.78vw;
-      font-weight:1000;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:.4vw;
+      border:1px solid rgba(245,178,26,.28);
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(0,0,0,.25));
     }
 
     @media (max-aspect-ratio: 14/9) {
@@ -923,6 +935,98 @@ function PriceRow({ p, data }) {
   );
 }
 
+
+
+const PRODUCT_IMAGE_MAP = {
+  cement: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=600&q=80",
+  steel: "https://images.unsplash.com/photo-1618761714954-0b8cd0026356?auto=format&fit=crop&w=600&q=80",
+  paint: "https://images.unsplash.com/photo-1562259949-e8e7689d7828?auto=format&fit=crop&w=600&q=80",
+  gypsum: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=600&q=80",
+  sand: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&q=80",
+  seal: "https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=600&q=80",
+  package: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=600&q=80"
+};
+
+function getProductImage(product) {
+  const key = String(product?.icon || product?.nameHe || product?.nameAr || "").toLowerCase();
+  if (key.includes("cement") || key.includes("מלט") || key.includes("إسمنت")) return PRODUCT_IMAGE_MAP.cement;
+  if (key.includes("steel") || key.includes("ברזל") || key.includes("حديد")) return PRODUCT_IMAGE_MAP.steel;
+  if (key.includes("paint") || key.includes("צבע") || key.includes("دهان")) return PRODUCT_IMAGE_MAP.paint;
+  if (key.includes("gypsum") || key.includes("גבס") || key.includes("جبص")) return PRODUCT_IMAGE_MAP.gypsum;
+  if (key.includes("sand") || key.includes("חול") || key.includes("رمل")) return PRODUCT_IMAGE_MAP.sand;
+  if (key.includes("seal") || key.includes("איטום") || key.includes("عزل")) return PRODUCT_IMAGE_MAP.seal;
+  return PRODUCT_IMAGE_MAP.package;
+}
+
+function ChangeBadge({ product }) {
+  const direction = product?.direction === "up" ? "up" : product?.direction === "down" ? "down" : "flat";
+  const arrow = direction === "up" ? "↑" : direction === "down" ? "↓" : "−";
+  const changeText = String(product?.change ?? "0").replace(/^\+/, "");
+  return <div className={`change-pill ${direction}`}>{direction === "up" ? "+" : direction === "down" ? "-" : "0"}{direction === "flat" ? "" : changeText} {arrow}</div>;
+}
+
+function LiveProductSpotlight({ data, isAr }) {
+  const products = (data.prices && data.prices.length ? data.prices : DEFAULT_DATA.prices);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveIndex((v) => (v + 1) % Math.max(1, products.length));
+    }, 4800);
+    return () => clearInterval(timer);
+  }, [products.length]);
+
+  const active = products[activeIndex % Math.max(1, products.length)] || DEFAULT_DATA.prices[0];
+  const doubled = [...products, ...products];
+
+  return (
+    <aside className="spotlight-card glass-panel">
+      <div className="spotlight-title"><BadgePercent size={20} /> {isAr ? "المنتج المميز اليوم" : "המוצר המוביל היום"}</div>
+
+      <div className="featured-product" key={`${active.nameHe}-${activeIndex}`}>
+        <div className="featured-image-wrap">
+          <img src={getProductImage(active)} alt="product" onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }} />
+        </div>
+        <div className="featured-info">
+          <div className="featured-name">{itemT(data, active, "nameHe", "nameAr")}</div>
+          <div className="featured-unit">{itemT(data, active, "unitHe", "unitAr")}</div>
+          <div className="price-badge-xl">
+            <div className="shekel-coin">₪</div>
+            <div className="price-number-xl">{Number(active.price || 0).toFixed(2)}</div>
+            <ChangeBadge product={active} />
+          </div>
+        </div>
+      </div>
+
+      <div className="spotlight-dots">
+        {products.slice(0, 8).map((_, i) => <span key={i} className={`spotlight-dot ${i === activeIndex % products.length ? "active" : ""}`} />)}
+      </div>
+
+      <div className="product-list-window">
+        <div className="product-list-track">
+          {doubled.map((p, i) => {
+            const originalIndex = i % products.length;
+            const activeRow = originalIndex === activeIndex % products.length;
+            return (
+              <div className={`product-line ${activeRow ? "active" : ""}`} key={`${p.nameHe}-${i}`}>
+                <div className="product-thumb"><img src={getProductImage(p)} alt="" onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }} /></div>
+                <div>
+                  <div className="product-line-name">{itemT(data, p, "nameHe", "nameAr")}</div>
+                  <div className="product-line-unit">{itemT(data, p, "unitHe", "unitAr")}</div>
+                </div>
+                <div className="price-mini-badge"><span className="mini-coin">₪</span><span className="mini-price">{Number(p.price || 0).toFixed(2)}</span></div>
+                <ChangeBadge product={p} />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="all-products-btn"><Package size={18} /> {isAr ? "لكل المنتجات" : "לכל המוצרים"}</div>
+    </aside>
+  );
+}
+
 function CurrencyPill({ icon, label, value, change }) {
   return (
     <div className="data-pill">
@@ -934,114 +1038,6 @@ function CurrencyPill({ icon, label, value, change }) {
     </div>
   );
 }
-
-
-const PRODUCT_IMAGE_MAP = {
-  cement: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=500&q=80",
-  steel: "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=500&q=80",
-  paint: "https://images.unsplash.com/photo-1562259949-e8e7689d7828?auto=format&fit=crop&w=500&q=80",
-  gypsum: "https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=500&q=80",
-  sand: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=500&q=80",
-  seal: "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&w=500&q=80",
-  package: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=500&q=80"
-};
-
-function productImage(p) {
-  const key = String(p?.icon || p?.nameHe || p?.nameAr || "").toLowerCase();
-  if (key.includes("cement") || key.includes("מלט") || key.includes("إسمنت")) return PRODUCT_IMAGE_MAP.cement;
-  if (key.includes("steel") || key.includes("ברזל") || key.includes("حديد")) return PRODUCT_IMAGE_MAP.steel;
-  if (key.includes("paint") || key.includes("צבע") || key.includes("دهان")) return PRODUCT_IMAGE_MAP.paint;
-  if (key.includes("gypsum") || key.includes("גבס") || key.includes("جبص")) return PRODUCT_IMAGE_MAP.gypsum;
-  if (key.includes("sand") || key.includes("חול") || key.includes("رمل")) return PRODUCT_IMAGE_MAP.sand;
-  if (key.includes("seal") || key.includes("איטום") || key.includes("عزل")) return PRODUCT_IMAGE_MAP.seal;
-  return PRODUCT_IMAGE_MAP.package;
-}
-
-function LiveProductSpotlight({ data }) {
-  const [spotlightIndex, setSpotlightIndex] = useState(0);
-  const products = data.prices && data.prices.length ? data.prices : DEFAULT_DATA.prices;
-  const isAr = data.language === "ar";
-  const active = products[spotlightIndex % products.length] || products[0];
-  const activeName = itemT(data, active, "nameHe", "nameAr");
-  const activeUnit = itemT(data, active, "unitHe", "unitAr");
-  const dirClass = active.direction === "up" ? "up" : active.direction === "down" ? "down" : "flat";
-  const arrow = active.direction === "up" ? "↑" : active.direction === "down" ? "↓" : "–";
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setSpotlightIndex((v) => (v + 1) % Math.max(1, products.length));
-    }, 5200);
-    return () => clearInterval(timer);
-  }, [products.length]);
-
-  return (
-    <aside className="spotlight-card glass-panel">
-      <div className="spotlight-inner">
-        <div className="spotlight-hero">
-          <div className="spotlight-hero-bg" />
-          <div className="spotlight-label">
-            <BadgePercent size={20} />
-            {isAr ? "المنتج المميز الآن" : "המוצר המוביל היום"}
-          </div>
-
-          <div className="spotlight-product-img-wrap">
-            <img
-              className="spotlight-product-img"
-              src={productImage(active)}
-              alt={activeName}
-              onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }}
-            />
-          </div>
-
-          <div className="spotlight-product-info">
-            <div className="spotlight-product-name">{activeName}</div>
-            <div className="spotlight-product-unit">{activeUnit}</div>
-            <div className="spotlight-price-line">
-              <div className="spotlight-price">₪ {active.price}</div>
-              <div className={`spotlight-change-pill ${dirClass}`}>{arrow} {active.change}</div>
-            </div>
-          </div>
-
-          <div className="spotlight-qualities">
-            <div className="spotlight-quality">{isAr ? "سعر محدث" : "מחיר מעודכן"}</div>
-            <div className="spotlight-quality">{isAr ? "متوفر" : "במלאי"}</div>
-            <div className="spotlight-quality">{isAr ? "مناسب للمشاريع" : "לקבלנים"}</div>
-          </div>
-        </div>
-
-        <div className="spotlight-list">
-          {products.slice(0, 6).map((p, i) => {
-            const rowActive = i === spotlightIndex % products.length;
-            const rowDir = p.direction === "up" ? "up" : p.direction === "down" ? "down" : "flat";
-            const rowArrow = p.direction === "up" ? "↑" : p.direction === "down" ? "↓" : "–";
-            return (
-              <div className={`spotlight-row ${rowActive ? "active" : ""}`} key={`${p.nameHe}-${i}`}>
-                <img
-                  className="spotlight-row-img"
-                  src={productImage(p)}
-                  alt={itemT(data, p, "nameHe", "nameAr")}
-                  onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }}
-                />
-                <div>
-                  <div className="spotlight-row-name">{itemT(data, p, "nameHe", "nameAr")}</div>
-                  <div className="spotlight-row-unit">{itemT(data, p, "unitHe", "unitAr")}</div>
-                </div>
-                <div className="spotlight-row-price">₪ {p.price}</div>
-                <div className={`spotlight-row-change ${rowDir}`}>{rowArrow} {p.change}</div>
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="spotlight-all-btn">
-          <Package size={18} />
-          {isAr ? "كل المنتجات" : "לכל המוצרים"}
-        </div>
-      </div>
-    </aside>
-  );
-}
-
 
 export default function HamoudaPremiumDisplay() {
   injectTvTheme();
@@ -1338,7 +1334,7 @@ export default function HamoudaPremiumDisplay() {
         </header>
 
         <section className="main-grid">
-          <LiveProductSpotlight data={data} />
+          <LiveProductSpotlight data={data} isAr={isAr} />
 
           <main className="hero-card glass-panel">
             <div className="hero-media">
