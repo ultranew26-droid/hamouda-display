@@ -93,14 +93,14 @@ const DEFAULT_DATA = {
     }
   ],
   prices: [
-    { nameHe: "מלט רגיל 50 ק״ג", nameAr: "إسمنت عادي 50 كغم", price: "29", unitHe: "שק", unitAr: "كيس", image: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=600&q=80" },
-    { nameHe: "ברזל 8 מ״מ", nameAr: "حديد 8 ملم", price: "32", unitHe: "מ׳", unitAr: "متر", image: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=600&q=80" },
-    { nameHe: "ברזל 10 מ״מ", nameAr: "حديد 10 ملم", price: "38", unitHe: "מ׳", unitAr: "متر", image: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=600&q=80" },
-    { nameHe: "ברזל 12 מ״מ", nameAr: "حديد 12 ملم", price: "43", unitHe: "מ׳", unitAr: "متر", image: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=600&q=80" },
-    { nameHe: "גבס לבן", nameAr: "جبص أبيض", price: "45", unitHe: "לוח", unitAr: "لوح", image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=600&q=80" },
-    { nameHe: "צבע פנים לבן", nameAr: "دهان داخلي أبيض", price: "120", unitHe: "גלון", unitAr: "غالون", image: "https://images.unsplash.com/photo-1562259949-e8e7689d7828?auto=format&fit=crop&w=600&q=80" },
-    { nameHe: "חול דק", nameAr: "رمل ناعم", price: "180", unitHe: "קוב", unitAr: "كوب", image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&q=80" },
-    { nameHe: "חומר איטום", nameAr: "مادة عزل", price: "65", unitHe: "יח׳", unitAr: "قطعة", image: "https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=600&q=80" }
+    { nameHe: "מלט", nameAr: "إسمنت", price: "29", unitHe: "שק", unitAr: "كيس", change: "+1", direction: "up", icon: "cement" },
+    { nameHe: "ברזל 8 מ״מ", nameAr: "حديد 8 ملم", price: "32", unitHe: "מ׳", unitAr: "متر", change: "0", direction: "flat", icon: "steel" },
+    { nameHe: "ברזל 10 מ״מ", nameAr: "حديد 10 ملم", price: "38", unitHe: "מ׳", unitAr: "متر", change: "-1", direction: "down", icon: "steel" },
+    { nameHe: "ברזל 12 מ״מ", nameAr: "حديد 12 ملم", price: "43", unitHe: "מ׳", unitAr: "متر", change: "+2", direction: "up", icon: "steel" },
+    { nameHe: "גבס לבן", nameAr: "جبص أبيض", price: "45", unitHe: "לוח", unitAr: "لوح", change: "0", direction: "flat", icon: "gypsum" },
+    { nameHe: "צבע פנים", nameAr: "دهان داخلي", price: "120", unitHe: "גלון", unitAr: "غالون", change: "-5", direction: "down", icon: "paint" },
+    { nameHe: "חול דק", nameAr: "رمل ناعم", price: "180", unitHe: "קוב", unitAr: "كوب", change: "+5", direction: "up", icon: "sand" },
+    { nameHe: "חומר איטום", nameAr: "مادة عزل", price: "65", unitHe: "יח׳", unitAr: "قطعة", change: "0", direction: "flat", icon: "seal" }
   ],
   topProductsHe: ["מלט", "ברזל", "גבס", "צבעים", "חומרי איטום", "כלי עבודה"],
   topProductsAr: ["إسمنت", "حديد", "جبص", "دهانات", "مواد عزل", "أدوات عمل"],
@@ -883,33 +883,99 @@ function injectTvTheme() {
 
 
 
-    /* SIMPLE PRODUCT LIST - image + name + unit + fixed price only */
+    /* SIMPLE PRODUCT EDITOR + PRICE ONLY LIST */
     .product-line {
-      grid-template-columns: 3.65vw minmax(0, 1fr) 5.55vw !important;
-      height: 3.42vw !important;
-      flex-basis: 3.42vw !important;
-      column-gap: .50vw !important;
-      padding: .32vw .46vw !important;
+      grid-template-columns:3.55vw minmax(0,1fr) 6.15vw !important;
     }
     .price-mini-badge {
-      width: 5.55vw !important;
-      min-width: 5.55vw !important;
-      max-width: 5.55vw !important;
-      justify-self: end !important;
+      width:6.15vw !important;
+      min-width:6.15vw !important;
+      max-width:6.15vw !important;
     }
-    .product-line-name {
-      font-size: .92vw !important;
-      font-weight: 950 !important;
+    .mini-price { font-size:1.06vw !important; }
+    .simple-price-only {
+      grid-template-columns:2.45vw 1fr !important;
     }
-    .product-line-unit {
-      font-size: .54vw !important;
+    .product-editor-grid {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:.6vw;
+      margin-top:.7vw;
     }
-    .mini-price {
-      font-size: .98vw !important;
-      font-variant-numeric: tabular-nums !important;
+    .product-editor-actions {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:.55vw;
+      margin-top:.55vw;
     }
-    .change-pill { display: none !important; }
-    .product-list-track { animation: productListMove 36s linear infinite !important; }
+    .product-editor-btn {
+      border:0;
+      border-radius:.55vw;
+      padding:.7vw;
+      color:#07111f;
+      background:linear-gradient(135deg, #ffdb54, #f0a300);
+      font-weight:1000;
+      cursor:pointer;
+    }
+    .product-editor-btn.secondary {
+      color:#fff;
+      background:#263244;
+      border:1px solid rgba(255,255,255,.12);
+    }
+    .product-admin-list {
+      display:flex;
+      flex-direction:column;
+      gap:.45vw;
+      max-height:15vw;
+      overflow:auto;
+      padding-inline-end:.2vw;
+      margin-top:.75vw;
+    }
+    .product-admin-row {
+      display:grid;
+      grid-template-columns:3.2vw 1fr 4.4vw 3.8vw 3.8vw;
+      align-items:center;
+      gap:.45vw;
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:.65vw;
+      padding:.35vw;
+      background:rgba(255,255,255,.04);
+    }
+    .product-admin-thumb {
+      width:3vw;
+      height:2.2vw;
+      border-radius:.45vw;
+      object-fit:cover;
+      background:#111827;
+    }
+    .product-admin-name {
+      font-size:.78vw;
+      color:#fff;
+      font-weight:900;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .product-admin-price {
+      text-align:center;
+      color:var(--gold2);
+      font-size:.78vw;
+      font-weight:1000;
+    }
+    .mini-action-btn {
+      border:0;
+      border-radius:.45vw;
+      padding:.45vw .3vw;
+      font-size:.68vw;
+      font-weight:900;
+      color:#07111f;
+      background:#f5b21a;
+      cursor:pointer;
+    }
+    .mini-action-btn.delete {
+      background:#ef4444;
+      color:#fff;
+    }
 
     @media (max-aspect-ratio: 14/9) {
       .topbar { grid-template-columns: 1.6fr 2.2fr 1.5fr; }
@@ -1062,11 +1128,9 @@ function applyFirebaseSettings(base, remote) {
 
   if (remote.prices && Array.isArray(remote.prices) && remote.prices.length > 0) {
     next.prices = remote.prices.map((p) => ({
-      nameHe: p.nameHe || "",
-      nameAr: p.nameAr || "",
+      nameHe: p.nameHe || p.name || "",
+      nameAr: p.nameAr || p.name || "",
       price: String(p.price ?? "0"),
-      unitHe: p.unitHe || "",
-      unitAr: p.unitAr || "",
       image: p.image || p.imageUrl || ""
     }));
   }
@@ -1108,12 +1172,10 @@ function toFirebaseSettings(data) {
     tickerTextAr: data.tickerAr?.[0] || "",
     tickerTextHe: data.tickerHe?.[0] || "",
     prices: (data.prices || []).map((p) => ({
-      nameHe: p.nameHe || "",
-      nameAr: p.nameAr || "",
+      nameHe: p.nameHe || p.name || "",
+      nameAr: p.nameAr || p.name || "",
       price: String(p.price ?? "0"),
-      unitHe: p.unitHe || "",
-      unitAr: p.unitAr || "",
-      image: p.image || p.imageUrl || ""
+      image: p.image || ""
     })),
     updatedAt: new Date().toISOString()
   };
@@ -1160,8 +1222,8 @@ const PRODUCT_IMAGE_MAP = {
 };
 
 function getProductImage(product) {
-  if (product?.image || product?.imageUrl) return product.image || product.imageUrl;
-  const key = String(product?.nameHe || product?.nameAr || product?.icon || "").toLowerCase();
+  if (product?.image) return product.image;
+  const key = String(product?.icon || product?.nameHe || product?.nameAr || "").toLowerCase();
   if (key.includes("cement") || key.includes("מלט") || key.includes("إسمنت")) return PRODUCT_IMAGE_MAP.cement;
   if (key.includes("steel") || key.includes("ברזל") || key.includes("حديد")) return PRODUCT_IMAGE_MAP.steel;
   if (key.includes("paint") || key.includes("צבע") || key.includes("دهان")) return PRODUCT_IMAGE_MAP.paint;
@@ -1202,11 +1264,9 @@ function LiveProductSpotlight({ data, isAr }) {
         </div>
         <div className="featured-info">
           <div className="featured-name">{itemT(data, active, "nameHe", "nameAr")}</div>
-          <div className="featured-unit">{itemT(data, active, "unitHe", "unitAr")}</div>
-          <div className="price-badge-xl">
+          <div className="price-badge-xl simple-price-only">
             <div className="shekel-coin">₪</div>
-            <div className="price-number-xl">{Number(active.price || 0).toFixed(2)}</div>
-
+            <div className="price-number-xl">{String(active.price || "0")}</div>
           </div>
         </div>
       </div>
@@ -1225,10 +1285,9 @@ function LiveProductSpotlight({ data, isAr }) {
                 <div className="product-thumb"><img src={getProductImage(p)} alt="" onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }} /></div>
                 <div>
                   <div className="product-line-name">{itemT(data, p, "nameHe", "nameAr")}</div>
-                  <div className="product-line-unit">{itemT(data, p, "unitHe", "unitAr")}</div>
+                  <div className="product-line-unit">{isAr ? "السعر الحالي" : "מחיר"}</div>
                 </div>
-                <div className="price-mini-badge"><span className="mini-coin">₪</span><span className="mini-price">{Number(p.price || 0).toFixed(2)}</span></div>
-
+                <div className="price-mini-badge"><span className="mini-coin">₪</span><span className="mini-price">{String(p.price || "0")}</span></div>
               </div>
             );
           })}
@@ -1267,6 +1326,7 @@ export default function HamoudaPremiumDisplay() {
   const [gold, setGold] = useState({ loading: true, price: "--" });
   const [constructionNews, setConstructionNews] = useState([]);
   const [firebaseSettingsId, setFirebaseSettingsId] = useState(null);
+  const [productForm, setProductForm] = useState({ name: "", price: "", image: "", editIndex: -1 });
 
   const isAr = data.language === "ar";
   const locale = isAr ? "ar" : "he";
@@ -1496,6 +1556,61 @@ export default function HamoudaPremiumDisplay() {
 
   const updateDraft = (key, value) => setDraft((d) => ({ ...d, [key]: value }));
 
+  const resetProductForm = () => setProductForm({ name: "", price: "", image: "", editIndex: -1 });
+
+  const handleProductImageFile = (file) => {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      setProductForm((form) => ({ ...form, image: String(reader.result || "") }));
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const saveProductToDraft = () => {
+    const name = productForm.name.trim();
+    const price = String(productForm.price || "").trim();
+    if (!name || !price) return;
+
+    const product = {
+      nameHe: name,
+      nameAr: name,
+      price,
+      image: productForm.image || ""
+    };
+
+    setDraft((current) => {
+      const products = Array.isArray(current.prices) ? [...current.prices] : [];
+      if (productForm.editIndex >= 0 && productForm.editIndex < products.length) {
+        products[productForm.editIndex] = product;
+      } else {
+        products.push(product);
+      }
+      return { ...current, prices: products };
+    });
+
+    resetProductForm();
+  };
+
+  const editProductFromDraft = (index) => {
+    const p = draft.prices?.[index];
+    if (!p) return;
+    setProductForm({
+      name: p.nameHe || p.nameAr || "",
+      price: String(p.price || ""),
+      image: p.image || "",
+      editIndex: index
+    });
+  };
+
+  const deleteProductFromDraft = (index) => {
+    setDraft((current) => ({
+      ...current,
+      prices: (current.prices || []).filter((_, i) => i !== index)
+    }));
+    if (productForm.editIndex === index) resetProductForm();
+  };
+
   return (
     <div dir="rtl" className="tv-root">
       <div className="background-slideshow">
@@ -1633,6 +1748,43 @@ export default function HamoudaPremiumDisplay() {
             <label>اسم المحل عبري <input value={draft.businessNameHe} onChange={(e) => updateDraft("businessNameHe", e.target.value)} /></label>
             <label>اسم المحل عربي <input value={draft.businessNameAr} onChange={(e) => updateDraft("businessNameAr", e.target.value)} /></label>
             <label>رقم الهاتف <input value={draft.phone} onChange={(e) => updateDraft("phone", e.target.value)} /></label>
+          </div>
+
+          <div className="settings-box">
+            <h3 style={{fontSize:"1.05vw",fontWeight:1000,color:"#ffdc63",marginBottom:".6vw"}}>إضافة / تعديل منتجات الأسعار</h3>
+            <label>صورة المنتج من الجهاز
+              <input type="file" accept="image/*" onChange={(e) => handleProductImageFile(e.target.files?.[0])} />
+            </label>
+            {productForm.image && (
+              <div style={{display:"flex",alignItems:"center",gap:".7vw",marginBottom:".7vw"}}>
+                <img src={productForm.image} alt="preview" style={{width:"4.6vw",height:"3.2vw",objectFit:"cover",borderRadius:".55vw",border:"1px solid rgba(245,178,26,.45)"}} />
+                <button className="control-btn" onClick={() => setProductForm((f) => ({...f, image:""}))}>حذف الصورة</button>
+              </div>
+            )}
+            <div className="product-editor-grid">
+              <label>اسم المنتج
+                <input value={productForm.name} onChange={(e) => setProductForm((f) => ({...f, name:e.target.value}))} placeholder="مثال: إسمنت / מלט" />
+              </label>
+              <label>السعر
+                <input value={productForm.price} onChange={(e) => setProductForm((f) => ({...f, price:e.target.value}))} placeholder="مثال: 29" />
+              </label>
+            </div>
+            <div className="product-editor-actions">
+              <button type="button" className="product-editor-btn" onClick={saveProductToDraft}>{productForm.editIndex >= 0 ? "حفظ التعديل" : "إضافة المنتج"}</button>
+              <button type="button" className="product-editor-btn secondary" onClick={resetProductForm}>تفريغ الحقول</button>
+            </div>
+
+            <div className="product-admin-list">
+              {(draft.prices || []).map((p, i) => (
+                <div className="product-admin-row" key={`${p.nameHe || p.nameAr}-${i}`}>
+                  <img className="product-admin-thumb" src={getProductImage(p)} alt="" onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }} />
+                  <div className="product-admin-name">{p.nameHe || p.nameAr}</div>
+                  <div className="product-admin-price">₪{p.price}</div>
+                  <button type="button" className="mini-action-btn" onClick={() => editProductFromDraft(i)}>تعديل</button>
+                  <button type="button" className="mini-action-btn delete" onClick={() => deleteProductFromDraft(i)}>حذف</button>
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="settings-box">
