@@ -93,14 +93,14 @@ const DEFAULT_DATA = {
     }
   ],
   prices: [
-    { nameHe: "מלט", nameAr: "إسمنت", price: "29", unitHe: "שק", unitAr: "كيس", change: "+1", direction: "up", icon: "cement" },
-    { nameHe: "ברזל 8 מ״מ", nameAr: "حديد 8 ملم", price: "32", unitHe: "מ׳", unitAr: "متر", change: "0", direction: "flat", icon: "steel" },
-    { nameHe: "ברזל 10 מ״מ", nameAr: "حديد 10 ملم", price: "38", unitHe: "מ׳", unitAr: "متر", change: "-1", direction: "down", icon: "steel" },
-    { nameHe: "ברזל 12 מ״מ", nameAr: "حديد 12 ملم", price: "43", unitHe: "מ׳", unitAr: "متر", change: "+2", direction: "up", icon: "steel" },
-    { nameHe: "גבס לבן", nameAr: "جبص أبيض", price: "45", unitHe: "לוח", unitAr: "لوح", change: "0", direction: "flat", icon: "gypsum" },
-    { nameHe: "צבע פנים", nameAr: "دهان داخلي", price: "120", unitHe: "גלון", unitAr: "غالون", change: "-5", direction: "down", icon: "paint" },
-    { nameHe: "חול דק", nameAr: "رمل ناعم", price: "180", unitHe: "קוב", unitAr: "كوب", change: "+5", direction: "up", icon: "sand" },
-    { nameHe: "חומר איטום", nameAr: "مادة عزل", price: "65", unitHe: "יח׳", unitAr: "قطعة", change: "0", direction: "flat", icon: "seal" }
+    { nameHe: "מלט רגיל 50 ק״ג", nameAr: "إسمنت عادي 50 كغم", price: "29", unitHe: "שק", unitAr: "كيس", image: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=600&q=80" },
+    { nameHe: "ברזל 8 מ״מ", nameAr: "حديد 8 ملم", price: "32", unitHe: "מ׳", unitAr: "متر", image: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=600&q=80" },
+    { nameHe: "ברזל 10 מ״מ", nameAr: "حديد 10 ملم", price: "38", unitHe: "מ׳", unitAr: "متر", image: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=600&q=80" },
+    { nameHe: "ברזל 12 מ״מ", nameAr: "حديد 12 ملم", price: "43", unitHe: "מ׳", unitAr: "متر", image: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=600&q=80" },
+    { nameHe: "גבס לבן", nameAr: "جبص أبيض", price: "45", unitHe: "לוח", unitAr: "لوح", image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=600&q=80" },
+    { nameHe: "צבע פנים לבן", nameAr: "دهان داخلي أبيض", price: "120", unitHe: "גלון", unitAr: "غالون", image: "https://images.unsplash.com/photo-1562259949-e8e7689d7828?auto=format&fit=crop&w=600&q=80" },
+    { nameHe: "חול דק", nameAr: "رمل ناعم", price: "180", unitHe: "קוב", unitAr: "كوب", image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&q=80" },
+    { nameHe: "חומר איטום", nameAr: "مادة عزل", price: "65", unitHe: "יח׳", unitAr: "قطعة", image: "https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=600&q=80" }
   ],
   topProductsHe: ["מלט", "ברזל", "גבס", "צבעים", "חומרי איטום", "כלי עבודה"],
   topProductsAr: ["إسمنت", "حديد", "جبص", "دهانات", "مواد عزل", "أدوات عمل"],
@@ -881,6 +881,36 @@ function injectTvTheme() {
       border-radius:.62vw !important;
     }
 
+
+
+    /* SIMPLE PRODUCT LIST - image + name + unit + fixed price only */
+    .product-line {
+      grid-template-columns: 3.65vw minmax(0, 1fr) 5.55vw !important;
+      height: 3.42vw !important;
+      flex-basis: 3.42vw !important;
+      column-gap: .50vw !important;
+      padding: .32vw .46vw !important;
+    }
+    .price-mini-badge {
+      width: 5.55vw !important;
+      min-width: 5.55vw !important;
+      max-width: 5.55vw !important;
+      justify-self: end !important;
+    }
+    .product-line-name {
+      font-size: .92vw !important;
+      font-weight: 950 !important;
+    }
+    .product-line-unit {
+      font-size: .54vw !important;
+    }
+    .mini-price {
+      font-size: .98vw !important;
+      font-variant-numeric: tabular-nums !important;
+    }
+    .change-pill { display: none !important; }
+    .product-list-track { animation: productListMove 36s linear infinite !important; }
+
     @media (max-aspect-ratio: 14/9) {
       .topbar { grid-template-columns: 1.6fr 2.2fr 1.5fr; }
       .main-grid { grid-template-columns: 24.5vw 1fr 24vw; }
@@ -1031,15 +1061,13 @@ function applyFirebaseSettings(base, remote) {
   if (remote.tickerText && !remote.tickerTextAr) next.tickerAr = [remote.tickerText];
 
   if (remote.prices && Array.isArray(remote.prices) && remote.prices.length > 0) {
-    next.prices = remote.prices.map((p, i) => ({
+    next.prices = remote.prices.map((p) => ({
       nameHe: p.nameHe || "",
       nameAr: p.nameAr || "",
       price: String(p.price ?? "0"),
       unitHe: p.unitHe || "",
       unitAr: p.unitAr || "",
-      change: p.change || "0",
-      direction: p.direction || "flat",
-      icon: p.icon || DEFAULT_DATA.prices[i % DEFAULT_DATA.prices.length]?.icon || "package"
+      image: p.image || p.imageUrl || ""
     }));
   }
 
@@ -1085,9 +1113,7 @@ function toFirebaseSettings(data) {
       price: String(p.price ?? "0"),
       unitHe: p.unitHe || "",
       unitAr: p.unitAr || "",
-      change: p.change || "0",
-      direction: p.direction || "flat",
-      icon: p.icon || "package"
+      image: p.image || p.imageUrl || ""
     })),
     updatedAt: new Date().toISOString()
   };
@@ -1134,7 +1160,8 @@ const PRODUCT_IMAGE_MAP = {
 };
 
 function getProductImage(product) {
-  const key = String(product?.icon || product?.nameHe || product?.nameAr || "").toLowerCase();
+  if (product?.image || product?.imageUrl) return product.image || product.imageUrl;
+  const key = String(product?.nameHe || product?.nameAr || product?.icon || "").toLowerCase();
   if (key.includes("cement") || key.includes("מלט") || key.includes("إسمنت")) return PRODUCT_IMAGE_MAP.cement;
   if (key.includes("steel") || key.includes("ברזל") || key.includes("حديد")) return PRODUCT_IMAGE_MAP.steel;
   if (key.includes("paint") || key.includes("צבע") || key.includes("دهان")) return PRODUCT_IMAGE_MAP.paint;
@@ -1179,7 +1206,7 @@ function LiveProductSpotlight({ data, isAr }) {
           <div className="price-badge-xl">
             <div className="shekel-coin">₪</div>
             <div className="price-number-xl">{Number(active.price || 0).toFixed(2)}</div>
-            <ChangeBadge product={active} />
+
           </div>
         </div>
       </div>
@@ -1201,7 +1228,7 @@ function LiveProductSpotlight({ data, isAr }) {
                   <div className="product-line-unit">{itemT(data, p, "unitHe", "unitAr")}</div>
                 </div>
                 <div className="price-mini-badge"><span className="mini-coin">₪</span><span className="mini-price">{Number(p.price || 0).toFixed(2)}</span></div>
-                <ChangeBadge product={p} />
+
               </div>
             );
           })}
