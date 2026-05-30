@@ -200,78 +200,123 @@ function injectTvTheme() {
     .brand { display:flex; align-items:center; gap:.9vw; }
     .logo-box {
       position:relative;
-      width:4.35vw;
-      height:4.35vw;
+      width:4.55vw;
+      height:4.55vw;
       border-radius:50%;
       display:grid;
       place-items:center;
-      font-size:2.25vw;
+      place-content:center;
+      font-size:2.45vw;
+      line-height:1;
       font-weight:1000;
-      color:#fff4c7;
+      color:#ffe8a3;
       isolation:isolate;
       overflow:visible;
       background:
-        radial-gradient(circle at 35% 28%, rgba(255,255,255,.72), transparent 15%),
-        radial-gradient(circle at 50% 50%, #ffe27b 0%, #f5b21a 42%, #8a5a00 100%);
-      border:1px solid rgba(255,226,123,.85);
+        radial-gradient(circle at 50% 50%, rgba(255,217,92,.20) 0 34%, transparent 35%),
+        radial-gradient(circle at 50% 50%, #111827 0 54%, #05070b 55% 100%);
+      border:1px solid rgba(255,220,99,.92);
       box-shadow:
-        0 0 14px rgba(255,220,99,.85),
-        0 0 36px rgba(245,178,26,.62),
-        0 0 70px rgba(245,178,26,.28),
-        inset 0 0 14px rgba(255,255,255,.42),
-        inset 0 0 22px rgba(0,0,0,.22);
-      text-shadow:0 0 10px rgba(0,0,0,.75), 0 0 16px rgba(255,255,255,.38);
+        0 0 10px rgba(255,220,99,.75),
+        0 0 28px rgba(245,178,26,.62),
+        0 0 58px rgba(245,178,26,.26),
+        inset 0 0 18px rgba(255,220,99,.16),
+        inset 0 0 32px rgba(0,0,0,.70);
+      text-shadow:
+        0 1px 0 rgba(255,255,255,.25),
+        0 0 12px rgba(255,220,99,.95),
+        0 0 28px rgba(245,178,26,.55);
       animation: aiLogoPulse 4.8s ease-in-out infinite;
+    }
+    .logo-box > span {
+      position:relative;
+      z-index:4;
+      display:grid;
+      place-items:center;
+      width:100%;
+      height:100%;
+      transform:translateY(-.03vw);
     }
     .logo-box:before {
       content:"";
       position:absolute;
-      inset:-.45vw;
+      inset:-.38vw;
       border-radius:50%;
-      border:1px solid rgba(245,178,26,.55);
+      z-index:1;
       background:
-        conic-gradient(from 0deg, transparent 0 18%, rgba(255,220,99,.9) 21%, transparent 25% 48%, rgba(255,220,99,.55) 52%, transparent 56% 100%);
-      filter:drop-shadow(0 0 10px rgba(245,178,26,.65));
-      opacity:.95;
-      z-index:-1;
+        conic-gradient(
+          from 0deg,
+          transparent 0deg 34deg,
+          rgba(255,220,99,.95) 36deg 58deg,
+          transparent 60deg 122deg,
+          rgba(245,178,26,.70) 124deg 148deg,
+          transparent 150deg 226deg,
+          rgba(255,220,99,.88) 228deg 252deg,
+          transparent 254deg 360deg
+        );
+      -webkit-mask:radial-gradient(circle, transparent 0 63%, #000 64% 100%);
+      mask:radial-gradient(circle, transparent 0 63%, #000 64% 100%);
+      filter:drop-shadow(0 0 9px rgba(245,178,26,.75));
       animation: aiLogoRing 7s linear infinite;
     }
     .logo-box:after {
       content:"";
       position:absolute;
-      inset:.18vw;
+      inset:-.72vw;
       border-radius:50%;
-      background:linear-gradient(115deg, transparent 0 35%, rgba(255,255,255,.55) 45%, transparent 58% 100%);
+      z-index:0;
+      background:
+        radial-gradient(circle, rgba(245,178,26,.20), transparent 62%),
+        conic-gradient(from 180deg, transparent 0 19%, rgba(255,220,99,.30) 20% 22%, transparent 23% 48%, rgba(255,220,99,.22) 49% 51%, transparent 52% 100%);
+      filter:blur(.02vw);
+      animation: aiLogoOuterRing 12s linear infinite reverse;
+      pointer-events:none;
+    }
+    .logo-box .logo-scan {
+      position:absolute;
+      inset:.38vw;
+      border-radius:50%;
+      z-index:3;
+      background:linear-gradient(115deg, transparent 0 36%, rgba(255,255,255,.58) 45%, transparent 58% 100%);
       mix-blend-mode:screen;
-      opacity:.55;
+      opacity:.58;
       animation: aiLogoSweep 5.8s ease-in-out infinite;
       pointer-events:none;
     }
+    .logo-box .logo-circuit {
+      position:absolute;
+      inset:-.95vw;
+      z-index:-1;
+      pointer-events:none;
+    }
+    .logo-box .logo-circuit:before,
+    .logo-box .logo-circuit:after {
+      content:"";
+      position:absolute;
+      top:50%;
+      width:1.45vw;
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(255,220,99,.95), transparent);
+      box-shadow:
+        .35vw -.32vw 0 rgba(245,178,26,.45),
+        .72vw .34vw 0 rgba(245,178,26,.35);
+      opacity:.82;
+    }
+    .logo-box .logo-circuit:before { right:100%; transform:translateY(-50%); }
+    .logo-box .logo-circuit:after { left:100%; transform:translateY(-50%) rotate(180deg); }
     @keyframes aiLogoPulse {
-      0%,100% { transform:scale(1); box-shadow:0 0 14px rgba(255,220,99,.78), 0 0 36px rgba(245,178,26,.58), 0 0 70px rgba(245,178,26,.25), inset 0 0 14px rgba(255,255,255,.42), inset 0 0 22px rgba(0,0,0,.22); }
-      50% { transform:scale(1.045); box-shadow:0 0 18px rgba(255,220,99,1), 0 0 48px rgba(245,178,26,.78), 0 0 90px rgba(245,178,26,.38), inset 0 0 16px rgba(255,255,255,.55), inset 0 0 24px rgba(0,0,0,.18); }
+      0%,100% { transform:scale(1); filter:brightness(1); }
+      50% { transform:scale(1.045); filter:brightness(1.18); }
     }
     @keyframes aiLogoRing { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+    @keyframes aiLogoOuterRing { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
     @keyframes aiLogoSweep {
       0%, 38% { transform:translateX(85%) rotate(12deg); opacity:0; }
-      48% { opacity:.62; }
+      48% { opacity:.64; }
       68%,100% { transform:translateX(-85%) rotate(12deg); opacity:0; }
     }
     .brand-title { font-size:2.05vw; line-height:1; font-weight:1000; letter-spacing:-.03em; text-shadow:0 0 12px rgba(255,255,255,.18); }
     .brand-sub { margin-top:.35vw; color:rgba(255,255,255,.72); font-size:.9vw; font-weight:700; }
-    .brand-ai-tag {
-      display:inline-flex;
-      align-items:center;
-      margin-top:.35vw;
-      padding:.18vw .55vw;
-      border-radius:999px;
-      color:#07111f;
-      background:linear-gradient(135deg, #ffdc63, #f5b21a);
-      font-size:.56vw;
-      font-weight:1000;
-      letter-spacing:.08em;
-      box-shadow:0 0 12px rgba(245,178,26,.42);
-    }
     .top-pills { display:flex; justify-content:center; gap:.48vw; overflow:hidden; }
     .data-pill {
       min-width:6.7vw; height:3.75vw; border-radius:.75vw; padding:.35vw .65vw;
@@ -1795,11 +1840,10 @@ export default function HamoudaPremiumDisplay() {
       <div className="pixel-shell">
         <header className="topbar glass-panel">
           <div className="brand">
-            <div className="logo-box">{data.logoText}</div>
+            <div className="logo-box"><span>{data.logoText}</span><i className="logo-scan" /><i className="logo-circuit" /></div>
             <div>
               <div className="brand-title">{t(data, "businessNameHe", "businessNameAr")}</div>
               <div className="brand-sub">{t(data, "sloganHe", "sloganAr")}</div>
-              <div className="brand-ai-tag">HAMOODI AI DISPLAY</div>
             </div>
           </div>
 
