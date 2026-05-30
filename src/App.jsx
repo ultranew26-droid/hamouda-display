@@ -1147,6 +1147,110 @@ function injectTvTheme() {
       padding:.55vw;
     }
 
+
+
+    /* SMART AUTO CATEGORY NAV */
+    .bottom-nav.smart-category-nav {
+      position:relative;
+      overflow:hidden;
+      padding-top:1.18vw !important;
+      border-color:rgba(245,178,26,.46);
+      background:
+        radial-gradient(circle at 50% 0%, rgba(245,178,26,.12), transparent 55%),
+        linear-gradient(180deg, rgba(12,20,33,.90), rgba(4,9,15,.92));
+    }
+    .active-category-label {
+      position:absolute;
+      top:.18vw;
+      left:50%;
+      transform:translateX(-50%);
+      z-index:4;
+      height:.92vw;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:.28vw;
+      padding:0 .7vw;
+      border-radius:999px;
+      color:#07111f;
+      background:linear-gradient(135deg, #ffdc63, #f5b21a);
+      font-size:.52vw;
+      font-weight:1000;
+      letter-spacing:.02em;
+      box-shadow:0 0 16px rgba(245,178,26,.55);
+      white-space:nowrap;
+    }
+    .nav-light-runner {
+      position:absolute;
+      top:.05vw;
+      bottom:.05vw;
+      width:2.8vw;
+      z-index:1;
+      border-radius:999px;
+      background:linear-gradient(90deg, transparent, rgba(255,220,99,.45), transparent);
+      filter:blur(.3vw);
+      animation: navLightRunner 5s linear infinite;
+      pointer-events:none;
+    }
+    @keyframes navLightRunner {
+      0% { transform:translateX(-5vw); opacity:0; }
+      10% { opacity:.75; }
+      90% { opacity:.75; }
+      100% { transform:translateX(100vw); opacity:0; }
+    }
+    .smart-nav-item {
+      position:relative;
+      z-index:2;
+      height:100%;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:.68vw;
+      background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(0,0,0,.32));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:.62vw;
+      font-size:.98vw;
+      font-weight:950;
+      color:#fff;
+      overflow:hidden;
+      transition:all .55s ease;
+    }
+    .smart-nav-item svg {
+      transition:transform .55s ease, filter .55s ease;
+    }
+    .smart-nav-item.active {
+      color:#07111f;
+      border-color:rgba(255,220,99,1);
+      background:linear-gradient(135deg, #ffdc63, #f5b21a 48%, #d79505);
+      box-shadow:0 0 24px rgba(245,178,26,.52), inset 0 0 18px rgba(255,255,255,.28);
+      transform:translateY(-.08vw);
+    }
+    .smart-nav-item.active svg {
+      transform:scale(1.14);
+      filter:drop-shadow(0 0 8px rgba(255,255,255,.45));
+      animation: smartNavIconPulse 1.45s ease-in-out infinite;
+    }
+    .smart-nav-item.active:after {
+      content:"";
+      position:absolute;
+      inset:-40% -20%;
+      background:linear-gradient(115deg, transparent 30%, rgba(255,255,255,.42) 48%, transparent 63%);
+      animation: smartNavSweep 2.6s ease-in-out infinite;
+      pointer-events:none;
+    }
+    @keyframes smartNavIconPulse { 0%,100% { transform:scale(1.08); } 50% { transform:scale(1.24); } }
+    @keyframes smartNavSweep { 0% { transform:translateX(80%); opacity:0; } 45% { opacity:.8; } 100% { transform:translateX(-80%); opacity:0; } }
+    .filtered-products-hint {
+      position:absolute;
+      top:2.05vw;
+      right:.9vw;
+      z-index:4;
+      color:rgba(255,220,99,.88);
+      font-size:.62vw;
+      font-weight:900;
+      pointer-events:none;
+    }
+
     @media (max-aspect-ratio: 14/9) {
       .topbar { grid-template-columns: 1.6fr 2.2fr 1.5fr; }
       .main-grid { grid-template-columns: 24.5vw 1fr 24vw; }
@@ -1410,23 +1514,52 @@ function ChangeBadge({ product }) {
   return <div className={`change-pill ${direction}`}>{direction === "up" ? "+" : direction === "down" ? "-" : "0"}{direction === "flat" ? "" : changeText} {arrow}</div>;
 }
 
-function LiveProductSpotlight({ data, isAr }) {
-  const products = (data.prices && data.prices.length ? data.prices : DEFAULT_DATA.prices);
+
+const SMART_CATEGORIES = [
+  { id: "tools", he: "כלי עבודה", ar: "أدوات عمل", Icon: Wrench, keys: ["tool", "tools", "כלי", "עבודה", "أداة", "اداة", "أدوات", "ادوات", "شنيور", "دريل", "مفك", "مطرقة"] },
+  { id: "seal", he: "חומרי איטום", ar: "مواد عزل", Icon: ShieldCheck, keys: ["seal", "איטום", "عزل", "زفت", "بيتومين", "سيكا"] },
+  { id: "paint", he: "צבעים", ar: "دهانات", Icon: PaintBucket, keys: ["paint", "צבע", "دهان", "دهانات", "معجون", "برايمر", "رول"] },
+  { id: "gypsum", he: "גבס", ar: "جبص", Icon: ScrollText, keys: ["gypsum", "גבס", "جبص", "جبس", "لوح"] },
+  { id: "steel", he: "ברזל", ar: "حديد", Icon: Layers, keys: ["steel", "ברזל", "حديد", "8", "10", "12", "16"] },
+  { id: "cement", he: "מלט", ar: "إسمنت", Icon: Package, keys: ["cement", "מלט", "إسمنت", "اسمنت", "أسمنت", "مونة"] },
+  { id: "home", he: "דף הבית", ar: "الرئيسية", Icon: Home, keys: [] }
+];
+
+function productMatchesCategory(product, category) {
+  if (!category || category.id === "home") return true;
+  const text = `${product?.nameHe || ""} ${product?.nameAr || ""} ${product?.name || ""} ${product?.icon || ""}`.toLowerCase();
+  return category.keys.some((k) => text.includes(String(k).toLowerCase()));
+}
+
+function getProductsForCategory(products, category) {
+  const list = Array.isArray(products) && products.length ? products : DEFAULT_DATA.prices;
+  const filtered = list.filter((p) => productMatchesCategory(p, category));
+  return filtered.length ? filtered : list;
+}
+
+function LiveProductSpotlight({ data, isAr, activeCategory }) {
+  const baseProducts = (data.prices && data.prices.length ? data.prices : DEFAULT_DATA.prices);
+  const products = getProductsForCategory(baseProducts, activeCategory);
   const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    setActiveIndex(0);
+  }, [activeCategory?.id, products.length]);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveIndex((v) => (v + 1) % Math.max(1, products.length));
-    }, 4800);
+    }, 4200);
     return () => clearInterval(timer);
-  }, [products.length]);
+  }, [products.length, activeCategory?.id]);
 
   const active = products[activeIndex % Math.max(1, products.length)] || DEFAULT_DATA.prices[0];
   const doubled = [...products, ...products];
 
   return (
     <aside className="spotlight-card glass-panel">
-      <div className="spotlight-title"><BadgePercent size={20} /> {isAr ? "المنتج المميز اليوم" : "המוצר המוביל היום"}</div>
+      <div className="spotlight-title"><BadgePercent size={20} /> {isAr ? "منتجات القسم النشط" : "מוצרי הקטגוריה הפעילה"}</div>
+      <div className="filtered-products-hint">{isAr ? "القسم النشط الآن" : "הקטגוריה הפעילה עכשיו"}: {isAr ? activeCategory?.ar : activeCategory?.he}</div>
 
       <div className="featured-product" key={`${active.nameHe}-${activeIndex}`}>
         <div className="featured-image-wrap">
@@ -1469,6 +1602,26 @@ function LiveProductSpotlight({ data, isAr }) {
   );
 }
 
+
+function SmartCategoryNav({ isAr, activeCategoryIndex }) {
+  return (
+    <nav className="bottom-nav smart-category-nav glass-panel">
+      <div className="active-category-label">{isAr ? "القسم النشط الآن" : "הקטגוריה הפעילה עכשיו"}</div>
+      <div className="nav-light-runner" />
+      {SMART_CATEGORIES.map((category, index) => {
+        const Icon = category.Icon;
+        const active = index === activeCategoryIndex;
+        return (
+          <div className={`smart-nav-item ${active ? "active" : ""}`} key={category.id}>
+            <Icon size={active ? 34 : 30} />
+            {isAr ? category.ar : category.he}
+          </div>
+        );
+      })}
+    </nav>
+  );
+}
+
 function CurrencyPill({ icon, label, value, change }) {
   return (
     <div className="data-pill">
@@ -1497,9 +1650,11 @@ export default function HamoudaPremiumDisplay() {
   const [constructionNews, setConstructionNews] = useState([]);
   const [firebaseSettingsId, setFirebaseSettingsId] = useState(null);
   const [productForm, setProductForm] = useState({ name: "", price: "", image: "", editIndex: -1 });
+  const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
 
   const isAr = data.language === "ar";
   const locale = isAr ? "ar" : "he";
+  const activeCategory = SMART_CATEGORIES[activeCategoryIndex % SMART_CATEGORIES.length] || SMART_CATEGORIES[0];
   const currentSlide = data.heroSlides?.[0] || DEFAULT_DATA.heroSlides[0];
   const slideMedia = currentSlide?.media?.length ? currentSlide.media : [{ type: "image", src: FALLBACK_IMAGE, name: "fallback" }];
   const currentMedia = slideMedia[imageIndex % Math.max(1, slideMedia.length)] || { type: "image", src: FALLBACK_IMAGE };
@@ -1531,6 +1686,13 @@ export default function HamoudaPremiumDisplay() {
   useEffect(() => {
     const clock = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(clock);
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveCategoryIndex((current) => (current + 1) % SMART_CATEGORIES.length);
+    }, 5000);
+    return () => clearInterval(timer);
   }, []);
 
   useEffect(() => {
@@ -1866,7 +2028,7 @@ export default function HamoudaPremiumDisplay() {
         </header>
 
         <section className="main-grid">
-          <LiveProductSpotlight data={data} isAr={isAr} />
+          <LiveProductSpotlight data={data} isAr={isAr} activeCategory={activeCategory} />
 
           <main className="hero-card glass-panel">
             <div className="hero-media">
@@ -1924,15 +2086,7 @@ export default function HamoudaPremiumDisplay() {
           </div>
         </section>
 
-        <nav className="bottom-nav glass-panel">
-          <div className="nav-item"><Wrench size={30} /> {isAr ? "أدوات عمل" : "כלי עבודה"}</div>
-          <div className="nav-item"><ShieldCheck size={30} /> {isAr ? "مواد عزل" : "חומרי איטום"}</div>
-          <div className="nav-item"><PaintBucket size={30} /> {isAr ? "دهانات" : "צבעים"}</div>
-          <div className="nav-item"><ScrollText size={30} /> {isAr ? "جبص" : "גבס"}</div>
-          <div className="nav-item"><Layers size={30} /> {isAr ? "حديد" : "ברזל"}</div>
-          <div className="nav-item"><Package size={30} /> {isAr ? "إسمنت" : "מלט"}</div>
-          <div className="nav-item active"><Home size={32} /> {isAr ? "الرئيسية" : "דף הבית"}</div>
-        </nav>
+        <SmartCategoryNav isAr={isAr} activeCategoryIndex={activeCategoryIndex} />
       </div>
 
       {settingsOpen && (
