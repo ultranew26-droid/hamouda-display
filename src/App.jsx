@@ -375,7 +375,7 @@ function injectTvTheme() {
     .bottom-nav { height:4.9vw; display:grid; grid-template-columns:repeat(7,1fr); align-items:center; padding:.48vw; gap:.5vw; }
     .nav-item { height:100%; border:1px solid rgba(255,255,255,.12); border-radius:.6vw; background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(0,0,0,.28)); display:flex; align-items:center; justify-content:center; gap:.65vw; font-size:1.02vw; font-weight:900; color:#fff; }
     .nav-item.active { color:var(--gold2); border-color:rgba(245,178,26,.85); box-shadow:0 0 18px rgba(245,178,26,.35), inset 0 0 16px rgba(245,178,26,.10); }
-    .hidden-controls { position:fixed; top:.9vw; left:.9vw; z-index:40; display:flex; gap:.45vw; opacity:.04; transition:opacity .2s; }
+    .hidden-controls { position:fixed; top:.9vw; left:.9vw; z-index:40; display:flex; gap:.45vw; opacity:.65; transition:opacity .2s; }
     .hidden-controls:hover { opacity:1; }
     .control-btn { border:0; background:#f5b21a; color:#07111f; border-radius:.5vw; font-weight:900; padding:.45vw .7vw; cursor:pointer; }
     .settings-drawer { position:fixed; top:0; left:0; width:32vw; max-width:540px; height:100vh; overflow:auto; z-index:80; background:#07111f; border-right:1px solid rgba(245,178,26,.45); padding:1vw; }
@@ -977,6 +977,65 @@ function injectTvTheme() {
       color:#fff;
     }
 
+    .image-upload-box {
+      position:relative;
+      min-height:5.2vw;
+      border:1px dashed rgba(245,178,26,.55);
+      border-radius:.75vw;
+      background:rgba(245,178,26,.06);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:.7vw;
+      padding:.75vw;
+      cursor:pointer;
+      text-align:center;
+      color:#ffdc63;
+      font-weight:1000;
+    }
+    .image-upload-box input {
+      position:absolute;
+      inset:0;
+      opacity:0;
+      cursor:pointer;
+      margin:0;
+      padding:0;
+    }
+    .image-preview-row {
+      display:grid;
+      grid-template-columns:5vw 1fr auto;
+      align-items:center;
+      gap:.7vw;
+      margin:.65vw 0;
+      padding:.55vw;
+      border-radius:.7vw;
+      border:1px solid rgba(245,178,26,.28);
+      background:rgba(0,0,0,.24);
+    }
+    .image-preview-row img {
+      width:5vw;
+      height:3.3vw;
+      object-fit:cover;
+      border-radius:.55vw;
+      border:1px solid rgba(245,178,26,.45);
+    }
+    .save-products-now {
+      grid-column:1 / -1;
+      background:linear-gradient(135deg,#39ff78,#16a34a) !important;
+      color:#06120b !important;
+      box-shadow:0 0 18px rgba(34,197,94,.28);
+    }
+    .product-editor-note {
+      margin-top:.5vw;
+      font-size:.72vw;
+      line-height:1.45;
+      color:rgba(255,255,255,.70);
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:.6vw;
+      padding:.55vw;
+    }
+
     @media (max-aspect-ratio: 14/9) {
       .topbar { grid-template-columns: 1.6fr 2.2fr 1.5fr; }
       .main-grid { grid-template-columns: 24.5vw 1fr 24vw; }
@@ -1531,16 +1590,7 @@ export default function HamoudaPremiumDisplay() {
   const topProducts = isAr ? data.topProductsAr : data.topProductsHe;
 
   const saveSettings = async () => {
-    saveLocal(draft);
-    setData(draft);
-    setSettingsOpen(false);
-    try {
-      const targetId = firebaseSettingsId || "main";
-      await setDoc(doc(db, "settings", targetId), toFirebaseSettings(draft), { merge: true });
-      setFirebaseSettingsId(targetId);
-    } catch (error) {
-      console.error("Firebase save error:", error);
-    }
+    await persistSettings(draft, true);
   };
 
   const toggleLanguage = () => {
@@ -1556,21 +1606,54 @@ export default function HamoudaPremiumDisplay() {
 
   const updateDraft = (key, value) => setDraft((d) => ({ ...d, [key]: value }));
 
+  const persistSettings = async (nextData, closeDrawer = false) => {
+    saveLocal(nextData);
+    setData(nextData);
+    setDraft(nextData);
+    if (closeDrawer) setSettingsOpen(false);
+    try {
+      const targetId = firebaseSettingsId || "main";
+      await setDoc(doc(db, "settings", targetId), toFirebaseSettings(nextData), { merge: true });
+      setFirebaseSettingsId(targetId);
+    } catch (error) {
+      console.error("Firebase save error:", error);
+    }
+  };
+
   const resetProductForm = () => setProductForm({ name: "", price: "", image: "", editIndex: -1 });
 
   const handleProductImageFile = (file) => {
     if (!file) return;
+
     const reader = new FileReader();
     reader.onload = () => {
-      setProductForm((form) => ({ ...form, image: String(reader.result || "") }));
+      const img = new Image();
+      img.onload = () => {
+        const maxW = 520;
+        const maxH = 360;
+        const ratio = Math.min(maxW / img.width, maxH / img.height, 1);
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.max(1, Math.round(img.width * ratio));
+        canvas.height = Math.max(1, Math.round(img.height * ratio));
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+          setProductForm((form) => ({ ...form, image: String(reader.result || "") }));
+          return;
+        }
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        const compressed = canvas.toDataURL("image/jpeg", 0.72);
+        setProductForm((form) => ({ ...form, image: compressed }));
+      };
+      img.onerror = () => setProductForm((form) => ({ ...form, image: String(reader.result || "") }));
+      img.src = String(reader.result || "");
     };
     reader.readAsDataURL(file);
   };
 
-  const saveProductToDraft = () => {
+  const buildProductDraft = () => {
     const name = productForm.name.trim();
     const price = String(productForm.price || "").trim();
-    if (!name || !price) return;
+    if (!name || !price) return null;
 
     const product = {
       nameHe: name,
@@ -1579,16 +1662,26 @@ export default function HamoudaPremiumDisplay() {
       image: productForm.image || ""
     };
 
-    setDraft((current) => {
-      const products = Array.isArray(current.prices) ? [...current.prices] : [];
-      if (productForm.editIndex >= 0 && productForm.editIndex < products.length) {
-        products[productForm.editIndex] = product;
-      } else {
-        products.push(product);
-      }
-      return { ...current, prices: products };
-    });
+    const products = Array.isArray(draft.prices) ? [...draft.prices] : [];
+    if (productForm.editIndex >= 0 && productForm.editIndex < products.length) {
+      products[productForm.editIndex] = product;
+    } else {
+      products.push(product);
+    }
+    return { ...draft, prices: products };
+  };
 
+  const saveProductToDraft = () => {
+    const nextDraft = buildProductDraft();
+    if (!nextDraft) return;
+    setDraft(nextDraft);
+    resetProductForm();
+  };
+
+  const saveProductAndPublish = async () => {
+    const nextDraft = buildProductDraft();
+    if (!nextDraft) return;
+    await persistSettings(nextDraft, false);
     resetProductForm();
   };
 
@@ -1752,13 +1845,18 @@ export default function HamoudaPremiumDisplay() {
 
           <div className="settings-box">
             <h3 style={{fontSize:"1.05vw",fontWeight:1000,color:"#ffdc63",marginBottom:".6vw"}}>إضافة / تعديل منتجات الأسعار</h3>
-            <label>صورة المنتج من الجهاز
+            <div className="image-upload-box">
+              <span>🖼 اضغط هنا لإرفاق صورة المنتج من الجهاز</span>
               <input type="file" accept="image/*" onChange={(e) => handleProductImageFile(e.target.files?.[0])} />
-            </label>
+            </div>
             {productForm.image && (
-              <div style={{display:"flex",alignItems:"center",gap:".7vw",marginBottom:".7vw"}}>
-                <img src={productForm.image} alt="preview" style={{width:"4.6vw",height:"3.2vw",objectFit:"cover",borderRadius:".55vw",border:"1px solid rgba(245,178,26,.45)"}} />
-                <button className="control-btn" onClick={() => setProductForm((f) => ({...f, image:""}))}>حذف الصورة</button>
+              <div className="image-preview-row">
+                <img src={productForm.image} alt="preview" />
+                <div>
+                  <div style={{fontWeight:1000,color:"#ffdc63"}}>تم اختيار الصورة</div>
+                  <div style={{fontSize:".68vw",color:"rgba(255,255,255,.65)"}}>الصورة تُضغط تلقائياً حتى تحفظ بشكل أخف.</div>
+                </div>
+                <button className="control-btn" onClick={() => setProductForm((f) => ({...f, image:""}))}>حذف</button>
               </div>
             )}
             <div className="product-editor-grid">
@@ -1770,13 +1868,17 @@ export default function HamoudaPremiumDisplay() {
               </label>
             </div>
             <div className="product-editor-actions">
-              <button type="button" className="product-editor-btn" onClick={saveProductToDraft}>{productForm.editIndex >= 0 ? "حفظ التعديل" : "إضافة المنتج"}</button>
+              <button type="button" className="product-editor-btn" onClick={saveProductToDraft}>{productForm.editIndex >= 0 ? "حفظ التعديل مؤقتاً" : "إضافة مؤقتاً"}</button>
               <button type="button" className="product-editor-btn secondary" onClick={resetProductForm}>تفريغ الحقول</button>
+              <button type="button" className="product-editor-btn save-products-now" onClick={saveProductAndPublish}>{productForm.editIndex >= 0 ? "حفظ التعديل ونشره فوراً" : "إضافة ونشر فوراً"}</button>
+            </div>
+            <div className="product-editor-note">
+              الأسهل: ارفع الصورة، اكتب اسم المنتج والسعر، ثم اضغط <b>إضافة ونشر فوراً</b>. إذا استخدمت إضافة مؤقتاً، اضغط زر <b>حفظ وتشغيل</b> أسفل الإعدادات.
             </div>
 
             <div className="product-admin-list">
               {(draft.prices || []).map((p, i) => (
-                <div className="product-admin-row" key={`${p.nameHe || p.nameAr}-${i}`}>
+                <div className="product-admin-row" key={`${p.nameHe || p.nameAr || "product"}-${i}`}>
                   <img className="product-admin-thumb" src={getProductImage(p)} alt="" onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }} />
                   <div className="product-admin-name">{p.nameHe || p.nameAr}</div>
                   <div className="product-admin-price">₪{p.price}</div>
