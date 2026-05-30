@@ -1149,53 +1149,36 @@ function injectTvTheme() {
 
 
 
-    /* SMART AUTO CATEGORY NAV */
+    /* SMART AUTO CATEGORY NAV - clean animated version without label */
     .bottom-nav.smart-category-nav {
       position:relative;
       overflow:hidden;
-      padding-top:1.18vw !important;
-      border-color:rgba(245,178,26,.46);
+      height:4.35vw !important;
+      padding:.38vw !important;
+      border-color:rgba(245,178,26,.50);
       background:
-        radial-gradient(circle at 50% 0%, rgba(245,178,26,.12), transparent 55%),
-        linear-gradient(180deg, rgba(12,20,33,.90), rgba(4,9,15,.92));
-    }
-    .active-category-label {
-      position:absolute;
-      top:.18vw;
-      left:50%;
-      transform:translateX(-50%);
-      z-index:4;
-      height:.92vw;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:.28vw;
-      padding:0 .7vw;
-      border-radius:999px;
-      color:#07111f;
-      background:linear-gradient(135deg, #ffdc63, #f5b21a);
-      font-size:.52vw;
-      font-weight:1000;
-      letter-spacing:.02em;
-      box-shadow:0 0 16px rgba(245,178,26,.55);
-      white-space:nowrap;
+        radial-gradient(circle at 50% 0%, rgba(245,178,26,.12), transparent 56%),
+        linear-gradient(180deg, rgba(12,20,33,.92), rgba(4,9,15,.94));
+      box-shadow:
+        0 0 22px rgba(245,178,26,.12),
+        inset 0 0 20px rgba(255,255,255,.025);
     }
     .nav-light-runner {
       position:absolute;
-      top:.05vw;
-      bottom:.05vw;
-      width:2.8vw;
+      top:.2vw;
+      bottom:.2vw;
+      width:4vw;
       z-index:1;
       border-radius:999px;
-      background:linear-gradient(90deg, transparent, rgba(255,220,99,.45), transparent);
-      filter:blur(.3vw);
+      background:linear-gradient(90deg, transparent, rgba(255,220,99,.42), transparent);
+      filter:blur(.38vw);
       animation: navLightRunner 5s linear infinite;
       pointer-events:none;
     }
     @keyframes navLightRunner {
-      0% { transform:translateX(-5vw); opacity:0; }
-      10% { opacity:.75; }
-      90% { opacity:.75; }
+      0% { transform:translateX(-6vw); opacity:0; }
+      10% { opacity:.72; }
+      90% { opacity:.72; }
       100% { transform:translateX(100vw); opacity:0; }
     }
     .smart-nav-item {
@@ -1203,17 +1186,22 @@ function injectTvTheme() {
       z-index:2;
       height:100%;
       border:1px solid rgba(255,255,255,.12);
-      border-radius:.68vw;
-      background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(0,0,0,.32));
+      border-radius:.72vw;
+      background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(0,0,0,.34));
       display:flex;
       align-items:center;
       justify-content:center;
       gap:.62vw;
-      font-size:.98vw;
+      font-size:.96vw;
       font-weight:950;
       color:#fff;
       overflow:hidden;
-      transition:all .55s ease;
+      transition:
+        transform .55s ease,
+        background .55s ease,
+        color .55s ease,
+        border-color .55s ease,
+        box-shadow .55s ease;
     }
     .smart-nav-item svg {
       transition:transform .55s ease, filter .55s ease;
@@ -1221,35 +1209,27 @@ function injectTvTheme() {
     .smart-nav-item.active {
       color:#07111f;
       border-color:rgba(255,220,99,1);
-      background:linear-gradient(135deg, #ffdc63, #f5b21a 48%, #d79505);
-      box-shadow:0 0 24px rgba(245,178,26,.52), inset 0 0 18px rgba(255,255,255,.28);
-      transform:translateY(-.08vw);
+      background:linear-gradient(135deg, #ffdc63, #f5b21a 50%, #d79505);
+      box-shadow:
+        0 0 22px rgba(245,178,26,.56),
+        inset 0 0 18px rgba(255,255,255,.30);
+      transform:translateY(-.07vw);
     }
     .smart-nav-item.active svg {
-      transform:scale(1.14);
+      transform:scale(1.15);
       filter:drop-shadow(0 0 8px rgba(255,255,255,.45));
       animation: smartNavIconPulse 1.45s ease-in-out infinite;
     }
     .smart-nav-item.active:after {
       content:"";
       position:absolute;
-      inset:-40% -20%;
+      inset:-45% -22%;
       background:linear-gradient(115deg, transparent 30%, rgba(255,255,255,.42) 48%, transparent 63%);
       animation: smartNavSweep 2.6s ease-in-out infinite;
       pointer-events:none;
     }
-    @keyframes smartNavIconPulse { 0%,100% { transform:scale(1.08); } 50% { transform:scale(1.24); } }
-    @keyframes smartNavSweep { 0% { transform:translateX(80%); opacity:0; } 45% { opacity:.8; } 100% { transform:translateX(-80%); opacity:0; } }
-    .filtered-products-hint {
-      position:absolute;
-      top:2.05vw;
-      right:.9vw;
-      z-index:4;
-      color:rgba(255,220,99,.88);
-      font-size:.62vw;
-      font-weight:900;
-      pointer-events:none;
-    }
+    @keyframes smartNavIconPulse { 0%,100% { transform:scale(1.10); } 50% { transform:scale(1.25); } }
+    @keyframes smartNavSweep { 0% { transform:translateX(82%); opacity:0; } 45% { opacity:.85; } 100% { transform:translateX(-82%); opacity:0; } }
 
     @media (max-aspect-ratio: 14/9) {
       .topbar { grid-template-columns: 1.6fr 2.2fr 1.5fr; }
@@ -1558,9 +1538,7 @@ function LiveProductSpotlight({ data, isAr, activeCategory }) {
 
   return (
     <aside className="spotlight-card glass-panel">
-      <div className="spotlight-title"><BadgePercent size={20} /> {isAr ? "منتجات القسم النشط" : "מוצרי הקטגוריה הפעילה"}</div>
-      <div className="filtered-products-hint">{isAr ? "القسم النشط الآن" : "הקטגוריה הפעילה עכשיו"}: {isAr ? activeCategory?.ar : activeCategory?.he}</div>
-
+      <div className="spotlight-title"><BadgePercent size={20} /> {isAr ? `منتجات ${activeCategory?.ar || "المحل"}` : `מוצרי ${activeCategory?.he || "החנות"}`}</div>
       <div className="featured-product" key={`${active.nameHe}-${activeIndex}`}>
         <div className="featured-image-wrap">
           <img src={getProductImage(active)} alt="product" onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }} />
@@ -1606,7 +1584,6 @@ function LiveProductSpotlight({ data, isAr, activeCategory }) {
 function SmartCategoryNav({ isAr, activeCategoryIndex }) {
   return (
     <nav className="bottom-nav smart-category-nav glass-panel">
-      <div className="active-category-label">{isAr ? "القسم النشط الآن" : "הקטגוריה הפעילה עכשיו"}</div>
       <div className="nav-light-runner" />
       {SMART_CATEGORIES.map((category, index) => {
         const Icon = category.Icon;
