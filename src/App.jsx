@@ -1567,6 +1567,44 @@ function injectTvTheme() {
       opacity:.92;
     }
 
+
+    /* CLEAN PREMIUM PHONE: number + icon only */
+    .data-pill.phone-premium {
+      min-width:8.7vw !important;
+      height:3.95vw !important;
+      grid-template-columns:2.75vw 1fr !important;
+      align-items:center !important;
+    }
+    .data-pill.phone-premium .pill-content {
+      display:flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+      height:100% !important;
+      min-width:0 !important;
+    }
+    .data-pill.phone-premium .phone-only-number {
+      margin:0 !important;
+      width:100% !important;
+      justify-content:center !important;
+      text-align:center !important;
+      font-size:1.12vw !important;
+      line-height:1 !important;
+      color:#fff3bd !important;
+      letter-spacing:.01em !important;
+      text-shadow:
+        0 0 10px rgba(255,220,99,.82),
+        0 0 22px rgba(245,178,26,.42),
+        0 0 16px rgba(63,255,143,.18) !important;
+    }
+    .data-pill.phone-premium .phone-only-number .flash-price {
+      min-width:auto !important;
+      padding:0 !important;
+    }
+    .data-pill.phone-premium .pill-label,
+    .data-pill.phone-premium .phone-subline {
+      display:none !important;
+    }
+
     @media (max-aspect-ratio: 14/9) {
       .topbar { grid-template-columns: 1.6fr 2.2fr 1.5fr; }
       .main-grid { grid-template-columns: 24.5vw 1fr 24vw; }
@@ -1984,9 +2022,16 @@ function CurrencyPill({ icon, label, value, change, kind = "" }) {
         {icon}
       </div>
       <div className="pill-content">
-        <div className="pill-label">{label}</div>
-        <div className="pill-value"><FlashPrice value={value} /> {change && <span className="pill-change">{change}</span>}</div>
-        {isPhone && <div className="phone-subline">WhatsApp • זמין ב-WhatsApp</div>}
+        {isPhone ? (
+          <div className="pill-value phone-only-number">
+            <FlashPrice value={value} />
+          </div>
+        ) : (
+          <>
+            <div className="pill-label">{label}</div>
+            <div className="pill-value"><FlashPrice value={value} /> {change && <span className="pill-change">{change}</span>}</div>
+          </>
+        )}
       </div>
     </div>
   );
