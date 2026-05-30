@@ -438,6 +438,251 @@ function injectTvTheme() {
       opacity:1;
     }
 
+
+    /* Design 2: Live Product Spotlight panel */
+    .spotlight-card {
+      padding:.8vw;
+      display:flex;
+      flex-direction:column;
+      min-height:0;
+      overflow:hidden;
+      position:relative;
+    }
+    .spotlight-card:before {
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background:
+        radial-gradient(circle at 50% 20%, rgba(245,178,26,.20), transparent 22%),
+        conic-gradient(from 0deg, transparent, rgba(245,178,26,.10), transparent, rgba(39,243,107,.06), transparent);
+      opacity:.72;
+      animation: spotlightAura 12s linear infinite;
+      pointer-events:none;
+    }
+    @keyframes spotlightAura { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+
+    .spotlight-inner {
+      position:relative;
+      z-index:1;
+      height:100%;
+      min-height:0;
+      display:grid;
+      grid-template-rows: 16.4vw 1fr 2.45vw;
+      gap:.58vw;
+    }
+    .spotlight-hero {
+      position:relative;
+      overflow:hidden;
+      border-radius:1vw;
+      border:1px solid rgba(245,178,26,.72);
+      background:
+        radial-gradient(circle at 50% 22%, rgba(245,178,26,.22), transparent 36%),
+        linear-gradient(180deg, rgba(11,18,30,.98), rgba(3,7,12,.98));
+      box-shadow:0 0 24px rgba(245,178,26,.25), inset 0 0 30px rgba(255,255,255,.035);
+    }
+    .spotlight-hero-bg {
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(115deg, transparent 0%, rgba(255,255,255,.10) 42%, transparent 56%),
+        radial-gradient(circle at 20% 70%, rgba(245,178,26,.18), transparent 28%);
+      transform:translateX(-120%);
+      animation: lightSweep 4.8s ease-in-out infinite;
+      pointer-events:none;
+    }
+    @keyframes lightSweep {
+      0%,55% { transform:translateX(-120%); opacity:0; }
+      70% { opacity:1; }
+      100% { transform:translateX(120%); opacity:0; }
+    }
+    .spotlight-label {
+      position:absolute;
+      top:.55vw;
+      right:.7vw;
+      left:.7vw;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:.45vw;
+      color:var(--gold2);
+      font-size:.85vw;
+      font-weight:1000;
+      text-shadow:0 0 12px rgba(245,178,26,.45);
+      z-index:2;
+    }
+    .spotlight-product-img-wrap {
+      position:absolute;
+      top:2.25vw;
+      right:1vw;
+      width:10.7vw;
+      height:8.1vw;
+      border-radius:.85vw;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.12);
+      background:#03060b;
+      box-shadow:0 0 18px rgba(0,0,0,.45);
+    }
+    .spotlight-product-img {
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      animation: productFloat 5s ease-in-out infinite;
+    }
+    @keyframes productFloat {
+      0%,100% { transform:scale(1.04) translateY(0); }
+      50% { transform:scale(1.11) translateY(-.25vw); }
+    }
+    .spotlight-product-info {
+      position:absolute;
+      top:2.35vw;
+      left:.85vw;
+      right:12.35vw;
+      bottom:3.4vw;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:flex-end;
+      text-align:right;
+      z-index:2;
+    }
+    .spotlight-product-name {
+      font-size:1.55vw;
+      line-height:1.05;
+      font-weight:1000;
+      color:#fff;
+      text-shadow:0 0 14px rgba(255,255,255,.22);
+      max-width:100%;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+    .spotlight-product-unit {
+      margin-top:.25vw;
+      font-size:.72vw;
+      color:rgba(255,255,255,.68);
+      font-weight:800;
+    }
+    .spotlight-price-line {
+      margin-top:.8vw;
+      display:flex;
+      flex-direction:row-reverse;
+      align-items:center;
+      gap:.65vw;
+    }
+    .spotlight-price {
+      color:var(--gold2);
+      font-size:2.35vw;
+      line-height:1;
+      font-weight:1000;
+      text-shadow:0 0 18px rgba(245,178,26,.75);
+    }
+    .spotlight-change-pill {
+      border-radius:999px;
+      padding:.3vw .65vw;
+      font-size:.68vw;
+      font-weight:1000;
+      background:rgba(255,255,255,.08);
+    }
+    .spotlight-qualities {
+      position:absolute;
+      right:.8vw;
+      left:.8vw;
+      bottom:.65vw;
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:.35vw;
+      z-index:3;
+    }
+    .spotlight-quality {
+      border-radius:999px;
+      border:1px solid rgba(245,178,26,.22);
+      background:rgba(0,0,0,.42);
+      color:rgba(255,255,255,.82);
+      font-size:.58vw;
+      font-weight:900;
+      text-align:center;
+      padding:.28vw .35vw;
+    }
+
+    .spotlight-list {
+      min-height:0;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      gap:.42vw;
+    }
+    .spotlight-row {
+      height:3.1vw;
+      flex:0 0 3.1vw;
+      display:grid;
+      grid-template-columns:3.35vw 1fr 4.2vw 2.25vw;
+      align-items:center;
+      gap:.5vw;
+      border-radius:.75vw;
+      padding:.33vw .45vw;
+      border:1px solid rgba(255,255,255,.09);
+      background:linear-gradient(90deg, rgba(255,255,255,.05), rgba(255,255,255,.015));
+      transition:all .45s ease;
+    }
+    .spotlight-row.active {
+      border-color:rgba(245,178,26,.92);
+      box-shadow:0 0 20px rgba(245,178,26,.30), inset 0 0 18px rgba(245,178,26,.08);
+      background:linear-gradient(90deg, rgba(245,178,26,.12), rgba(255,255,255,.025));
+      transform:translateX(-.2vw);
+    }
+    .spotlight-row-img {
+      width:3vw;
+      height:2.35vw;
+      border-radius:.45vw;
+      object-fit:cover;
+      border:1px solid rgba(255,255,255,.12);
+      background:#020617;
+    }
+    .spotlight-row-name {
+      font-size:.82vw;
+      font-weight:1000;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .spotlight-row-unit {
+      font-size:.55vw;
+      font-weight:800;
+      color:rgba(255,255,255,.55);
+      margin-top:.06vw;
+    }
+    .spotlight-row-price {
+      color:white;
+      font-size:1.05vw;
+      font-weight:1000;
+      text-align:end;
+      text-shadow:0 0 12px rgba(255,255,255,.55);
+      white-space:nowrap;
+    }
+    .spotlight-row-change {
+      font-size:.68vw;
+      font-weight:1000;
+      text-align:center;
+      border-radius:999px;
+      padding:.22vw .25vw;
+      background:rgba(255,255,255,.06);
+    }
+    .spotlight-all-btn {
+      position:relative;
+      z-index:1;
+      border-radius:.7vw;
+      border:1px solid rgba(245,178,26,.30);
+      background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(0,0,0,.34));
+      color:var(--gold2);
+      font-size:.78vw;
+      font-weight:1000;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:.4vw;
+    }
+
     @media (max-aspect-ratio: 14/9) {
       .topbar { grid-template-columns: 1.6fr 2.2fr 1.5fr; }
       .main-grid { grid-template-columns: 24.5vw 1fr 24vw; }
@@ -689,6 +934,114 @@ function CurrencyPill({ icon, label, value, change }) {
     </div>
   );
 }
+
+
+const PRODUCT_IMAGE_MAP = {
+  cement: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=500&q=80",
+  steel: "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=500&q=80",
+  paint: "https://images.unsplash.com/photo-1562259949-e8e7689d7828?auto=format&fit=crop&w=500&q=80",
+  gypsum: "https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=500&q=80",
+  sand: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=500&q=80",
+  seal: "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&w=500&q=80",
+  package: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=500&q=80"
+};
+
+function productImage(p) {
+  const key = String(p?.icon || p?.nameHe || p?.nameAr || "").toLowerCase();
+  if (key.includes("cement") || key.includes("מלט") || key.includes("إسمنت")) return PRODUCT_IMAGE_MAP.cement;
+  if (key.includes("steel") || key.includes("ברזל") || key.includes("حديد")) return PRODUCT_IMAGE_MAP.steel;
+  if (key.includes("paint") || key.includes("צבע") || key.includes("دهان")) return PRODUCT_IMAGE_MAP.paint;
+  if (key.includes("gypsum") || key.includes("גבס") || key.includes("جبص")) return PRODUCT_IMAGE_MAP.gypsum;
+  if (key.includes("sand") || key.includes("חול") || key.includes("رمل")) return PRODUCT_IMAGE_MAP.sand;
+  if (key.includes("seal") || key.includes("איטום") || key.includes("عزل")) return PRODUCT_IMAGE_MAP.seal;
+  return PRODUCT_IMAGE_MAP.package;
+}
+
+function LiveProductSpotlight({ data }) {
+  const [spotlightIndex, setSpotlightIndex] = useState(0);
+  const products = data.prices && data.prices.length ? data.prices : DEFAULT_DATA.prices;
+  const isAr = data.language === "ar";
+  const active = products[spotlightIndex % products.length] || products[0];
+  const activeName = itemT(data, active, "nameHe", "nameAr");
+  const activeUnit = itemT(data, active, "unitHe", "unitAr");
+  const dirClass = active.direction === "up" ? "up" : active.direction === "down" ? "down" : "flat";
+  const arrow = active.direction === "up" ? "↑" : active.direction === "down" ? "↓" : "–";
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSpotlightIndex((v) => (v + 1) % Math.max(1, products.length));
+    }, 5200);
+    return () => clearInterval(timer);
+  }, [products.length]);
+
+  return (
+    <aside className="spotlight-card glass-panel">
+      <div className="spotlight-inner">
+        <div className="spotlight-hero">
+          <div className="spotlight-hero-bg" />
+          <div className="spotlight-label">
+            <BadgePercent size={20} />
+            {isAr ? "المنتج المميز الآن" : "המוצר המוביל היום"}
+          </div>
+
+          <div className="spotlight-product-img-wrap">
+            <img
+              className="spotlight-product-img"
+              src={productImage(active)}
+              alt={activeName}
+              onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }}
+            />
+          </div>
+
+          <div className="spotlight-product-info">
+            <div className="spotlight-product-name">{activeName}</div>
+            <div className="spotlight-product-unit">{activeUnit}</div>
+            <div className="spotlight-price-line">
+              <div className="spotlight-price">₪ {active.price}</div>
+              <div className={`spotlight-change-pill ${dirClass}`}>{arrow} {active.change}</div>
+            </div>
+          </div>
+
+          <div className="spotlight-qualities">
+            <div className="spotlight-quality">{isAr ? "سعر محدث" : "מחיר מעודכן"}</div>
+            <div className="spotlight-quality">{isAr ? "متوفر" : "במלאי"}</div>
+            <div className="spotlight-quality">{isAr ? "مناسب للمشاريع" : "לקבלנים"}</div>
+          </div>
+        </div>
+
+        <div className="spotlight-list">
+          {products.slice(0, 6).map((p, i) => {
+            const rowActive = i === spotlightIndex % products.length;
+            const rowDir = p.direction === "up" ? "up" : p.direction === "down" ? "down" : "flat";
+            const rowArrow = p.direction === "up" ? "↑" : p.direction === "down" ? "↓" : "–";
+            return (
+              <div className={`spotlight-row ${rowActive ? "active" : ""}`} key={`${p.nameHe}-${i}`}>
+                <img
+                  className="spotlight-row-img"
+                  src={productImage(p)}
+                  alt={itemT(data, p, "nameHe", "nameAr")}
+                  onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }}
+                />
+                <div>
+                  <div className="spotlight-row-name">{itemT(data, p, "nameHe", "nameAr")}</div>
+                  <div className="spotlight-row-unit">{itemT(data, p, "unitHe", "unitAr")}</div>
+                </div>
+                <div className="spotlight-row-price">₪ {p.price}</div>
+                <div className={`spotlight-row-change ${rowDir}`}>{rowArrow} {p.change}</div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="spotlight-all-btn">
+          <Package size={18} />
+          {isAr ? "كل المنتجات" : "לכל המוצרים"}
+        </div>
+      </div>
+    </aside>
+  );
+}
+
 
 export default function HamoudaPremiumDisplay() {
   injectTvTheme();
@@ -985,17 +1338,7 @@ export default function HamoudaPremiumDisplay() {
         </header>
 
         <section className="main-grid">
-          <aside className="prices-card glass-panel">
-            <div className="section-title">{isAr ? "أسعار اليوم" : "מחירי היום"} <BadgePercent size={20} /></div>
-            <div className="price-list">
-              <div className="price-track">
-                {[...(data.prices || []), ...(data.prices || [])].map((p, i) => (
-                  <PriceRow key={`${p.nameHe}-${i}`} p={p} data={data} />
-                ))}
-              </div>
-            </div>
-            <div className="small-note">* {isAr ? "الأسعار تتحدث حسب البيانات" : "המחירים מתעדכנים בזמן אמת"}</div>
-          </aside>
+          <LiveProductSpotlight data={data} />
 
           <main className="hero-card glass-panel">
             <div className="hero-media">
