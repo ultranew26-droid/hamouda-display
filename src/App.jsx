@@ -55,8 +55,8 @@ const DEFAULT_DATA = {
   sloganAr: "مواد عالية الجودة للبناء والمشاريع",
   phone: "054-7285036",
   whatsapp: "0547285036",
-  primaryColor: "#f5b21a",
-  backgroundColor: "#05070b",
+  primaryColor: "#d6a21f",
+  backgroundColor: "#070707",
   textScale: 0.66,
   slideSeconds: 8,
   tickerSpeed: 95,
@@ -1603,6 +1603,178 @@ function injectTvTheme() {
     .data-pill.phone-premium .pill-label,
     .data-pill.phone-premium .phone-subline {
       display:none !important;
+    }
+
+
+
+    /* BLACK LUXURY + GOLD ACCENT THEME OVERRIDE */
+    :root {
+      --gold:#d6a21f;
+      --gold2:#f6d66b;
+      --dark:#070707;
+      --panel:rgba(12,12,12,.94);
+      --line:rgba(214,162,31,.36);
+    }
+    body { background:#050505 !important; }
+    .tv-root {
+      background:
+        radial-gradient(circle at 50% -10%, rgba(214,162,31,.10), transparent 30%),
+        linear-gradient(180deg, #050505 0%, #0b0b0b 56%, #050505 100%) !important;
+    }
+    .background-slideshow {
+      background:
+        radial-gradient(circle at 50% 0%, rgba(214,162,31,.07), transparent 34%),
+        linear-gradient(180deg, #050505 0%, #0c0c0c 58%, #050505 100%) !important;
+    }
+    .background-slideshow img {
+      filter:blur(9px) brightness(.24) saturate(.92) contrast(1.12) !important;
+    }
+    .background-vignette {
+      background:
+        radial-gradient(circle at 50% 15%, rgba(214,162,31,.08), transparent 28%),
+        linear-gradient(180deg, rgba(5,5,5,.74), rgba(5,5,5,.90)) !important;
+    }
+    .glass-panel {
+      border-color:rgba(214,162,31,.28) !important;
+      background:linear-gradient(180deg, rgba(18,18,18,.92), rgba(7,7,7,.96)) !important;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.035) inset,
+        0 0 24px rgba(214,162,31,.075) !important;
+    }
+
+    /* Logo: black center, gold ח, cleaner luxury ring */
+    .logo-box {
+      color:#f6d66b !important;
+      background:
+        radial-gradient(circle at 50% 48%, #161616 0 48%, #050505 49% 100%) !important;
+      border-color:rgba(246,214,107,.82) !important;
+      box-shadow:
+        0 0 12px rgba(246,214,107,.42),
+        0 0 34px rgba(214,162,31,.24),
+        inset 0 0 24px rgba(0,0,0,.88) !important;
+      text-shadow:0 0 12px rgba(246,214,107,.78), 0 0 28px rgba(214,162,31,.38) !important;
+    }
+    .logo-box:before {
+      background:conic-gradient(from 0deg, transparent 0 36deg, rgba(246,214,107,.95) 38deg 58deg, transparent 60deg 174deg, rgba(214,162,31,.76) 176deg 206deg, transparent 208deg 316deg, rgba(246,214,107,.75) 318deg 338deg, transparent 340deg 360deg) !important;
+      filter:drop-shadow(0 0 7px rgba(214,162,31,.65)) !important;
+    }
+    .logo-box:after {
+      opacity:.62 !important;
+      background:radial-gradient(circle, rgba(214,162,31,.12), transparent 65%) !important;
+    }
+
+    /* Top indicators: less gold everywhere, each item has its own identity */
+    .data-pill {
+      border-color:rgba(214,162,31,.28) !important;
+      background:linear-gradient(180deg, rgba(18,18,18,.96), rgba(6,6,6,.98)) !important;
+      box-shadow:0 0 0 1px rgba(255,255,255,.035) inset, 0 0 14px rgba(214,162,31,.075) !important;
+    }
+    .data-pill .pill-icon {
+      background:radial-gradient(circle at 34% 26%, rgba(255,255,255,.38), transparent 18%), radial-gradient(circle, rgba(214,162,31,.22), rgba(0,0,0,.35) 68%) !important;
+      border-color:rgba(214,162,31,.45) !important;
+      box-shadow:0 0 12px rgba(214,162,31,.28), inset 0 0 12px rgba(246,214,107,.09) !important;
+    }
+    .data-pill.gold .pill-icon,
+    .data-pill.gold .premium-symbol { color:#f6d66b !important; }
+    .data-pill.usd .pill-icon,
+    .data-pill.usd .premium-symbol,
+    .data-pill.usd .pill-value { color:#35e27c !important; text-shadow:0 0 10px rgba(53,226,124,.35) !important; }
+    .data-pill.usd .pill-icon { border-color:rgba(53,226,124,.48) !important; box-shadow:0 0 14px rgba(53,226,124,.22) !important; }
+    .data-pill.euro .pill-icon,
+    .data-pill.euro .premium-symbol,
+    .data-pill.euro .pill-value { color:#74a9ff !important; text-shadow:0 0 10px rgba(116,169,255,.32) !important; }
+    .data-pill.euro .pill-icon { border-color:rgba(116,169,255,.42) !important; box-shadow:0 0 14px rgba(116,169,255,.20) !important; }
+    .data-pill.weather .pill-icon,
+    .data-pill.weather .pill-value { color:#ffb84d !important; text-shadow:0 0 10px rgba(255,184,77,.34) !important; }
+    .data-pill.weather .pill-icon { border-color:rgba(255,184,77,.46) !important; box-shadow:0 0 14px rgba(255,184,77,.22) !important; }
+    .data-pill.jod .pill-value { color:#d8c28a !important; }
+
+    /* Keep phone special but cleaner */
+    .data-pill.phone-premium {
+      border-color:rgba(42,205,110,.62) !important;
+      background:linear-gradient(180deg, rgba(9,32,22,.94), rgba(5,7,6,.98)) !important;
+      box-shadow:0 0 0 1px rgba(255,255,255,.035) inset, 0 0 22px rgba(42,205,110,.16) !important;
+    }
+    .data-pill.phone-premium .pill-icon {
+      border-color:rgba(42,205,110,.78) !important;
+      box-shadow:0 0 16px rgba(42,205,110,.38), inset 0 0 14px rgba(246,214,107,.12) !important;
+    }
+
+    /* Right products/prices panel: names white, prices gold, image border neutral */
+    .spotlight-card,
+    .prices-card,
+    .projects-card {
+      background:linear-gradient(180deg, rgba(16,16,16,.95), rgba(5,5,5,.97)) !important;
+      border-color:rgba(214,162,31,.26) !important;
+    }
+    .spotlight-title,
+    .section-title,
+    .projects-title { color:#f6d66b !important; }
+    .product-line-name,
+    .prod-name { color:#fff !important; }
+    .product-line-unit,
+    .prod-unit { color:rgba(255,255,255,.58) !important; }
+    .product-thumb,
+    .prod-icon {
+      border-color:rgba(210,210,210,.18) !important;
+      box-shadow:inset 0 0 12px rgba(255,255,255,.025) !important;
+    }
+    .price-mini-badge,
+    .price-badge-xl {
+      border-color:rgba(214,162,31,.58) !important;
+      background:linear-gradient(135deg, rgba(214,162,31,.10), rgba(0,0,0,.44)) !important;
+      box-shadow:0 0 12px rgba(214,162,31,.12), inset 0 0 10px rgba(214,162,31,.045) !important;
+    }
+    .mini-price,
+    .prod-price,
+    .price-number-xl { color:#f7e2a0 !important; }
+
+    /* News ticker: black window with a thin moving gold accent instead of heavy yellow */
+    .ticker-label {
+      color:#f6d66b !important;
+      background:linear-gradient(180deg, rgba(18,18,18,.96), rgba(6,6,6,.98)) !important;
+      border:1px solid rgba(214,162,31,.36) !important;
+      box-shadow:inset 0 0 16px rgba(214,162,31,.05), 0 0 14px rgba(214,162,31,.08) !important;
+      clip-path:none !important;
+    }
+    .ticker-window {
+      background:rgba(4,4,4,.72) !important;
+      border-color:rgba(214,162,31,.28) !important;
+    }
+    .ticker-window:before {
+      content:"";
+      position:absolute;
+      top:0;
+      bottom:0;
+      width:18%;
+      background:linear-gradient(90deg, transparent, rgba(246,214,107,.18), transparent);
+      filter:blur(.08vw);
+      animation:tickerGoldLine 5.5s linear infinite;
+      pointer-events:none;
+    }
+    @keyframes tickerGoldLine {
+      0% { transform:translateX(620%); opacity:0; }
+      18% { opacity:.8; }
+      82% { opacity:.8; }
+      100% { transform:translateX(-160%); opacity:0; }
+    }
+
+    /* Bottom nav: active is gold, inactive charcoal, softer borders */
+    .bottom-nav.smart-category-nav {
+      background:linear-gradient(180deg, rgba(15,15,15,.94), rgba(5,5,5,.97)) !important;
+      border-color:rgba(214,162,31,.28) !important;
+      padding-top:.48vw !important;
+    }
+    .smart-nav-item {
+      background:linear-gradient(180deg, rgba(22,22,22,.90), rgba(8,8,8,.96)) !important;
+      border-color:rgba(255,255,255,.09) !important;
+      color:#f3f3f3 !important;
+    }
+    .smart-nav-item.active {
+      color:#0a0a0a !important;
+      background:linear-gradient(135deg, #f6d66b, #d6a21f 52%, #9c6f0a) !important;
+      border-color:rgba(246,214,107,.92) !important;
+      box-shadow:0 0 20px rgba(214,162,31,.34), inset 0 0 16px rgba(255,255,255,.22) !important;
     }
 
     @media (max-aspect-ratio: 14/9) {
