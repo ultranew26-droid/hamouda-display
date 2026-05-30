@@ -199,13 +199,79 @@ function injectTvTheme() {
     .topbar { height: 5.9vw; display:grid; grid-template-columns: 1.45fr 3.25fr 1.25fr; align-items:center; padding:.55vw .75vw; gap:.75vw; }
     .brand { display:flex; align-items:center; gap:.9vw; }
     .logo-box {
-      width:4.35vw; height:4.35vw; border-radius:1vw;
-      display:grid; place-items:center; font-size:2.25vw; font-weight:1000;
-      color:#07111f; background:linear-gradient(135deg, #f2aa12, #ffe27b);
-      box-shadow: 0 0 24px rgba(245,178,26,.75), inset 0 0 12px rgba(255,255,255,.5);
+      position:relative;
+      width:4.35vw;
+      height:4.35vw;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      font-size:2.25vw;
+      font-weight:1000;
+      color:#fff4c7;
+      isolation:isolate;
+      overflow:visible;
+      background:
+        radial-gradient(circle at 35% 28%, rgba(255,255,255,.72), transparent 15%),
+        radial-gradient(circle at 50% 50%, #ffe27b 0%, #f5b21a 42%, #8a5a00 100%);
+      border:1px solid rgba(255,226,123,.85);
+      box-shadow:
+        0 0 14px rgba(255,220,99,.85),
+        0 0 36px rgba(245,178,26,.62),
+        0 0 70px rgba(245,178,26,.28),
+        inset 0 0 14px rgba(255,255,255,.42),
+        inset 0 0 22px rgba(0,0,0,.22);
+      text-shadow:0 0 10px rgba(0,0,0,.75), 0 0 16px rgba(255,255,255,.38);
+      animation: aiLogoPulse 4.8s ease-in-out infinite;
+    }
+    .logo-box:before {
+      content:"";
+      position:absolute;
+      inset:-.45vw;
+      border-radius:50%;
+      border:1px solid rgba(245,178,26,.55);
+      background:
+        conic-gradient(from 0deg, transparent 0 18%, rgba(255,220,99,.9) 21%, transparent 25% 48%, rgba(255,220,99,.55) 52%, transparent 56% 100%);
+      filter:drop-shadow(0 0 10px rgba(245,178,26,.65));
+      opacity:.95;
+      z-index:-1;
+      animation: aiLogoRing 7s linear infinite;
+    }
+    .logo-box:after {
+      content:"";
+      position:absolute;
+      inset:.18vw;
+      border-radius:50%;
+      background:linear-gradient(115deg, transparent 0 35%, rgba(255,255,255,.55) 45%, transparent 58% 100%);
+      mix-blend-mode:screen;
+      opacity:.55;
+      animation: aiLogoSweep 5.8s ease-in-out infinite;
+      pointer-events:none;
+    }
+    @keyframes aiLogoPulse {
+      0%,100% { transform:scale(1); box-shadow:0 0 14px rgba(255,220,99,.78), 0 0 36px rgba(245,178,26,.58), 0 0 70px rgba(245,178,26,.25), inset 0 0 14px rgba(255,255,255,.42), inset 0 0 22px rgba(0,0,0,.22); }
+      50% { transform:scale(1.045); box-shadow:0 0 18px rgba(255,220,99,1), 0 0 48px rgba(245,178,26,.78), 0 0 90px rgba(245,178,26,.38), inset 0 0 16px rgba(255,255,255,.55), inset 0 0 24px rgba(0,0,0,.18); }
+    }
+    @keyframes aiLogoRing { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+    @keyframes aiLogoSweep {
+      0%, 38% { transform:translateX(85%) rotate(12deg); opacity:0; }
+      48% { opacity:.62; }
+      68%,100% { transform:translateX(-85%) rotate(12deg); opacity:0; }
     }
     .brand-title { font-size:2.05vw; line-height:1; font-weight:1000; letter-spacing:-.03em; text-shadow:0 0 12px rgba(255,255,255,.18); }
     .brand-sub { margin-top:.35vw; color:rgba(255,255,255,.72); font-size:.9vw; font-weight:700; }
+    .brand-ai-tag {
+      display:inline-flex;
+      align-items:center;
+      margin-top:.35vw;
+      padding:.18vw .55vw;
+      border-radius:999px;
+      color:#07111f;
+      background:linear-gradient(135deg, #ffdc63, #f5b21a);
+      font-size:.56vw;
+      font-weight:1000;
+      letter-spacing:.08em;
+      box-shadow:0 0 12px rgba(245,178,26,.42);
+    }
     .top-pills { display:flex; justify-content:center; gap:.48vw; overflow:hidden; }
     .data-pill {
       min-width:6.7vw; height:3.75vw; border-radius:.75vw; padding:.35vw .65vw;
@@ -1733,6 +1799,7 @@ export default function HamoudaPremiumDisplay() {
             <div>
               <div className="brand-title">{t(data, "businessNameHe", "businessNameAr")}</div>
               <div className="brand-sub">{t(data, "sloganHe", "sloganAr")}</div>
+              <div className="brand-ai-tag">HAMOODI AI DISPLAY</div>
             </div>
           </div>
 
