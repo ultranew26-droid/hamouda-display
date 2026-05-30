@@ -593,10 +593,17 @@ function injectTvTheme() {
       content:"";
       position:absolute;
       inset:0;
-      background-image:
-        linear-gradient(rgba(245,178,26,.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(245,178,26,.04) 1px, transparent 1px);
-      background-size:40px 40px;
+
+      background:
+        repeating-linear-gradient(
+          -45deg,
+          rgba(245,178,26,.05) 0px,
+          rgba(245,178,26,.05) 10px,
+          transparent 10px,
+          transparent 20px
+        );
+
+      opacity:.8;
       pointer-events:none;
     }
     .ticker-window::after{
