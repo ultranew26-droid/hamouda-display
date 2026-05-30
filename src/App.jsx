@@ -1242,6 +1242,44 @@ function injectTvTheme() {
 
 
 
+
+    /* PRICE FLASH LIKE STOCK MARKET */
+    .flash-price {
+      position:relative;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:.45vw;
+      padding:.06vw .18vw;
+      transition:transform .25s ease, color .25s ease, background .25s ease;
+      will-change:transform, box-shadow, background;
+    }
+    .flash-price-up {
+      animation:flashPriceGreen 1.05s ease both;
+    }
+    .flash-price-down {
+      animation:flashPriceRed 1.05s ease both;
+    }
+    @keyframes flashPriceGreen {
+      0% { background:rgba(34,197,94,0); box-shadow:0 0 0 rgba(34,197,94,0); transform:scale(1); }
+      24% { background:rgba(34,197,94,.34); box-shadow:0 0 22px rgba(34,197,94,.82), inset 0 0 16px rgba(34,197,94,.28); transform:scale(1.10); color:#dfffee; }
+      100% { background:rgba(34,197,94,0); box-shadow:0 0 0 rgba(34,197,94,0); transform:scale(1); }
+    }
+    @keyframes flashPriceRed {
+      0% { background:rgba(239,68,68,0); box-shadow:0 0 0 rgba(239,68,68,0); transform:scale(1); }
+      24% { background:rgba(239,68,68,.34); box-shadow:0 0 22px rgba(239,68,68,.82), inset 0 0 16px rgba(239,68,68,.26); transform:scale(1.10); color:#ffe1e1; }
+      100% { background:rgba(239,68,68,0); box-shadow:0 0 0 rgba(239,68,68,0); transform:scale(1); }
+    }
+    .pill-value .flash-price {
+      min-width:3.2vw;
+    }
+    .price-mini-badge .flash-price,
+    .price-number-xl.flash-price,
+    .prod-price .flash-price {
+      width:100%;
+    }
+
+
     /* SMART AUTO CATEGORY NAV */
     .bottom-nav.smart-category-nav {
       position:relative;
@@ -1570,7 +1608,7 @@ function PriceRow({ p, data }) {
         <div className="prod-name">{itemT(data, p, "nameHe", "nameAr")}</div>
         <div className="prod-unit">{itemT(data, p, "unitHe", "unitAr")}</div>
       </div>
-      <div className="prod-price">₪{p.price}</div>
+      <div className="prod-price"><FlashPrice value={String(p.price || "0")} prefix="₪" /></div>
       <div className={`prod-change ${dirClass}`}>{arrow} {p.change}</div>
     </div>
   );
@@ -1662,7 +1700,7 @@ function LiveProductSpotlight({ data, isAr, activeCategory }) {
           <div className="featured-name">{itemT(data, active, "nameHe", "nameAr")}</div>
           <div className="price-badge-xl simple-price-only">
             <div className="shekel-coin">₪</div>
-            <div className="price-number-xl">{String(active.price || "0")}</div>
+            <FlashPrice className="price-number-xl" value={String(active.price || "0")} />
           </div>
         </div>
       </div>
@@ -1683,7 +1721,7 @@ function LiveProductSpotlight({ data, isAr, activeCategory }) {
                   <div className="product-line-name">{itemT(data, p, "nameHe", "nameAr")}</div>
                   <div className="product-line-unit">{isAr ? "السعر الحالي" : "מחיר"}</div>
                 </div>
-                <div className="price-mini-badge"><span className="mini-coin">₪</span><span className="mini-price">{String(p.price || "0")}</span></div>
+                <div className="price-mini-badge"><span className="mini-coin">₪</span><FlashPrice className="mini-price" value={String(p.price || "0")} /></div>
               </div>
             );
           })}
@@ -1715,13 +1753,45 @@ function SmartCategoryNav({ isAr, activeCategoryIndex }) {
   );
 }
 
+
+function numberFromDisplay(value) {
+  const cleaned = String(value ?? "").replace(/[^\d.,-]/g, "").replace(",", ".");
+  const parsed = Number.parseFloat(cleaned);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+function FlashPrice({ value, className = "", prefix = "", suffix = "" }) {
+  const [flashClass, setFlashClass] = useState("");
+  const [previous, setPrevious] = useState(null);
+  const numericValue = numberFromDisplay(value);
+
+  useEffect(() => {
+    if (numericValue === null) return;
+
+    if (previous !== null && numericValue !== previous) {
+      setFlashClass(numericValue > previous ? "flash-price-up" : "flash-price-down");
+      setPrevious(numericValue);
+      const timer = setTimeout(() => setFlashClass(""), 1050);
+      return () => clearTimeout(timer);
+    }
+
+    setPrevious(numericValue);
+  }, [numericValue]);
+
+  return (
+    <span className={`flash-price ${flashClass} ${className}`.trim()}>
+      {prefix}{value}{suffix}
+    </span>
+  );
+}
+
 function CurrencyPill({ icon, label, value, change, kind = "" }) {
   return (
     <div className={`data-pill ${kind}`}>
       <div className="pill-icon">{icon}</div>
       <div>
         <div className="pill-label">{label}</div>
-        <div className="pill-value">{value} {change && <span className="pill-change">{change}</span>}</div>
+        <div className="pill-value"><FlashPrice value={value} /> {change && <span className="pill-change">{change}</span>}</div>
       </div>
     </div>
   );
