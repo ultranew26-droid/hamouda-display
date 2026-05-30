@@ -1382,6 +1382,50 @@ function injectTvTheme() {
       pointer-events:none;
     }
 
+
+    /* FINAL CLEAN SMOOTH PRODUCTS - no labels, no jumping */
+    .active-category-label,
+    .filtered-products-hint {
+      display:none !important;
+    }
+    .bottom-nav.smart-category-nav {
+      padding-top:.48vw !important;
+    }
+    .product-list-window {
+      overflow:hidden !important;
+      border-radius:1vw !important;
+    }
+    .smooth-product-track {
+      animation: productListMoveSmooth 64s linear infinite !important;
+      will-change: transform !important;
+      transform: translate3d(0,0,0);
+      backface-visibility:hidden;
+    }
+    .product-list-window:hover .smooth-product-track {
+      animation-play-state: running;
+    }
+    @keyframes productListMoveSmooth {
+      0% { transform:translate3d(0,0,0); }
+      100% { transform:translate3d(0,var(--product-scroll-step),0); }
+    }
+    .product-line {
+      transition: transform .55s ease, box-shadow .55s ease, border-color .55s ease, background .55s ease !important;
+    }
+    .product-line.active {
+      animation: activeProductGlow 2.4s ease-in-out infinite !important;
+    }
+    @keyframes activeProductGlow {
+      0%,100% { filter:brightness(1); transform:translateX(0); }
+      50% { filter:brightness(1.12); transform:translateX(-.12vw); }
+    }
+    .price-mini-badge {
+      transition: transform .35s ease, box-shadow .35s ease !important;
+    }
+    .product-line.active .price-mini-badge {
+      transform:scale(1.035);
+      box-shadow:0 0 18px rgba(245,178,26,.32), inset 0 0 12px rgba(245,178,26,.09) !important;
+    }
+
     @media (max-aspect-ratio: 14/9) {
       .topbar { grid-template-columns: 1.6fr 2.2fr 1.5fr; }
       .main-grid { grid-template-columns: 24.5vw 1fr 24vw; }
@@ -1685,13 +1729,13 @@ function LiveProductSpotlight({ data, isAr, activeCategory }) {
   }, [products.length, activeCategory?.id]);
 
   const active = products[activeIndex % Math.max(1, products.length)] || DEFAULT_DATA.prices[0];
-  const doubled = [...products, ...products];
+  const repeatCount = Math.max(3, Math.ceil(16 / Math.max(1, products.length)));
+  const repeatedProducts = Array.from({ length: repeatCount }).flatMap(() => products);
+  const scrollStep = `${-(100 / repeatCount)}%`;
 
   return (
     <aside className="spotlight-card glass-panel">
       <div className="spotlight-title"><BadgePercent size={20} /> {isAr ? "منتجات القسم النشط" : "מוצרי הקטגוריה הפעילה"}</div>
-      <div className="filtered-products-hint">{isAr ? "القسم النشط الآن" : "הקטגוריה הפעילה עכשיו"}: {isAr ? activeCategory?.ar : activeCategory?.he}</div>
-
       <div className="featured-product" key={`${active.nameHe}-${activeIndex}`}>
         <div className="featured-image-wrap">
           <img src={getProductImage(active)} alt="product" onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }} />
@@ -1710,8 +1754,8 @@ function LiveProductSpotlight({ data, isAr, activeCategory }) {
       </div>
 
       <div className="product-list-window">
-        <div className="product-list-track">
-          {doubled.map((p, i) => {
+        <div className="product-list-track smooth-product-track" style={{ "--product-scroll-step": scrollStep }}>
+          {repeatedProducts.map((p, i) => {
             const originalIndex = i % products.length;
             const activeRow = originalIndex === activeIndex % products.length;
             return (
@@ -1737,7 +1781,6 @@ function LiveProductSpotlight({ data, isAr, activeCategory }) {
 function SmartCategoryNav({ isAr, activeCategoryIndex }) {
   return (
     <nav className="bottom-nav smart-category-nav glass-panel">
-      <div className="active-category-label">{isAr ? "القسم النشط الآن" : "הקטגוריה הפעילה עכשיו"}</div>
       <div className="nav-light-runner" />
       {SMART_CATEGORIES.map((category, index) => {
         const Icon = category.Icon;
